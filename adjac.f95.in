@@ -340,7 +340,7 @@ contains
        ic(r) = ia(p)
        r = r + 1
     end do
-    do p = q, nb, 1
+    do q = q, nb, 1
        vc(r) = vb(q)
        ic(r) = ib(q)
        r = r + 1
