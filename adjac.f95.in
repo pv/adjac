@@ -250,11 +250,11 @@ contains
     end do
   end subroutine get_dense_jacobian_{{CHR}}
 
-  subroutine get_coo_jacobian_{{CHR}}(y, jac_i, jac_j, jac_val)
+  subroutine get_coo_jacobian_{{CHR}}(y, jac_val, jac_i, jac_j)
     implicit none
     type({{TYPE}}), dimension(:), intent(inout) :: y
-    integer, dimension(:), intent(out) :: jac_i, jac_j
     {{FTYPE}}, dimension(:), intent(out) :: jac_val
+    integer, dimension(:), intent(out) :: jac_i, jac_j
 
     integer :: i, p, j, k
 
@@ -269,23 +269,23 @@ contains
     end do
   end subroutine get_coo_jacobian_{{CHR}}
 
-  subroutine get_csr_jacobian_{{CHR}}(y, jac_ind, jac_indptr, jac_val)
+  subroutine get_csr_jacobian_{{CHR}}(y, jac_val, jac_indices, jac_indptr)
     implicit none
     type({{TYPE}}), dimension(:), intent(inout) :: y
-    integer, dimension(:), intent(out) :: jac_ind, jac_indptr
     {{FTYPE}}, dimension(:), intent(out) :: jac_val
+    integer, dimension(:), intent(out) :: jac_indices, jac_indptr
 
     integer :: i, p, j, k
 
     k = 1
-    jac_ind(1) = 1
+    jac_indptr(1) = 1
     do i = 1, size(y,1)
        if (y(i)%n > 0) then
-          jac_indptr(k:k+y(i)%n-1) = y(i)%taylor_i(1:y(i)%n)
+          jac_indices(k:k+y(i)%n-1) = y(i)%taylor_i(1:y(i)%n)
           jac_val(k:k+y(i)%n-1) = y(i)%taylor_val(1:y(i)%n)
           k = k + y(i)%n
        end if
-       jac_ind(i+1) = k
+       jac_indptr(i+1) = k
     end do
   end subroutine get_csr_jacobian_{{CHR}}
 
