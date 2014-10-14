@@ -3,6 +3,11 @@ FC=gfortran
 
 TESTS=$(patsubst %.f95,%.test,$(wildcard tests/test_*.f95))
 
+all: test
+
+adjac.f95: adjac.f95.in
+	python generate.py
+
 test: $(TESTS)
 	@rm -f tests/*.out; \
 	ok=0; \
