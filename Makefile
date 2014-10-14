@@ -8,6 +8,7 @@ test: $(TESTS)
 	ok=0; \
 	for t in $(TESTS); do \
 		b="`basename $$t .test`"; \
+		c="tests/$$b.cmp"; \
 		log="$$t.out"; \
 		echo "--------------------------------------------" > "$$log"; \
 		echo "$$b" >> "$$log"; \
@@ -16,6 +17,10 @@ test: $(TESTS)
 		result=$$?; \
 		if test "$$result" = "0"; then \
 			if grep -q FAIL "$$log"; then result=1; else result=0; fi; \
+		fi; \
+		if test -f "$$c"; then \
+			if diff -b -u "$$log" "$$c" >> "$$log.tmp"; then true; else result=1; fi; \
+			mv -f "$$log.tmp" "$$log"; \
 		fi; \
 		if test "$$result" = "0"; then echo "OK"; rm -f "$$log"; else echo "FAIL"; ok=1; fi; \
 	done; \
