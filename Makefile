@@ -1,5 +1,6 @@
 
 FC=gfortran
+FFLAGS=-O2
 
 TESTS=$(patsubst %.f95,%.test,$(wildcard tests/test_*.f95))
 EXAMPLES=$(patsubst %.f95,%,$(wildcard examples/*.f95))
@@ -36,12 +37,15 @@ adjac.f95: adjac.f95.in generate.py
 	python generate.py
 
 %.o: %.f95
-	$(FC) -c -o $@ $^
+	$(FC) $(FFLAGS) -c -o $@ $^
 
 tests/%.test: tests/%.f95 adjac.o
-	$(FC) -o $@ -Itests $^
+	$(FC) $(FFLAGS) -o $@ -Itests $^
 
 examples/%: examples/%.f95 adjac.o
-	$(FC) -o $@ $^
+	$(FC) $(FFLAGS) -o $@ $^
+
+clean:
+	rm -f $(EXAMPLES) $(TESTS) tests/*.out *.o adjac.f95 *.mod
 
 .PHONY: all test examples
