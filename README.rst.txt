@@ -80,8 +80,8 @@ addition the partial derivatives with respect to `x`::
     end subroutine my_func_jac
 
 Note that the computational part of the code is unchanged. In general,
-only data type replacements of the form "double precision ->
-adjac_double" are usually necessary to make things work.
+only data type replacements of the form ``double precision ->
+adjac_doubl`` are usually necessary to make things work.
 
-See examples/*.f90 for mode a usage examples.
+See ``examples/*.f90`` for mode a usage examples.
 
