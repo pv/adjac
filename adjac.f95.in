@@ -57,7 +57,9 @@ module adjac
 
   public assignment(=)
   interface assignment(=)
-     module procedure assign_ad, assign_bd, assign_bz, assign_ba, assign_qz
+     module procedure assign_ai, assign_ad
+     module procedure assign_bi, assign_bd, assign_bz, assign_ba
+     module procedure assign_qi, assign_qd, assign_qz
   end interface
 
 {{py:
