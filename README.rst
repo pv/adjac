@@ -28,7 +28,7 @@ of the variables. In complex-analytic cases, the results will be
 equivalent, but adjac_complexan is more efficient computationally.
 
 The data types support operations =,*,+,-,matmul,exp,sin,cos,log,dble,aimag,conjg.
-adjac_complexan does not support operations that break complex analyticity.
+However, adjac_complexan does not support operations that break complex analyticity.
 
 For more information about automatic differentiation, and other AD
 software (there are many and adjac does not do anything unusual), see
@@ -81,7 +81,7 @@ addition the partial derivatives with respect to `x`::
 
 Note that the computational part of the code is unchanged. In general,
 only data type replacements of the form ``double precision ->
-adjac_doubl`` are usually necessary to make things work.
+adjac_double`` are usually necessary to make things work.
 
-See ``examples/*.f90`` for mode a usage examples.
+See ``examples/*.f95`` for mode a usage examples.
 
