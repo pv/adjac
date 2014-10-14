@@ -1,9 +1,18 @@
-import tempita
+"""
+generate.py SRC DST
+"""
 import sys
+import argparse
+import tempita
 
 
 def main():
-    process('adjac.f95.in', 'adjac.f95')
+    p = argparse.ArgumentParser(usage=__doc__.strip())
+    p.add_argument('src')
+    p.add_argument('dst')
+    args = p.parse_args()
+
+    process(args.src, args.dst)
 
 
 def process(src, dst):

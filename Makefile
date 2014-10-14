@@ -34,7 +34,7 @@ test: $(TESTS)
 	exit "$$ok"
 
 adjac.f95: adjac.f95.in generate.py
-	python generate.py
+	python generate.py adjac.f95.in adjac.f95
 
 %.o: %.f95
 	$(FC) $(FFLAGS) -c -o $@ $^
