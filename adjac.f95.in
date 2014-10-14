@@ -324,6 +324,7 @@ contains
           vy(q) = alpha * vx(p)
           ny = ny + 1
           p = p + 1
+          q = q + 1
        end if
     end do
 
