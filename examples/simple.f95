@@ -5,7 +5,7 @@
 
         integer :: j
         do j = 1, 2
-            y(j) = log(x(j) / (1 + cos(x(j+1))**2))
+            y(j) = log(x(j) / ((0d0,1d0) + cos(x(j+1))**2))
         end do
     end subroutine my_func
 
@@ -23,7 +23,7 @@
 	call adjac_set_independent(x, x_value)
 
         do j = 1, 2
-            y(j) = log(x(j) / (1 + cos(x(j+1))**2))
+            y(j) = log(x(j) / ((0d0,1d0) + cos(x(j+1))**2))
         end do
 
 	call adjac_get_value(y, y_value)
@@ -41,7 +41,7 @@ program simple
   integer :: i
 
   do i = 1, 3
-     x(i) = i
+     x(i) = i + (0d0,1d0) * i**2
   end do
 
   ! Evaluate function values

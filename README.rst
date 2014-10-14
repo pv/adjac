@@ -51,7 +51,7 @@ For example, consider the following::
 
         integer :: j
         do j = 1, 2
-            y(j) = log(x(j) / (1 + cos(x(j+1))**2))
+            y(j) = log(x(j) / ((0d0,1d0) + cos(x(j+1))**2))
         end do
     end subroutine my_func
 
@@ -72,7 +72,7 @@ addition the partial derivatives with respect to `x`::
 	call adjac_set_independent(x, x_value)
 
         do j = 1, 2
-            y(j) = log(x(j) / (1 + cos(x(j+1))**2))
+            y(j) = log(x(j) / ((0d0,1d0) + cos(x(j+1))**2))
         end do
 
 	call adjac_get_value(y, y_value)
