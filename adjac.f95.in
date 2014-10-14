@@ -91,6 +91,11 @@ def binops(name):
      {{binops("div")}}
   end interface operator(/)
 
+  public operator(**)
+  interface operator(**)
+     module procedure pow_ai, pow_qi
+  end interface operator(**)
+
   public matmul
   interface matmul
      module procedure matmul_aa, matmul_ai, matmul_ia, matmul_ad, matmul_da
@@ -135,6 +140,7 @@ def binops(name):
 
   interface adjac_set_independent
      module procedure set_independent_a, set_independent_q
+     module procedure set_independent_many_a, set_independent_many_q
   end interface adjac_set_independent
 
   interface axpy_sparse_vectors
@@ -187,6 +193,18 @@ contains
     x%taylor_i(1) = j
     x%taylor_val(1) = 1
   end subroutine set_independent_{{CHR}}
+
+  subroutine set_independent_many_{{CHR}}(x, xval)
+    implicit none
+    type({{TYPE}}), dimension(:), intent(inout) :: x
+    {{FTYPE}}, dimension(size(x)), intent(in) :: xval
+
+    integer :: j
+
+    do j = 1, size(x,1)
+       call set_independent_{{CHR}}(x(j), xval(j), j)
+    end do
+  end subroutine set_independent_many_{{CHR}}
 
   subroutine get_value_one_{{CHR}}(y, val)
     implicit none
@@ -886,6 +904,19 @@ contains
   end function div_{{CHR2}}b
   {{endfor}}
   {{endif}}
+
+  !!
+  !! operator(**)
+  !!
+
+  {{for FTYPE2, CHR2 in FTYPES2}}
+  pure elemental function pow_{{CHR}}{{CHR2}}(x, y) result(z)
+    implicit none
+    type({{TYPE}}), intent(in) :: x, y
+    type({{TYPE}}) :: z
+    z = exp(y * log(x))
+  end function pow_{{CHR}}{{CHR2}}
+  {{endfor}}
 
   !!
   !! matmul
