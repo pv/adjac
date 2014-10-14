@@ -4,50 +4,34 @@
 ! adjac
 ! =====
 !
-! Automatic Differentiation (forward-mode) for sparse Jacobians.
+! Automatic Differentiation (forward-mode) for generating sparse Jacobians.
 !
-! Usage::
+! Provides three AD data types:
 !
-!    subroutine somefunction(x_value, y_value, jac_dense, jac_i, jac_j, jac_val)
-!        use adjac
-!        implicit none
-!    
-!        double precision, dimension(n), intent(in) :: x_value
-!        double precision, dimension(n), intent(out) :: y_value
-!        double precision, dimension(n, n), intent(out) :: jac_dense
-!        integer, allocatable, dimension(:), intent(inout) :: jac_i, jac_j, jac_ind, jac_indptr
-!        double precision, allocatable, dimension(:), intent(inout) :: jac_val, jac_val2
-!    
-!        type(adjac_double), dimension(n) :: x
-!        type(adjac_double), dimension(n) :: y
-!        integer :: j, nnz
-!    
-!        do j = 1, n
-!            call adjac_set_independent(x(j), x_value(j), j)
-!        end do
-!    
-!        ! Some calculation, for example the Laplacian plus nonlinearity
-!        y(1) = x(1)
-!        y(n) = x(n)
-!        do j = 2, n-1
-!           y(j) = x(j-1) - 2*x(j) + x(j+1) + cos(x(j))
-!        end do
+! - adjac_double: double precision AD variable
+! - adjac_complex: double complex AD variable
+! - adjac_complexan: double complex analytic AD variable
 !
-!        ! Obtain function value
-!        call adjac_get_value(y, y_value)
+! and the support routines:
 !
-!        ! Obtain jacobian in dense format
-!        call adjac_get_dense_jacobian(y, jac_dense)
+! - adjac_set_independent: initialize independent variable (dy_i/dx_j = delta_ij)
+! - adjac_get_value: get values from a dependent variables
+! - adjac_get_nnz: get number of nonzero entries in the Jacobian
+! - adjac_get_csr_jacobian: get Jacobian in Compressed Sparse Row format
+! - adjac_get_coo_jacobian: get Jacobian in sparse coordinate format
+! - adjac_get_dense_jacobian: get Jacobian as a full matrix
 !
-!        ! Obtain jacobian in sparse coordinate (i, j, value) format
-!        nnz = adjac_get_nnz(y)
-!        allocate(jac_i(nnz), jac_j(nnz), jac_val(nnz))
-!        call adjac_get_coo_jacobian(y, jac_i, jac_j, jac_val)
+! The complex analytic adjac_complexan generates complex-valued
+! Jacobians corresponding to the complex derivative, whereas
+! adjac_complex can be used to generate real-valued Jacobians
+! corresponding to separate derivatives vs. real and imaginary parts
+! of the variables. In complex-analytic cases, the results will be
+! equivalent, but adjac_complexan is more efficient computationally.
 !
-!        ! Obtain jacobian in compressed sparse row format
-!        allocate(jac_ind(n+1), jac_indptr(nnz), jac_val2(nnz))
-!        call adjac_get_csr_jacobian(y, jac_ind, jac_indptr, jac_val2)
-!    end subroutine somefunction
+! The data types support operations =,*,+,-,matmul,exp,sin,cos,log,dble,aimag,conjg.
+! adjac_complexan does not support operations that break complex analyticity.
+!
+! See examples/*.f90 for a usage examples.
 
 ! Copyright (c) 2014, Pauli Virtanen <pav@iki.fi>
 ! All rights reserved.
@@ -103,55 +87,45 @@ module adjac
 
   public assignment(=)
   interface assignment(=)
-     module procedure assign_ad, assign_bd, assign_bz, assign_ba
+     module procedure assign_ad, assign_bd, assign_bz, assign_ba, assign_qz
   end interface
+
+{{py:
+def binops(name):
+    chrs = ['i', 'd', 'z']
+    ops = ['aa', 'bb', 'qq', 'ab', 'ba']
+    for c in chrs:
+        ops += ['a'+c, 'b'+c, 'q'+c, c+'a', c+'b', c+'q']
+    s = "\n".join("     module procedure " + name + "_" + op for op in ops)
+    return s.lstrip()
+}}
 
   public operator(+)
   interface operator(+)
-     module procedure add_aa, add_ad, add_da
-     module procedure add_qq, add_qd, add_dq, add_qz, add_zq
-     module procedure add_bb, add_bz, add_zb
-     module procedure add_ab, add_ba
-     module procedure add_az, add_za
-     module procedure add_bd, add_db
+     {{binops("add")}}
   end interface
 
   public operator(-)
   interface operator(-)
-     module procedure sub_aa, sub_ad, sub_da
-     module procedure sub_qq, sub_qd, sub_dq, sub_qz, sub_zq
-     module procedure sub_bb, sub_bz, sub_zb
-     module procedure sub_ab, sub_ba
-     module procedure sub_az, sub_za
-     module procedure sub_bd, sub_db
-     module procedure neg_a, neg_b
+     {{binops("sub")}}
+     module procedure neg_a, neg_b, neg_q
   end interface
 
   public operator(*)
   interface operator(*)
-     module procedure mul_aa, mul_ad, mul_da
-     module procedure mul_qq, mul_qd, mul_dq, mul_qz, mul_zq
-     module procedure mul_bb, mul_bz, mul_zb
-     module procedure mul_ab, mul_ba
-     module procedure mul_az, mul_za
-     module procedure mul_bd, mul_db
+     {{binops("mul")}}
   end interface operator(*)
 
   public operator(/)
   interface operator(/)
-     module procedure div_aa, div_ad, div_da
-     module procedure div_qq, div_qd, div_dq, div_qz, div_zq
-     module procedure div_bb, div_bz, div_zb
-     module procedure div_ab, div_ba
-     module procedure div_az, div_za
-     module procedure div_bd, div_db
+     {{binops("div")}}
   end interface operator(/)
 
   public matmul
   interface matmul
-     module procedure matmul_aa, matmul_ad, matmul_da
-     module procedure matmul_qq, matmul_qd, matmul_dq, matmul_qz, matmul_zq
+     module procedure matmul_aa, matmul_ai, matmul_ia, matmul_ad, matmul_da
      module procedure matmul_bb, matmul_bz, matmul_zb
+     module procedure matmul_qq, matmul_qi, matmul_iq, matmul_qd, matmul_dq, matmul_qz, matmul_zq
   end interface matmul
 
   public dble
@@ -224,8 +198,10 @@ module adjac
 
 contains
 
-{{for TYPE, FTYPE, CHR, CAST, FTYPES2 in [('adjac_double', 'double precision', 'a', 'dble', [('double precision', 'd')]), 
-                                          ('adjac_complexan', 'double complex', 'q', 'dcmplx', [('double precision', 'd'), 
+{{for TYPE, FTYPE, CHR, CAST, FTYPES2 in [('adjac_double', 'double precision', 'a', 'dble', [('integer', 'i'),
+                                                                                             ('double precision', 'd')]), 
+                                          ('adjac_complexan', 'double complex', 'q', 'dcmplx', [('integer', 'i'),
+                                                                                                ('double precision', 'd'), 
                                                                                                 ('double complex', 'z')])]}}
   subroutine set_independent_{{CHR}}(x, xval, j)
     implicit none
@@ -403,13 +379,15 @@ contains
   {{endfor}}
 
   {{if TYPE == "adjac_double"}}
-  pure elemental subroutine assign_bd(x, y)
+  {{for FTYPE2, CHR2 in FTYPES2}}
+  pure elemental subroutine assign_b{{CHR2}}(x, y)
     implicit none
     type(adjac_complex), intent(out) :: x
-    {{FTYPE}}, intent(in) :: y
-    x%re = y
+    {{FTYPE2}}, intent(in) :: y
+    x%re = dble(y)
     x%im = 0d0
-  end subroutine assign_bd
+  end subroutine assign_b{{CHR2}}
+  {{endfor}}
 
   pure elemental subroutine assign_bz(x, y)
     implicit none
@@ -535,21 +513,24 @@ contains
     z%im = y%im
   end function add_ab
 
-  pure elemental function add_bd(x, y) result(z)
+  {{for FTYPE2, CHR2 in FTYPES2}}
+  pure elemental function add_b{{CHR2}}(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
-    {{FTYPE}}, intent(in) :: y
+    {{FTYPE2}}, intent(in) :: y
     type(adjac_complex) :: z
     z = x + dcmplx(y)
-  end function add_bd
+  end function add_b{{CHR2}}
 
-  pure elemental function add_db(x, y) result(z)
+  pure elemental function add_{{CHR2}}b(x, y) result(z)
     implicit none
-    {{FTYPE}}, intent(in) :: x
+    {{FTYPE2}}, intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
     z = dcmplx(x) + y
-  end function add_db
+  end function add_{{CHR2}}b
+  {{endfor}}
+
   {{endif}}
 
   !!
@@ -663,21 +644,23 @@ contains
     z%im = -y%im
   end function sub_ab
 
-  pure elemental function sub_bd(x, y) result(z)
+  {{for FTYPE2, CHR2 in FTYPES2}}
+  pure elemental function sub_b{{CHR2}}(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
-    {{FTYPE}}, intent(in) :: y
+    {{FTYPE2}}, intent(in) :: y
     type(adjac_complex) :: z
     z = x - dcmplx(y)
-  end function sub_bd
+  end function sub_b{{CHR2}}
 
-  pure elemental function sub_db(x, y) result(z)
+  pure elemental function sub_{{CHR2}}b(x, y) result(z)
     implicit none
-    {{FTYPE}}, intent(in) :: x
+    {{FTYPE2}}, intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
     z = dcmplx(x) - y
-  end function sub_db
+  end function sub_{{CHR2}}b
+  {{endfor}}
   {{endif}}
 
   !!
@@ -803,21 +786,23 @@ contains
     z%im = x * y%im
   end function mul_ab
 
-  pure elemental function mul_bd(x, y) result(z)
+  {{for FTYPE2, CHR2 in FTYPES2}}
+  pure elemental function mul_b{{CHR2}}(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
-    {{FTYPE}}, intent(in) :: y
+    {{FTYPE2}}, intent(in) :: y
     type(adjac_complex) :: z
     z = x * dcmplx(y)
-  end function mul_bd
+  end function mul_b{{CHR2}}
 
-  pure elemental function mul_db(x, y) result(z)
+  pure elemental function mul_{{CHR2}}b(x, y) result(z)
     implicit none
-    {{FTYPE}}, intent(in) :: x
+    {{FTYPE2}}, intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
     z = dcmplx(x) * y
-  end function mul_db
+  end function mul_{{CHR2}}b
+  {{endfor}}
   {{endif}}
 
   !!
@@ -912,22 +897,24 @@ contains
     z = x * conjg(y) / (dble(y)*dble(y) + aimag(y)*aimag(y))
   end function div_ab
 
-  pure elemental function div_bd(x, y) result(z)
+  {{for FTYPE2, CHR2 in FTYPES2}}
+  pure elemental function div_b{{CHR2}}(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
-    {{FTYPE}}, intent(in) :: y
+    {{FTYPE2}}, intent(in) :: y
     type(adjac_complex) :: z
     z%re = x%re / y
     z%im = x%im / y
-  end function div_bd
+  end function div_b{{CHR2}}
 
-  pure elemental function div_db(x, y) result(z)
+  pure elemental function div_{{CHR2}}b(x, y) result(z)
     implicit none
-    {{FTYPE}}, intent(in) :: x
+    {{FTYPE2}}, intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
     z = dcmplx(x) / y
-  end function div_db
+  end function div_{{CHR2}}b
+  {{endfor}}
   {{endif}}
 
   !!
