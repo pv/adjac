@@ -2,11 +2,11 @@
 FC=gfortran
 
 TESTS=$(patsubst %.f95,%.test,$(wildcard tests/test_*.f95))
+EXAMPLES=$(patsubst %.f95,%,$(wildcard examples/*.f95))
 
-all: test
+all: examples test
 
-adjac.f95: adjac.f95.in
-	python generate.py
+examples: $(EXAMPLES)
 
 test: $(TESTS)
 	@rm -f tests/*.out; \
@@ -32,10 +32,16 @@ test: $(TESTS)
 	for f in tests/*.out; do test -f "$$f" && cat "$$f"; done; \
 	exit "$$ok"
 
+adjac.f95: adjac.f95.in generate.py
+	python generate.py
+
 %.o: %.f95
 	$(FC) -c -o $@ $^
 
 tests/%.test: tests/%.f95 adjac.o
 	$(FC) -o $@ -Itests $^
 
-.PHONY: test
+examples/%: examples/%.f95 adjac.o
+	$(FC) -o $@ $^
+
+.PHONY: all test examples
