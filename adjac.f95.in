@@ -289,65 +289,49 @@ contains
     end do
   end subroutine get_csr_jacobian_{{CHR}}
 
-  pure subroutine axpy_sparse_vectors_{{CHR}}(a, na, ia, va, nb, ib, vb, nc, ic, vc)
-    ! c := a*x + y
+  pure subroutine axpy_sparse_vectors_{{CHR}}(alpha, nx, ix, vx, ny, iy, vy)
+    ! y := a*x + y
     implicit none
-    {{FTYPE}}, intent(in) :: a
-    integer, intent(in) :: na, nb
-    integer, intent(inout) :: nc
-    integer, dimension(na), intent(in) :: ia
-    integer, dimension(nb), intent(in) :: ib
-    integer, dimension(nc), intent(out) :: ic
-    {{FTYPE}}, dimension(na), intent(in) :: va
-    {{FTYPE}}, dimension(nb), intent(in) :: vb
-    {{FTYPE}}, dimension(nc), intent(out) :: vc
+    {{FTYPE}}, intent(in) :: alpha
+    integer, intent(in) :: nx
+    integer, intent(inout) :: ny
+    integer, dimension(*), intent(in) :: ix
+    integer, dimension(*), intent(inout) :: iy
+    {{FTYPE}}, dimension(*), intent(in) :: vx
+    {{FTYPE}}, dimension(*), intent(inout) :: vy
 
-    {{FTYPE}} :: tmp
-    integer :: p, q, r
+    integer :: p, q
 
-    ! Sum sorted, until either va or vb exhausted
+    if (alpha == 0) return
+
     p = 1
     q = 1
-    r = 1
     do
-       if (p > na .or. q > nb) exit
+       if (p > nx) exit
+       if (q > ny) exit
 
-       if (ia(p) < ib(q)) then
-          vc(r) = a * va(p)
-          ic(r) = ia(p)
-          p = p + 1
-          r = r + 1
-       else if (ia(p) > ib(q)) then
-          vc(r) = vb(q)
-          ic(r) = ib(q)
+       if (ix(p) == iy(q)) then
+          vy(q) = vy(q) + alpha * vx(p)
           q = q + 1
-          r = r + 1
+          p = p + 1
+       else if (ix(p) > iy(q)) then
+          q = q + 1
        else
-          tmp = a * va(p) + vb(q)
-          if (tmp .ne. 0) then
-             vc(r) = tmp
-             ic(r) = ia(p)
-             r = r + 1
-          end if
+          ! Insertion
+          iy(q+1:ny+1) = iy(q:ny)
+          vy(q+1:ny+1) = vy(q:ny)
+          iy(q) = ix(p)
+          vy(q) = alpha * vx(p)
+          ny = ny + 1
           p = p + 1
-          q = q + 1
        end if
     end do
 
-    ! Copy rest
-    do p = p, na, 1
-       vc(r) = a * va(p)
-       ic(r) = ia(p)
-       r = r + 1
-    end do
-    do q = q, nb, 1
-       vc(r) = vb(q)
-       ic(r) = ib(q)
-       r = r + 1
-    end do
-
-    ! Finish
-    nc = r - 1
+    if (p <= nx) then
+       vy(ny+1:ny+1+(nx-p)) = alpha * vx(p:nx)
+       iy(ny+1:ny+1+(nx-p)) = ix(p:nx)
+       ny = ny + (nx - p) + 1
+    end if
   end subroutine axpy_sparse_vectors_{{CHR}}
 
   !--------------------------------------------------------------------------
@@ -407,17 +391,26 @@ contains
     type({{TYPE}}), intent(in) :: x, y
     type({{TYPE}}) :: z
 
+    if (x%n == 0) then
+       z = y
+    else if (y%n == 0) then
+       z = x
+    else
+       z%n = x%n + y%n
+       allocate(z%taylor_i(z%n))
+       allocate(z%taylor_val(z%n))
+
+       z%taylor_i(1:x%n) = x%taylor_i(1:x%n)
+       z%taylor_val(1:x%n) = x%taylor_val(1:x%n)
+       z%n = x%n
+
+       call axpy_sparse_vectors(&
+            {{CAST}}(1d0), &
+            y%n, y%taylor_i, y%taylor_val, &
+            z%n, z%taylor_i, z%taylor_val)
+    end if
+
     z%value = x%value + y%value
-
-    z%n = x%n + y%n
-    allocate(z%taylor_i(z%n))
-    allocate(z%taylor_val(z%n))
-
-    call axpy_sparse_vectors(&
-         {{CAST}}(1d0), &
-         x%n, x%taylor_i, x%taylor_val, &
-         y%n, y%taylor_i, y%taylor_val, &
-         z%n, z%taylor_i, z%taylor_val)
   end function add_{{CHR}}{{CHR}}
 
   {{for FTYPE2, CHR2 in FTYPES2}}
@@ -536,17 +529,26 @@ contains
 
     integer :: n
 
+    if (x%n == 0) then
+       z = y
+    else if (y%n == 0) then
+       z = x
+    else
+       z%n = x%n + y%n
+       allocate(z%taylor_i(z%n))
+       allocate(z%taylor_val(z%n))
+
+       z%taylor_i(1:x%n) = x%taylor_i(1:x%n)
+       z%taylor_val(1:x%n) = x%taylor_val(1:x%n)
+       z%n = x%n
+
+       call axpy_sparse_vectors(&
+            {{CAST}}(-1d0), &
+            y%n, y%taylor_i, y%taylor_val, &
+            z%n, z%taylor_i, z%taylor_val)
+    end if
+
     z%value = x%value - y%value
-
-    z%n = x%n + y%n
-    allocate(z%taylor_i(z%n))
-    allocate(z%taylor_val(z%n))
-
-    call axpy_sparse_vectors(&
-         {{CAST}}(-1d0), &
-         y%n, y%taylor_i, y%taylor_val, &
-         x%n, x%taylor_i, x%taylor_val, &
-         z%n, z%taylor_i, z%taylor_val)
   end function sub_{{CHR}}{{CHR}}
 
   {{for FTYPE2, CHR2 in FTYPES2}}
@@ -683,7 +685,20 @@ contains
     implicit none
     type({{TYPE}}), intent(in) :: x, y
     type({{TYPE}}) :: z
-    z = (x * y%value) + (x%value * y)
+
+    z%n = x%n + y%n
+    allocate(z%taylor_i(z%n))
+    allocate(z%taylor_val(z%n))
+
+    z%taylor_i(1:x%n) = x%taylor_i(1:x%n)
+    z%taylor_val(1:x%n) = x%taylor_val(1:x%n) * y%value
+    z%n = x%n
+
+    call axpy_sparse_vectors(&
+         x%value, &
+         y%n, y%taylor_i, y%taylor_val, &
+         z%n, z%taylor_i, z%taylor_val)
+
     z%value = x%value * y%value
   end function mul_{{CHR}}{{CHR}}
 
