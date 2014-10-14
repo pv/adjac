@@ -531,7 +531,7 @@ contains
     integer :: n
 
     if (x%n == 0) then
-       z = y
+       z = -y
     else if (y%n == 0) then
        z = x
     else
