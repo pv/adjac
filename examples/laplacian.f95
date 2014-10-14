@@ -18,9 +18,9 @@ program laplacian
   integer j, nnz
   
   do j = 1, n
-     x_value(j) = 1d0
-     call adjac_set_independent(x(j), x_value(j), j)
+     x_value(j) = j-1
   end do
+  call adjac_set_independent(x, x_value)
 
   ! Compute Laplacian
   y(1) = x(2) - 2*x(1)

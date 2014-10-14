@@ -2,7 +2,8 @@
 adjac
 =====
 
-Automatic Differentiation (forward-mode) for generating sparse Jacobians.
+Automatic Differentiation (forward-mode) for generating sparse
+Jacobians, using Fortran 95 and operator overloading.
 
 Provides three AD data types:
 
@@ -29,4 +30,58 @@ equivalent, but adjac_complexan is more efficient computationally.
 The data types support operations =,*,+,-,matmul,exp,sin,cos,log,dble,aimag,conjg.
 adjac_complexan does not support operations that break complex analyticity.
 
-See examples/*.f90 for a usage examples.
+For more information about automatic differentiation, and other AD
+software (there are many and adjac does not do anything unusual), see
+http://autodiff.org/
+
+
+Example
+-------
+
+Adjac enables computation of the Jacobian of a multivariate function,
+requiring only slightly modified code computing the *value* of the
+function.
+
+For example, consider the following::
+
+    subroutine my_func(x, y)
+        implicit none
+        double complex, dimension(3), intent(in) :: x
+        double complex, dimension(2), intent(out) :: y
+
+        integer :: j
+        do j = 1, 2
+            y(j) = log(x(j) / (1 + cos(x(j+1))**2))
+        end do
+    end subroutine my_func
+
+The following function calculates the same as the above, and in
+addition the partial derivatives with respect to `x`::
+
+    subroutine my_func_jac(x_value, y_value, dy_dx)
+        use adjac
+        implicit none
+        double complex, dimension(3), intent(in) :: x_value
+        double complex, dimension(2), intent(out) :: y_value
+        double complex, dimension(2,3), intent(out) :: dy_dx
+
+	type(adjac_complexan), dimension(3) :: x
+	type(adjac_complexan), dimension(2) :: y
+        integer :: j
+
+	call adjac_set_independent(x, x_value)
+
+        do j = 1, 2
+            y(j) = log(x(j) / (1 + cos(x(j+1))**2))
+        end do
+
+	call adjac_get_value(y, y_value)
+	call adjac_get_dense_jacobian(y, dy_dx)
+    end subroutine my_func_jac
+
+Note that the computational part of the code is unchanged. In general,
+only data type replacements of the form "double precision ->
+adjac_double" are usually necessary to make things work.
+
+See examples/*.f90 for mode a usage examples.
+
