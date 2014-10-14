@@ -93,7 +93,7 @@ def binops(name):
 
   public operator(**)
   interface operator(**)
-     module procedure pow_ai, pow_qi
+     module procedure pow_ai, pow_ad, pow_qi, pow_qd, pow_qz
   end interface operator(**)
 
   public matmul
@@ -912,7 +912,8 @@ contains
   {{for FTYPE2, CHR2 in FTYPES2}}
   pure elemental function pow_{{CHR}}{{CHR2}}(x, y) result(z)
     implicit none
-    type({{TYPE}}), intent(in) :: x, y
+    type({{TYPE}}), intent(in) :: x
+    {{FTYPE2}}, intent(in) :: y
     type({{TYPE}}) :: z
     z = exp(y * log(x))
   end function pow_{{CHR}}{{CHR2}}
@@ -1046,7 +1047,7 @@ contains
     type({{TYPE}}), intent(in) :: x
     type({{TYPE}}) :: z
     {{FTYPE}} :: v, dv
-    v = exp(z%value)
+    v = exp(x%value)
     dv = v
     z = dv*x
     z%value = v
