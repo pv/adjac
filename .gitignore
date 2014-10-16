@@ -4,3 +4,7 @@
 /adjac.f95
 /examples/simple
 /examples/laplacian
+/examples/bench_simple
+/examples/bench_simple_adept
+/examples/bench_simple_adolc
+/examples/bench_simple_tapeless_adolc

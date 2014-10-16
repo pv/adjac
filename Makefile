@@ -1,9 +1,18 @@
 
 FC=gfortran
-FFLAGS=-O2
+CXX=g++
+
+CXXFLAGS=-g -O3
+FFLAGS=-g -O3
 
 TESTS=$(patsubst %.f95,%.test,$(wildcard tests/test_*.f95))
 EXAMPLES=$(patsubst %.f95,%,$(wildcard examples/*.f95))
+CXXEXAMPLES=$(patsubst %.cpp,%,$(wildcard examples/*.cpp))
+
+ADOLC_CFLAGS=-I/usr/include/adolc
+ADOLC_LIBS=-ladolc
+ADEPT_CFLAGS=-Iadept-1.0/include
+ADEPT_LIBS=-Ladept-1.0/lib -ladept
 
 all: examples test
 
@@ -45,7 +54,29 @@ tests/%.test: tests/%.f95 adjac.o
 examples/%: examples/%.f95 adjac.o
 	$(FC) $(FFLAGS) -o $@ $^
 
-clean:
-	rm -f $(EXAMPLES) $(TESTS) tests/*.out *.o adjac.f95 *.mod
+examples/%_adolc: examples/%_adolc.cpp
+	$(CXX) $(CXXFLAGS) $(ADOLC_CFLAGS) -o $@ $^ $(ADOLC_LIBS)
 
-.PHONY: all test examples
+examples/%_adept: examples/%_adept.cpp
+	$(CXX) $(CXXFLAGS) $(ADEPT_CFLAGS) -o $@ $^ $(ADEPT_LIBS)
+
+compare_adolc: examples/bench_simple examples/bench_simple_adolc examples/bench_simple_tapeless_adolc
+	@echo "-- bench_simple ----------------------------------------"
+	@echo "* ADOLC (tape+eval)"
+	time ./examples/bench_simple_adolc
+	@echo "* ADOLC (tapeless)"
+	time ./examples/bench_simple_tapeless_adolc
+	@echo "* ADJAC"
+	time ./examples/bench_simple
+
+compare_adept: examples/bench_simple examples/bench_simple_adept
+	@echo "-- bench_simple ----------------------------------------"
+	@echo "* ADEPT"
+	time ./examples/bench_simple_adept
+	@echo "* ADJAC"
+	time ./examples/bench_simple
+
+clean:
+	rm -f $(EXAMPLES) $(TESTS) tests/*.out *.o adjac.f95 *.mod $(CXXEXAMPLES)
+
+.PHONY: all test examples compare_adolc compare_adept
