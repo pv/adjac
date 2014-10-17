@@ -29,6 +29,7 @@ contains
     type(adjac_double) :: x(n), y(n)
     integer :: i
 
+    call adjac_reset()
     call adjac_set_independent(x, xval)
     call laplacian(x, y)
     call adjac_get_value(y, yval)

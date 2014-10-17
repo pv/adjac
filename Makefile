@@ -4,6 +4,7 @@ CXX=g++
 
 CXXFLAGS=-g -O3
 FFLAGS=-g -O3
+#FFLAGS=-ggdb -Og
 
 TESTS=$(patsubst %.f95,%.test,$(wildcard tests/test_*.f95))
 EXAMPLES=$(patsubst %.f95,%,$(wildcard examples/*.f95))
@@ -60,12 +61,10 @@ examples/%_adolc: examples/%_adolc.cpp
 examples/%_adept: examples/%_adept.cpp
 	$(CXX) $(CXXFLAGS) $(ADEPT_CFLAGS) -o $@ $^ $(ADEPT_LIBS)
 
-compare_adolc: examples/bench_simple examples/bench_simple_adolc examples/bench_simple_tapeless_adolc
+compare_adolc: examples/bench_simple examples/bench_simple_adolc
 	@echo "-- bench_simple ----------------------------------------"
 	@echo "* ADOLC (tape+eval)"
 	time ./examples/bench_simple_adolc
-	@echo "* ADOLC (tapeless)"
-	time ./examples/bench_simple_tapeless_adolc
 	@echo "* ADJAC"
 	time ./examples/bench_simple
 

@@ -37,18 +37,20 @@
 module adjac
   private
 
+  integer, parameter :: numvars = 100
+
   type, public :: adjac_double
+     ! value + v * D[i]
      double precision :: value
-     integer :: n
-     integer, allocatable, dimension(:) :: taylor_i
-     double precision, allocatable, dimension(:) :: taylor_val
+     integer :: i
+     double precision :: v
   end type adjac_double
 
   type, public :: adjac_complexan
+     ! value + v * D[i]
      double complex :: value
-     integer :: n
-     integer, allocatable, dimension(:) :: taylor_i
-     double complex, allocatable, dimension(:) :: taylor_val
+     integer :: i
+     double complex :: v
   end type adjac_complexan
 
   type, public :: adjac_complex
@@ -62,8 +64,20 @@ module adjac
      module procedure assign_qi, assign_qd, assign_qz
   end interface
 
-{{default pure = "pure"}}
-{{default pure_elemental = "pure elemental"}}
+  ! Differential binary tree
+  !
+  ! if (sum_map(1 + 2*(i-1)) .ne. 0) then
+  !     D[i] = sum_mul(1+2*(i-1)) * D[sum_map(1+2*(i-1))] + sum_mul(2+2*(i-1)) * D[sum_map(2+2*(i-1))]
+  ! else
+  !     D[i] = D[i]
+  !
+  integer :: free_a = 1, free_q = 1
+  integer, dimension(:), allocatable :: sum_map_a, sum_map_q
+  double precision, dimension(:), allocatable :: sum_mul_a
+  double complex, dimension(:), allocatable :: sum_mul_q
+
+{{default pure = ""}}
+{{default pure_elemental = ""}}
 
 {{py:
 def binops(name):
@@ -175,29 +189,103 @@ def binops(name):
 
   public adjac_set_independent, adjac_get_value, &
        adjac_get_dense_jacobian, adjac_get_csr_jacobian, &
-       adjac_get_coo_jacobian, adjac_get_nnz
+       adjac_get_coo_jacobian, adjac_get_nnz, &
+       adjac_reset
 
 contains
+
+  subroutine adjac_reset()
+    implicit none
+    free_a = 1
+    free_q = 1
+    if (allocated(sum_map_a)) then
+       deallocate(sum_map_a)
+       deallocate(sum_mul_a)
+    end if
+    if (allocated(sum_map_q)) then
+       deallocate(sum_map_q)
+       deallocate(sum_mul_q)
+    end if
+  end subroutine adjac_reset
 
 {{for TYPE, FTYPE, CHR, CAST, FTYPES2 in [('adjac_double', 'double precision', 'a', 'dble', [('integer', 'i'),
                                                                                              ('double precision', 'd')]), 
                                           ('adjac_complexan', 'double complex', 'q', 'dcmplx', [('integer', 'i'),
                                                                                                 ('double precision', 'd'), 
                                                                                                 ('double complex', 'z')])]}}
+
+  subroutine get_free_variable_idx_{{CHR}}(j)
+    implicit none
+    integer, intent(out) :: j
+
+    integer, dimension(:), allocatable :: itmp
+    {{FTYPE}}, dimension(:), allocatable :: tmp
+    integer :: sz
+
+    if (.not.allocated(sum_map_{{CHR}})) then
+       sz = 0
+    else
+       sz = size(sum_map_{{CHR}})
+    end if
+
+    if (sz < 2*free_{{CHR}} + 1) then
+       ! Enlarge work space
+       if (allocated(sum_map_{{CHR}})) then
+          sz = sz + 2*free_{{CHR}} + 1
+          allocate(itmp(sz), tmp(sz))
+          itmp(1:size(sum_map_{{CHR}})) = sum_map_{{CHR}}(:)
+          tmp(1:size(sum_mul_{{CHR}})) = sum_mul_{{CHR}}(:)
+          call move_alloc(itmp, sum_map_{{CHR}})
+          call move_alloc(tmp, sum_mul_{{CHR}})
+       else
+          allocate(sum_map_{{CHR}}(100), sum_mul_{{CHR}}(100))
+       end if
+    end if
+
+    j = free_{{CHR}}
+    free_{{CHR}} = free_{{CHR}} + 1
+  end subroutine get_free_variable_idx_{{CHR}}
+
   subroutine set_independent_{{CHR}}(x, xval, j)
     implicit none
     type({{TYPE}}), intent(out) :: x
     {{FTYPE}}, intent(in) :: xval
     integer, intent(in) :: j
 
-    allocate(x%taylor_i(1))
-    allocate(x%taylor_val(1))
-
-    x%n = 1
     x%value = xval
-    x%taylor_i(1) = j
-    x%taylor_val(1) = 1
+    call get_free_variable_idx_{{CHR}}(x%i)
+    x%v = 1
+
+    ! Independent variable
+    sum_map_{{CHR}}(1 + 2*(x%i-1)) = 0
+    sum_map_{{CHR}}(2 + 2*(x%i-1)) = j
   end subroutine set_independent_{{CHR}}
+
+  subroutine sum_taylor_{{CHR}}(alpha, beta, a, b, c)
+    ! dc := alpha*da + beta*db
+    implicit none
+    {{FTYPE}}, intent(in) :: alpha, beta
+    type({{TYPE}}), intent(in) :: a, b
+    type({{TYPE}}), intent(inout) :: c
+
+    if (a%v == 0 .or. a%i == 0) then
+       c%v = beta * b%v
+       c%i = b%i
+    else if (b%v == 0 .or. b%i == 0) then
+       c%v = alpha * a%v
+       c%i = a%i
+    else if (a%i == b%i) then
+       c%v = alpha * a%v + beta * b%v
+       c%i = a%i
+    else
+       call get_free_variable_idx_{{CHR}}(c%i)
+       c%v = 1
+       sum_map_{{CHR}}(1 + 2*(c%i-1)) = a%i
+       sum_map_{{CHR}}(2 + 2*(c%i-1)) = b%i
+       sum_mul_{{CHR}}(1 + 2*(c%i-1)) = alpha * a%v
+       sum_mul_{{CHR}}(2 + 2*(c%i-1)) = beta * b%v
+    end if
+  end subroutine sum_taylor_{{CHR}}
 
   subroutine set_independent_many_{{CHR}}(x, xval)
     implicit none
@@ -228,12 +316,55 @@ contains
     end do
   end subroutine get_value_many_{{CHR}}
 
+{{py:
+def walk_tape(ftype, chr, assign, setup=None, accumulate=None):
+    if setup is None:
+        setup = """
+        work(1:(i-1)) = 0
+        work(i) = v
+        """
+    if accumulate is None:
+        accumulate = """
+        work(ia) = work(ia) + sum_mul_{chr}(1+2*(j-1)) * work(j)
+        work(ib) = work(ib) + sum_mul_{chr}(2+2*(j-1)) * work(j)
+        """.format(chr=chr)
+    return """
+    {setup}
+
+    iwork(1:(i-1)) = 0
+    iwork(i) = 1
+
+    ! Traverse the tape
+    do j = i, 1, -1
+       if (iwork(j) .ne. 0) then
+          ia = sum_map_{chr}(1+2*(j-1))
+          ib = sum_map_{chr}(2+2*(j-1))
+
+          if (ia == 0) then
+             {assign}
+          else
+             {accumulate}
+             iwork(ia) = 1
+             iwork(ib) = 1
+          end if
+       end if
+    end do
+""".format(ftype=ftype, chr=chr, assign=assign, accumulate=accumulate, setup=setup)
+}}
+
   function get_nnz_{{CHR}}(y) result(nnz)
     type({{TYPE}}), dimension(:), intent(in) :: y
     integer :: nnz
+
+    integer, dimension(free_{{CHR}}) :: iwork
+    integer :: k, j, ia, ib
+
     nnz = 0
-    do i = 1, size(y,1)
-       nnz = nnz + y(i)%n
+    do k = 1, size(y,1)
+       i = y(k)%i
+       {{walk_tape(FTYPE, CHR, 
+                   "if (iwork(j) .ne. 0) nnz = nnz + 1", 
+                   "", "")}}
     end do
   end function get_nnz_{{CHR}}
 
@@ -242,14 +373,18 @@ contains
     type({{TYPE}}), dimension(:), intent(inout) :: y
     {{FTYPE}}, dimension(:,:), intent(out) :: jac_dense
 
-    integer :: i, p, j
+    {{FTYPE}}, dimension(free_{{CHR}}) :: work
+    integer, dimension(free_{{CHR}}) :: iwork
+    integer :: i, k, j, ia, ib
+    {{FTYPE}} :: v
 
     jac_dense = 0
 
-    do i = 1, size(y,1)
-       do p = 1, y(i)%n
-          jac_dense(i, y(i)%taylor_i(p)) = jac_dense(i, y(i)%taylor_i(p)) + y(i)%taylor_val(p)
-       end do
+    do k = 1, size(y,1)
+       i = y(k)%i
+       v = y(k)%v
+    
+       {{walk_tape(FTYPE, CHR, "jac_dense(k,ib) = work(j)")}}
     end do
   end subroutine get_dense_jacobian_{{CHR}}
 
@@ -259,16 +394,17 @@ contains
     {{FTYPE}}, dimension(:), intent(out) :: jac_val
     integer, dimension(:), intent(out) :: jac_i, jac_j
 
-    integer :: i, p, j, k
+    {{FTYPE}}, dimension(free_{{CHR}}) :: work
+    integer, dimension(free_{{CHR}}) :: iwork
+    integer :: i, k, j, ia, ib, pos
+    {{FTYPE}} :: v
 
-    k = 1
-    do i = 1, size(y,1)
-       if (y(i)%n > 0) then
-          jac_i(k:k+y(i)%n-1) = i
-          jac_j(k:k+y(i)%n-1) = y(i)%taylor_i(1:y(i)%n)
-          jac_val(k:k+y(i)%n-1) = y(i)%taylor_val(1:y(i)%n)
-          k = k + y(i)%n
-       end if
+    pos = 1
+    do k = 1, size(y,1)
+       i = y(k)%i
+       v = y(k)%v
+
+       {{walk_tape(FTYPE, CHR, "jac_i(pos) = k\njac_j(pos) = ib\njac_val(pos) = work(j)\npos = pos + 1")}}
     end do
   end subroutine get_coo_jacobian_{{CHR}}
 
@@ -278,75 +414,22 @@ contains
     {{FTYPE}}, dimension(:), intent(out) :: jac_val
     integer, dimension(:), intent(out) :: jac_indices, jac_indptr
 
-    integer :: i, p, j, k
+    {{FTYPE}}, dimension(free_{{CHR}}) :: work
+    integer, dimension(free_{{CHR}}) :: iwork
+    integer :: i, k, j, ia, ib, pos
+    {{FTYPE}} :: v
 
-    k = 1
+    pos = 1
     jac_indptr(1) = 1
-    do i = 1, size(y,1)
-       if (y(i)%n > 0) then
-          jac_indices(k:k+y(i)%n-1) = y(i)%taylor_i(1:y(i)%n)
-          jac_val(k:k+y(i)%n-1) = y(i)%taylor_val(1:y(i)%n)
-          k = k + y(i)%n
-       end if
-       jac_indptr(i+1) = k
+    do k = 1, size(y,1)
+       i = y(k)%i
+       v = y(k)%v
+
+       {{walk_tape(FTYPE, CHR, "jac_indices(pos) = ib\njac_val(pos) = work(j)\npos = pos + 1")}}
+       jac_indptr(k+1) = pos
     end do
   end subroutine get_csr_jacobian_{{CHR}}
 
-  {{pure}} subroutine sum_taylor_{{CHR}}(alpha, beta, a, b, c)
-    ! c := alpha*a + beta*b
-    implicit none
-    {{FTYPE}}, intent(in) :: alpha, beta
-    type({{TYPE}}), intent(in) :: a, b
-    type({{TYPE}}), intent(inout) :: c
-
-    {{FTYPE}} :: tmp
-    integer :: p, q, r
-
-    ! Sum sorted, until either a%taylor_val or b%taylor_val exhausted
-    p = 1
-    q = 1
-    r = 1
-    do
-       if (p > a%n .or. q > b%n) exit
-
-       if (a%taylor_i(p) < b%taylor_i(q)) then
-          c%taylor_val(r) = alpha * a%taylor_val(p)
-          c%taylor_i(r) = a%taylor_i(p)
-          p = p + 1
-          r = r + 1
-       else if (a%taylor_i(p) > b%taylor_i(q)) then
-          c%taylor_val(r) = beta * b%taylor_val(q)
-          c%taylor_i(r) = b%taylor_i(q)
-          q = q + 1
-          r = r + 1
-       else
-          tmp = alpha * a%taylor_val(p) + beta * b%taylor_val(q)
-          if (tmp .ne. 0) then
-             c%taylor_val(r) = tmp
-             c%taylor_i(r) = a%taylor_i(p)
-             r = r + 1
-          end if
-          p = p + 1
-          q = q + 1
-       end if
-    end do
-
-    ! Copy rest
-    do p = p, a%n, 1
-       c%taylor_val(r) = alpha * a%taylor_val(p)
-       c%taylor_i(r) = a%taylor_i(p)
-       r = r + 1
-    end do
-    do q = q, b%n, 1
-       c%taylor_val(r) = beta * b%taylor_val(q)
-       c%taylor_i(r) = b%taylor_i(q)
-       r = r + 1
-    end do
-
-    ! Finish
-    c%n = r - 1
-  end subroutine sum_taylor_{{CHR}}
-  
   !--------------------------------------------------------------------------
   ! Overloaded operators
   !--------------------------------------------------------------------------
@@ -361,7 +444,8 @@ contains
     type({{TYPE}}), intent(out) :: x
     {{FTYPE2}}, intent(in) :: y
     x%value = y
-    x%n = 0
+    x%i = 0
+    x%v = 0
   end subroutine assign_{{CHR}}{{CHR2}}
   {{endfor}}
 
@@ -405,9 +489,6 @@ contains
     type({{TYPE}}) :: z
 
     z%value = x%value + y%value
-    z%n = x%n + y%n
-    allocate(z%taylor_i(z%n))
-    allocate(z%taylor_val(z%n))
     call sum_taylor({{CAST}}(1d0), {{CAST}}(1d0), x, y, z)
   end function add_{{CHR}}{{CHR}}
 
@@ -418,11 +499,8 @@ contains
     {{FTYPE2}}, intent(in) :: y
     type({{TYPE}}) :: z
     z%value = x%value + y
-    z%n = x%n
-    allocate(z%taylor_i(z%n))
-    allocate(z%taylor_val(z%n))
-    z%taylor_i(1:z%n) = x%taylor_i(1:x%n)
-    z%taylor_val(1:z%n) = x%taylor_val(1:x%n)
+    z%i = x%i
+    z%v = x%v
   end function add_{{CHR}}{{CHR2}}
 
   {{pure_elemental}} function add_{{CHR2}}{{CHR}}(x, y) result(z)
@@ -528,13 +606,7 @@ contains
     implicit none
     type({{TYPE}}), intent(in) :: x, y
     type({{TYPE}}) :: z
-
-    integer :: n
-
     z%value = x%value - y%value
-    z%n = x%n + y%n
-    allocate(z%taylor_i(z%n))
-    allocate(z%taylor_val(z%n))
     call sum_taylor({{CAST}}(1d0), {{CAST}}(-1d0), x, y, z)
   end function sub_{{CHR}}{{CHR}}
 
@@ -545,11 +617,8 @@ contains
     {{FTYPE2}}, intent(in) :: y
     type({{TYPE}}) :: z
     z%value = x%value - y
-    z%n = x%n
-    allocate(z%taylor_i(z%n))
-    allocate(z%taylor_val(z%n))
-    z%taylor_i(1:z%n) = x%taylor_i(1:x%n)
-    z%taylor_val(1:z%n) = x%taylor_val(1:x%n)
+    z%v = x%v
+    z%i = x%i
   end function sub_{{CHR}}{{CHR2}}
 
   {{pure_elemental}} function sub_{{CHR2}}{{CHR}}(x, y) result(z)
@@ -558,11 +627,8 @@ contains
     type({{TYPE}}), intent(in) :: y
     type({{TYPE}}) :: z
     z%value = x - y%value
-    z%n = y%n
-    allocate(z%taylor_i(z%n))
-    allocate(z%taylor_val(z%n))
-    z%taylor_i(1:z%n) = y%taylor_i(1:y%n)
-    z%taylor_val(1:z%n) = -y%taylor_val(1:y%n)
+    z%i = y%i
+    z%v = -y%v
   end function sub_{{CHR2}}{{CHR}}
   {{endfor}}
 
@@ -681,9 +747,6 @@ contains
     type({{TYPE}}) :: z
 
     z%value = x%value * y%value
-    z%n = x%n + y%n
-    allocate(z%taylor_i(z%n))
-    allocate(z%taylor_val(z%n))
     call sum_taylor(y%value, x%value, x, y, z)
   end function mul_{{CHR}}{{CHR}}
 
@@ -693,17 +756,9 @@ contains
     type({{TYPE}}), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
     type({{TYPE}}) :: z
-    if (y == 0) then
-       z%value = 0
-       z%n = 0
-    else
-       z%value = x%value * y
-       z%n = x%n
-       allocate(z%taylor_i(z%n))
-       allocate(z%taylor_val(z%n))
-       z%taylor_i(1:z%n) = x%taylor_i(1:z%n)
-       z%taylor_val(1:z%n) = x%taylor_val(1:z%n) * y
-    end if
+    z%value = x%value * y
+    z%i = x%i
+    z%v = x%v * y
   end function mul_{{CHR}}{{CHR2}}
 
   {{pure_elemental}} function mul_{{CHR2}}{{CHR}}(x, y) result(z)
@@ -809,9 +864,6 @@ contains
     type({{TYPE}}), intent(in) :: x, y
     type({{TYPE}}) :: z
     z%value = x%value / y%value
-    z%n = x%n + y%n
-    allocate(z%taylor_i(z%n))
-    allocate(z%taylor_val(z%n))
     call sum_taylor(1d0/y%value, -x%value/(y%value**2), x, y, z)
   end function div_{{CHR}}{{CHR}}
 
