@@ -57,13 +57,6 @@ module adjac
      type(adjac_double) :: re, im
   end type adjac_complex
 
-  public assignment(=)
-  interface assignment(=)
-     module procedure assign_ai, assign_ad
-     module procedure assign_bi, assign_bd, assign_bz, assign_ba
-     module procedure assign_qi, assign_qd, assign_qz
-  end interface
-
   ! Differential binary tree
   !
   ! if (sum_map(1 + 2*(i-1)) .ne. 0) then
@@ -81,13 +74,14 @@ module adjac
 
 {{py:
 
-def binops(name, return_ops=False):
+def binops(name):
     chrs = ['i', 'd', 'z']
     ops = ['aa', 'bb', 'qq', 'ab', 'ba']
     for c in chrs:
         ops += ['a'+c, 'b'+c, 'q'+c, c+'a', c+'b', c+'q']
-    if return_ops: 
-        return ops
+    oldops = list(ops)
+    for suf in ['_1', '_2']:
+        ops.extend([x + suf for x in oldops])
     s = "\n".join("     module procedure " + name + "_" + op for op in ops)
     return s.lstrip()
 
@@ -186,12 +180,30 @@ def elemental_versions(name, rtype, ops=None):
             typec = typea if op[0] in 'abq' else typeb
             if typec == 'type(adjac_double)' and ('z' in op or 'b' in op): 
                 typec = 'type(adjac_complex)'
+        elif rtype == 'assign':
+            typec = types[op[0]]
+            typea = types[op[1]]
         else:
             typea = types[op[0]]
             typec = typea
         s += base_code.format(name=name, op=op, typea=typea, typeb=typeb, typec=typec)
     return s
 }}
+
+  public assignment(=)
+  interface assignment(=)
+     module procedure assign_ai, assign_ad
+     module procedure assign_bi, assign_bd, assign_bz, assign_ba
+     module procedure assign_qi, assign_qd, assign_qz
+
+     module procedure assign_ai_1, assign_ad_1
+     module procedure assign_bi_1, assign_bd_1, assign_bz_1, assign_ba_1
+     module procedure assign_qi_1, assign_qd_1, assign_qz_1
+
+     module procedure assign_ai_2, assign_ad_2
+     module procedure assign_bi_2, assign_bd_2, assign_bz_2, assign_ba_2
+     module procedure assign_qi_2, assign_qd_2, assign_qz_2
+  end interface
 
   public operator(+)
   interface operator(+)
@@ -217,6 +229,8 @@ def elemental_versions(name, rtype, ops=None):
   public operator(**)
   interface operator(**)
      module procedure pow_ai, pow_ad, pow_qi, pow_qd, pow_qz
+     module procedure pow_ai_1, pow_ad_1, pow_qi_1, pow_qd_1, pow_qz_1
+     module procedure pow_ai_2, pow_ad_2, pow_qi_2, pow_qd_2, pow_qz_2
   end interface operator(**)
 
   public matmul
@@ -229,36 +243,50 @@ def elemental_versions(name, rtype, ops=None):
   public dble
   interface dble
      module procedure dble_a, dble_b
+     module procedure dble_a_1, dble_b_1
+     module procedure dble_a_2, dble_b_2
   end interface dble
 
   public aimag
   interface aimag
      module procedure aimag_b
+     module procedure aimag_b_1
+     module procedure aimag_b_2
   end interface aimag
 
   public conjg
   interface conjg
      module procedure conjg_b
+     module procedure conjg_b_1
+     module procedure conjg_b_2
   end interface conjg
 
   public exp
   interface exp
      module procedure exp_a, exp_b, exp_q
+     module procedure exp_a_1, exp_b_1, exp_q_1
+     module procedure exp_a_2, exp_b_2, exp_q_2
   end interface exp
 
   public sin
   interface sin
      module procedure sin_a, sin_b, sin_q
+     module procedure sin_a_1, sin_b_1, sin_q_1
+     module procedure sin_a_2, sin_b_2, sin_q_2
   end interface sin
 
   public cos
   interface cos
      module procedure cos_a, cos_b, cos_q
+     module procedure cos_a_1, cos_b_1, cos_q_1
+     module procedure cos_a_2, cos_b_2, cos_q_2
   end interface cos
 
   public log
   interface log
      module procedure log_a, log_b, log_q
+     module procedure log_a_1, log_b_1, log_q_1
+     module procedure log_a_2, log_b_2, log_q_2
   end interface log
 
   interface adjac_set_independent
@@ -1393,6 +1421,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
 
 {{endfor}}
 
+  {{elemental_versions('assign', 'assign', ops='ai ad bi bd bz ba qi qd qz'.split())}}
   {{elemental_versions('add', 'binop')}}
   {{elemental_versions('sub', 'binop')}}
   {{elemental_versions('mul', 'binop')}}
