@@ -80,13 +80,117 @@ module adjac
 {{default pure_elemental = ""}}
 
 {{py:
-def binops(name):
+
+def binops(name, return_ops=False):
     chrs = ['i', 'd', 'z']
     ops = ['aa', 'bb', 'qq', 'ab', 'ba']
     for c in chrs:
         ops += ['a'+c, 'b'+c, 'q'+c, c+'a', c+'b', c+'q']
+    if return_ops: 
+        return ops
     s = "\n".join("     module procedure " + name + "_" + op for op in ops)
     return s.lstrip()
+
+def elemental_versions(name, rtype, ops=None):
+    if ops is None:
+        chrs = ['i', 'd', 'z']
+        ops = ['aa', 'bb', 'qq', 'ab', 'ba']
+        for c in chrs:
+            ops += ['a'+c, 'b'+c, 'q'+c, c+'a', c+'b', c+'q']
+
+    binop_code = """
+    function {name}_{op}_1(a, b) result(c)
+      implicit none
+      {typea}, dimension(:), intent(in) :: a
+      {typeb}, dimension(size(a)), intent(in) :: b
+      {typec}, dimension(size(a)) :: c
+      integer :: i
+      do i = 1, size(a)
+        c(i) = {name}_{op}(a(i), b(i))
+      end do
+    end function {name}_{op}_1
+    function {name}_{op}_2(a, b) result(c)
+      implicit none
+      {typea}, dimension(:,:), intent(in) :: a
+      {typeb}, dimension(size(a,1),size(a,2)), intent(in) :: b
+      {typec}, dimension(size(a,1),size(a,2)) :: c
+      integer :: i, j
+      do j = 1, size(a,2)
+        do i = 1, size(a,1)
+          c(i,j) = {name}_{op}(a(i,j), b(i,j))
+        end do
+      end do
+    end function {name}_{op}_2
+    """
+
+    unop_code = """
+    function {name}_{op}_1(a) result(c)
+      implicit none
+      {typea}, dimension(:), intent(in) :: a
+      {typec}, dimension(size(a)) :: c
+      integer :: i
+      do i = 1, size(a)
+        c(i) = {name}_{op}(a(i))
+      end do
+    end function {name}_{op}_1
+    function {name}_{op}_2(a) result(c)
+      implicit none
+      {typea}, dimension(:,:), intent(in) :: a
+      {typec}, dimension(size(a,1),size(a,2)) :: c
+      integer :: i, j
+      do j = 1, size(a,2)
+        do i = 1, size(a,1)
+          c(i,j) = {name}_{op}(a(i,j))
+        end do
+      end do
+    end function {name}_{op}_2
+    """
+
+    assign_code = """
+    subroutine {name}_{op}_1(c, a)
+      implicit none
+      {typea}, dimension(:), intent(in) :: a
+      {typec}, dimension(size(a)), intent(out) :: c
+      integer :: i
+      do i = 1, size(a)
+        call {name}_{op}(c(i), a(i))
+      end do
+    end subroutine {name}_{op}_1
+    subroutine {name}_{op}_2(c, a)
+      implicit none
+      {typea}, dimension(:,:), intent(in) :: a
+      {typec}, dimension(size(a,1),size(a,2)), intent(out) :: c
+      integer :: i, j
+      do j = 1, size(a,2)
+        do i = 1, size(a,1)
+          call {name}_{op}(c(i,j), a(i,j))
+        end do
+      end do
+    end subroutine {name}_{op}_2
+    """
+
+    base_code = {'binop': binop_code, 'unop': unop_code, 'assign': assign_code}[rtype]
+    types = {'a': 'type(adjac_double)', 
+             'b': 'type(adjac_complex)',
+             'q': 'type(adjac_complexan)',
+             'i': 'integer',
+             'd': 'double precision',
+             'z': 'double complex'}
+
+    s = ""
+    typeb = ""
+    for op in ops:
+        if rtype == 'binop':
+            typea = types[op[0]]
+            typeb = types[op[1]]
+            typec = typea if op[0] in 'abq' else typeb
+            if typec == 'type(adjac_double)' and ('z' in op or 'b' in op): 
+                typec = 'type(adjac_complex)'
+        else:
+            typea = types[op[0]]
+            typec = typea
+        s += base_code.format(name=name, op=op, typea=typea, typeb=typeb, typec=typec)
+    return s
 }}
 
   public operator(+)
@@ -1288,4 +1392,18 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   {{endif}}
 
 {{endfor}}
+
+  {{elemental_versions('add', 'binop')}}
+  {{elemental_versions('sub', 'binop')}}
+  {{elemental_versions('mul', 'binop')}}
+  {{elemental_versions('div', 'binop')}}
+  {{elemental_versions('pow', 'binop', ops=['ai', 'ad', 'qi', 'qd', 'qz'])}}
+  {{elemental_versions('dble', 'unop', ops=['a', 'b'])}}
+  {{elemental_versions('aimag', 'unop', ops=['b'])}}
+  {{elemental_versions('conjg', 'unop', ops=['b'])}}
+  {{elemental_versions('exp', 'unop', ops=['a', 'b', 'q'])}}
+  {{elemental_versions('sin', 'unop', ops=['a', 'b', 'q'])}}
+  {{elemental_versions('cos', 'unop', ops=['a', 'b', 'q'])}}
+  {{elemental_versions('log', 'unop', ops=['a', 'b', 'q'])}}
+
 end module adjac
