@@ -36,9 +36,9 @@ test: $(TESTS)
 		fi; \
 		if test -f "$$c"; then \
 			if diff -b -u "$$log" "$$c" >> "$$log.tmp"; then true; else result=1; fi; \
-			mv -f "$$log.tmp" "$$log"; \
 		fi; \
 		if test "$$result" = "0"; then echo "OK"; rm -f "$$log"; else echo "FAIL"; ok=1; fi; \
+		rm -f "$$log.tmp"; \
 	done; \
 	for f in tests/*.out; do test -f "$$f" && cat "$$f"; done; \
 	exit "$$ok"
