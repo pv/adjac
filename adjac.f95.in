@@ -190,11 +190,17 @@ def binops(name):
   public adjac_set_independent, adjac_get_value, &
        adjac_get_dense_jacobian, adjac_get_csr_jacobian, &
        adjac_get_coo_jacobian, adjac_get_nnz, &
-       adjac_reset
+       adjac_reset, adjac_free
 
 contains
 
   subroutine adjac_reset()
+    implicit none
+    free_a = 1
+    free_q = 1
+  end subroutine adjac_reset
+
+  subroutine adjac_free()
     implicit none
     free_a = 1
     free_q = 1
@@ -206,7 +212,7 @@ contains
        deallocate(sum_map_q)
        deallocate(sum_mul_q)
     end if
-  end subroutine adjac_reset
+  end subroutine adjac_free
 
 {{for TYPE, FTYPE, CHR, CAST, FTYPES2 in [('adjac_double', 'double precision', 'a', 'dble', [('integer', 'i'),
                                                                                              ('double precision', 'd')]), 

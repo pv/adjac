@@ -17,6 +17,7 @@ program laplacian
   type(adjac_double), dimension(n) :: y
   integer j, nnz
   
+  call adjac_reset()
   do j = 1, n
      x_value(j) = j-1
   end do
@@ -57,4 +58,6 @@ program laplacian
   write(*,*) jac_val2
   write(*,*) jac_indices
   write(*,*) jac_indptr
+
+  call adjac_free()
 end program laplacian

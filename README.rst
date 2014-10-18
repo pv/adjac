@@ -2,8 +2,8 @@
 adjac
 =====
 
-Automatic Differentiation (forward-mode) for generating sparse
-Jacobians, using Fortran 95 and operator overloading.
+Automatic Differentiation for generating sparse Jacobians, using Fortran 95 and
+operator overloading.
 
 Provides three AD data types:
 
@@ -30,9 +30,10 @@ equivalent, but adjac_complexan is more efficient computationally.
 The data types support operations =,*,+,-,matmul,exp,sin,cos,log,dble,aimag,conjg.
 However, adjac_complexan does not support operations that break complex analyticity.
 
-For more information about automatic differentiation, and other AD
-software (there are many and adjac does not do anything unusual), see
-http://autodiff.org/
+For more information about automatic differentiation, and other AD software
+(there are many and adjac does not do anything unusual), see
+http://autodiff.org/ Adjac performance appears to be within a factor of 2 from
+ADOLC and ADEPT.
 
 
 Example
@@ -69,6 +70,7 @@ addition the partial derivatives with respect to `x`::
 	type(adjac_complexan), dimension(2) :: y
         integer :: j
 
+        call adjac_reset()
 	call adjac_set_independent(x, x_value)
 
         do j = 1, 2

@@ -20,6 +20,7 @@
 	type(adjac_complexan), dimension(2) :: y
         integer :: j
 
+        call adjac_reset()
 	call adjac_set_independent(x, x_value)
 
         do j = 1, 2
@@ -28,6 +29,7 @@
 
 	call adjac_get_value(y, y_value)
 	call adjac_get_dense_jacobian(y, dy_dx)
+	call adjac_free()
     end subroutine my_func_jac
 
 program simple
