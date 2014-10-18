@@ -1,6 +1,6 @@
 ! -*-f90-*-
 !
-! adjac: Automatic Differentiation (forward-mode) for generating sparse Jacobians.
+! adjac: Automatic Differentiation for generating Jacobians.
 !
 
 ! Copyright (c) 2014, Pauli Virtanen <pav@iki.fi>
@@ -37,7 +37,7 @@
 module adjac
   private
 
-  integer, parameter :: numvars = 100
+  integer, parameter :: block_size = 4
 
   type, public :: adjac_double
      ! value + v * D[i]
@@ -317,23 +317,15 @@ contains
   end subroutine get_value_many_{{CHR}}
 
 {{py:
-def walk_tape(ftype, chr, assign, setup=None, accumulate=None):
-    if setup is None:
-        setup = """
-        work(1:(i-1)) = 0
-        work(i) = v
-        """
+def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     if accumulate is None:
         accumulate = """
-        work(ia) = work(ia) + sum_mul_{chr}(1+2*(j-1)) * work(j)
-        work(ib) = work(ib) + sum_mul_{chr}(2+2*(j-1)) * work(j)
+        work(:,ia) = work(:,ia) + sum_mul_{chr}(1+2*(j-1)) * work(:,j)
+        work(:,ib) = work(:,ib) + sum_mul_{chr}(2+2*(j-1)) * work(:,j)
         """.format(chr=chr)
+    if clear is None:
+        clear = "work(:,j) = 0"
     return """
-    {setup}
-
-    iwork(1:(i-1)) = 0
-    iwork(i) = 1
-
     ! Traverse the tape
     do j = i, 1, -1
        if (iwork(j) .ne. 0) then
@@ -347,9 +339,11 @@ def walk_tape(ftype, chr, assign, setup=None, accumulate=None):
              iwork(ia) = 1
              iwork(ib) = 1
           end if
+          iwork(j) = 0
+          {clear}
        end if
     end do
-""".format(ftype=ftype, chr=chr, assign=assign, accumulate=accumulate, setup=setup)
+""".format(ftype=ftype, chr=chr, assign=assign, accumulate=accumulate, clear=clear)
 }}
 
   function get_nnz_{{CHR}}(y) result(nnz)
@@ -360,31 +354,63 @@ def walk_tape(ftype, chr, assign, setup=None, accumulate=None):
     integer :: k, j, ia, ib
 
     nnz = 0
+    iwork = 0
     do k = 1, size(y,1)
        i = y(k)%i
+       iwork(i) = 1
        {{walk_tape(FTYPE, CHR, 
-                   "if (iwork(j) .ne. 0) nnz = nnz + 1", 
+                   "nnz = nnz + 1", 
                    "", "")}}
     end do
   end function get_nnz_{{CHR}}
+
+  subroutine get_row_nnz_{{CHR}}(y, nnz)
+    type({{TYPE}}), dimension(:), intent(in) :: y
+    integer, dimension(*), intent(out) :: nnz
+
+    integer, dimension(free_{{CHR}}) :: iwork
+    integer :: k, j, ia, ib
+
+    nnz(1:size(y,1)) = 0
+    iwork = 0
+    do k = 1, size(y,1)
+       i = y(k)%i
+       iwork(i) = 1
+       {{walk_tape(FTYPE, CHR, 
+                   "nnz(k) = nnz(k) + 1", 
+                   "", "")}}
+    end do
+  end subroutine get_row_nnz_{{CHR}}
 
   subroutine get_dense_jacobian_{{CHR}}(y, jac_dense)
     implicit none
     type({{TYPE}}), dimension(:), intent(inout) :: y
     {{FTYPE}}, dimension(:,:), intent(out) :: jac_dense
 
-    {{FTYPE}}, dimension(free_{{CHR}}) :: work
+    {{FTYPE}}, dimension(block_size,free_{{CHR}}) :: work
     integer, dimension(free_{{CHR}}) :: iwork
-    integer :: i, k, j, ia, ib
+    integer :: i, k, j, ia, ib, kmin, kmax
     {{FTYPE}} :: v
 
     jac_dense = 0
 
-    do k = 1, size(y,1)
-       i = y(k)%i
-       v = y(k)%v
-    
-       {{walk_tape(FTYPE, CHR, "jac_dense(k,ib) = work(j)")}}
+    work = 0
+    iwork = 0
+
+    do kmin = 1, size(y,1), block_size
+       kmax = min(kmin + block_size - 1, size(y,1))
+
+       i = y(kmin)%i
+       do k = kmin, kmax
+          i = max(i, y(k)%i)
+       end do
+
+       do k = kmin, kmax
+          work(k-kmin+1, y(k)%i) = y(k)%v
+          iwork(y(k)%i) = 1
+       end do
+
+       {{walk_tape(FTYPE, CHR, "jac_dense(kmin:kmax,ib) = work(1:(kmax-kmin+1),j)")}}
     end do
   end subroutine get_dense_jacobian_{{CHR}}
 
@@ -394,39 +420,80 @@ def walk_tape(ftype, chr, assign, setup=None, accumulate=None):
     {{FTYPE}}, dimension(:), intent(out) :: jac_val
     integer, dimension(:), intent(out) :: jac_i, jac_j
 
-    {{FTYPE}}, dimension(free_{{CHR}}) :: work
+    {{FTYPE}}, dimension(block_size,free_{{CHR}}) :: work
     integer, dimension(free_{{CHR}}) :: iwork
-    integer :: i, k, j, ia, ib, pos
+    integer :: i, kmin, kmax, k, j, ia, ib, pos
     {{FTYPE}} :: v
 
     pos = 1
-    do k = 1, size(y,1)
-       i = y(k)%i
-       v = y(k)%v
+    work = 0
+    iwork = 0
 
-       {{walk_tape(FTYPE, CHR, "jac_i(pos) = k\njac_j(pos) = ib\njac_val(pos) = work(j)\npos = pos + 1")}}
+    do kmin = 1, size(y,1), block_size
+       kmax = min(kmin + block_size - 1, size(y,1))
+
+       i = y(kmin)%i
+       do k = kmin, kmax
+          i = max(i, y(k)%i)
+          work(k-kmin+1, y(k)%i) = y(k)%v
+          iwork(y(k)%i) = 1
+       end do
+
+       {{walk_tape(FTYPE, CHR, """
+            do k = kmin, kmax
+               if (work(k-kmin+1,j).ne.0) then
+                   jac_i(pos) = k
+                   jac_j(pos) = ib
+                   jac_val(pos) = work(k-kmin+1,j)
+                   pos = pos + 1
+                end if
+            end do
+        """)}}
     end do
   end subroutine get_coo_jacobian_{{CHR}}
 
   subroutine get_csr_jacobian_{{CHR}}(y, jac_val, jac_indices, jac_indptr)
     implicit none
     type({{TYPE}}), dimension(:), intent(inout) :: y
-    {{FTYPE}}, dimension(:), intent(out) :: jac_val
-    integer, dimension(:), intent(out) :: jac_indices, jac_indptr
+    {{FTYPE}}, dimension(*), intent(out) :: jac_val
+    integer, dimension(*), intent(out) :: jac_indices, jac_indptr
 
-    {{FTYPE}}, dimension(free_{{CHR}}) :: work
+    {{FTYPE}}, dimension(block_size,free_{{CHR}}) :: work
     integer, dimension(free_{{CHR}}) :: iwork
-    integer :: i, k, j, ia, ib, pos
+    integer, dimension(block_size) :: pos
+    integer :: i, j, k, kmax, kmin, ia, ib
     {{FTYPE}} :: v
 
-    pos = 1
     jac_indptr(1) = 1
-    do k = 1, size(y,1)
-       i = y(k)%i
-       v = y(k)%v
+    call get_row_nnz_{{CHR}}(y, jac_indptr(2))
+    do k = 2, size(y,1)+1
+       jac_indptr(k) = jac_indptr(k) + jac_indptr(k-1)
+    end do
 
-       {{walk_tape(FTYPE, CHR, "jac_indices(pos) = ib\njac_val(pos) = work(j)\npos = pos + 1")}}
-       jac_indptr(k+1) = pos
+    work = 0
+    iwork = 0
+
+    do kmin = 1, size(y,1), block_size
+       kmax = min(kmin + block_size - 1, size(y,1))
+
+       i = y(kmin)%i
+       do k = kmin, kmax
+          i = max(i, y(k)%i)
+          work(k-kmin+1, y(k)%i) = y(k)%v
+          iwork(y(k)%i) = 1
+       end do
+
+       pos = 1
+
+       {{walk_tape(FTYPE, CHR, """
+            do k = kmin, kmax
+               if (work(k-kmin+1,j).ne.0) then
+                  jac_indices(jac_indptr(k+1) - pos(k-kmin+1)) = ib
+                  jac_val(jac_indptr(k+1) - pos(k-kmin+1)) = work(k-kmin+1,j)
+                  pos(k-kmin+1) = pos(k-kmin+1) + 1
+                end if
+            end do
+        """)}}
     end do
   end subroutine get_csr_jacobian_{{CHR}}
 
