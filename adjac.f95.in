@@ -80,7 +80,7 @@ def binops(name):
     for c in chrs:
         ops += ['a'+c, 'b'+c, 'q'+c, c+'a', c+'b', c+'q']
     oldops = list(ops)
-    for suf in ['_1', '_2']:
+    for suf in ['_1', '_2', '_01', '_10', '_02', '_20']:
         ops.extend([x + suf for x in oldops])
     s = "\n".join("     module procedure " + name + "_" + op for op in ops)
     return s.lstrip()
@@ -103,6 +103,26 @@ def elemental_versions(name, rtype, ops=None):
         c(i) = {name}_{op}(a(i), b(i))
       end do
     end function {name}_{op}_1
+    function {name}_{op}_01(a, b) result(c)
+      implicit none
+      {typea}, intent(in) :: a
+      {typeb}, dimension(:), intent(in) :: b
+      {typec}, dimension(size(b)) :: c
+      integer :: i
+      do i = 1, size(b)
+        c(i) = {name}_{op}(a, b(i))
+      end do
+    end function {name}_{op}_01
+    function {name}_{op}_10(a, b) result(c)
+      implicit none
+      {typea}, dimension(:), intent(in) :: a
+      {typeb}, intent(in) :: b
+      {typec}, dimension(size(a)) :: c
+      integer :: i
+      do i = 1, size(a)
+        c(i) = {name}_{op}(a(i), b)
+      end do
+    end function {name}_{op}_10
     function {name}_{op}_2(a, b) result(c)
       implicit none
       {typea}, dimension(:,:), intent(in) :: a
@@ -115,6 +135,30 @@ def elemental_versions(name, rtype, ops=None):
         end do
       end do
     end function {name}_{op}_2
+    function {name}_{op}_02(a, b) result(c)
+      implicit none
+      {typea}, intent(in) :: a
+      {typeb}, dimension(:,:), intent(in) :: b
+      {typec}, dimension(size(b,1),size(b,2)) :: c
+      integer :: i, j
+      do j = 1, size(b,2)
+        do i = 1, size(b,1)
+          c(i,j) = {name}_{op}(a, b(i,j))
+        end do
+      end do
+    end function {name}_{op}_02
+    function {name}_{op}_20(a, b) result(c)
+      implicit none
+      {typea}, dimension(:,:), intent(in) :: a
+      {typeb}, intent(in) :: b
+      {typec}, dimension(size(a,1),size(a,2)) :: c
+      integer :: i, j
+      do j = 1, size(a,2)
+        do i = 1, size(a,1)
+          c(i,j) = {name}_{op}(a(i,j), b)
+        end do
+      end do
+    end function {name}_{op}_20
     """
 
     unop_code = """
@@ -144,12 +188,21 @@ def elemental_versions(name, rtype, ops=None):
     subroutine {name}_{op}_1(c, a)
       implicit none
       {typea}, dimension(:), intent(in) :: a
-      {typec}, dimension(size(a)), intent(out) :: c
+      {typec}, dimension(:), intent(out) :: c
       integer :: i
-      do i = 1, size(a)
+      do i = 1, size(c)
         call {name}_{op}(c(i), a(i))
       end do
     end subroutine {name}_{op}_1
+    subroutine {name}_{op}_10(c, a)
+      implicit none
+      {typea}, intent(in) :: a
+      {typec}, dimension(:), intent(out) :: c
+      integer :: i
+      do i = 1, size(c)
+        call {name}_{op}(c(i), a)
+      end do
+    end subroutine {name}_{op}_10
     subroutine {name}_{op}_2(c, a)
       implicit none
       {typea}, dimension(:,:), intent(in) :: a
@@ -161,6 +214,17 @@ def elemental_versions(name, rtype, ops=None):
         end do
       end do
     end subroutine {name}_{op}_2
+    subroutine {name}_{op}_20(c, a)
+      implicit none
+      {typea}, intent(in) :: a
+      {typec}, dimension(:,:), intent(out) :: c
+      integer :: i, j
+      do j = 1, size(c,2)
+        do i = 1, size(c,1)
+          call {name}_{op}(c(i,j), a)
+        end do
+      end do
+    end subroutine {name}_{op}_20
     """
 
     base_code = {'binop': binop_code, 'unop': unop_code, 'assign': assign_code}[rtype]
@@ -200,9 +264,17 @@ def elemental_versions(name, rtype, ops=None):
      module procedure assign_bi_1, assign_bd_1, assign_bz_1, assign_ba_1
      module procedure assign_qi_1, assign_qd_1, assign_qz_1
 
+     module procedure assign_ai_10, assign_ad_10
+     module procedure assign_bi_10, assign_bd_10, assign_bz_10, assign_ba_10
+     module procedure assign_qi_10, assign_qd_10, assign_qz_10
+
      module procedure assign_ai_2, assign_ad_2
      module procedure assign_bi_2, assign_bd_2, assign_bz_2, assign_ba_2
      module procedure assign_qi_2, assign_qd_2, assign_qz_2
+
+     module procedure assign_ai_20, assign_ad_20
+     module procedure assign_bi_20, assign_bd_20, assign_bz_20, assign_ba_20
+     module procedure assign_qi_20, assign_qd_20, assign_qz_20
   end interface
 
   public operator(+)
@@ -214,6 +286,8 @@ def elemental_versions(name, rtype, ops=None):
   interface operator(-)
      {{binops("sub")}}
      module procedure neg_a, neg_b, neg_q
+     module procedure neg_a_1, neg_b_1, neg_q_1
+     module procedure neg_a_2, neg_b_2, neg_q_2
   end interface
 
   public operator(*)
@@ -1430,6 +1504,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   {{elemental_versions('dble', 'unop', ops=['a', 'b'])}}
   {{elemental_versions('aimag', 'unop', ops=['b'])}}
   {{elemental_versions('conjg', 'unop', ops=['b'])}}
+  {{elemental_versions('neg', 'unop', ops=['a', 'b', 'q'])}}
   {{elemental_versions('exp', 'unop', ops=['a', 'b', 'q'])}}
   {{elemental_versions('sin', 'unop', ops=['a', 'b', 'q'])}}
   {{elemental_versions('cos', 'unop', ops=['a', 'b', 'q'])}}
