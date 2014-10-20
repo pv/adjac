@@ -37,37 +37,24 @@
 module adjac
   private
 
-  integer, parameter :: block_size = 4
-
   type, public :: adjac_double
-     ! value + v * D[i]
      double precision :: value
-     integer :: i
-     double precision :: v
+     integer :: j, n
   end type adjac_double
 
   type, public :: adjac_complexan
-     ! value + v * D[i]
      double complex :: value
-     integer :: i
-     double complex :: v
+     integer :: j, n
   end type adjac_complexan
 
   type, public :: adjac_complex
      type(adjac_double) :: re, im
   end type adjac_complex
 
-  ! Differential binary tree
-  !
-  ! if (sum_map(1 + 2*(i-1)) .ne. 0) then
-  !     D[i] = sum_mul(1+2*(i-1)) * D[sum_map(1+2*(i-1))] + sum_mul(2+2*(i-1)) * D[sum_map(2+2*(i-1))]
-  ! else
-  !     D[i] = D[i]
-  !
   integer :: free_a = 1, free_q = 1
-  integer, dimension(:), allocatable :: sum_map_a, sum_map_q
-  double precision, dimension(:), allocatable :: sum_mul_a
-  double complex, dimension(:), allocatable :: sum_mul_q
+  integer, dimension(:), allocatable, target :: imem_a, imem_q
+  double precision, dimension(:), allocatable, target :: vmem_a
+  double complex, dimension(:), allocatable, target :: vmem_q
 
 {{default pure = ""}}
 {{default pure_elemental = ""}}
@@ -410,13 +397,13 @@ contains
     implicit none
     free_a = 1
     free_q = 1
-    if (allocated(sum_map_a)) then
-       deallocate(sum_map_a)
-       deallocate(sum_mul_a)
+    if (allocated(imem_a)) then
+       deallocate(imem_a)
+       deallocate(vmem_a)
     end if
-    if (allocated(sum_map_q)) then
-       deallocate(sum_map_q)
-       deallocate(sum_mul_q)
+    if (allocated(imem_q)) then
+       deallocate(imem_q)
+       deallocate(vmem_q)
     end if
   end subroutine adjac_free
 
@@ -426,37 +413,38 @@ contains
                                                                                                 ('double precision', 'd'), 
                                                                                                 ('double complex', 'z')])]}}
 
-  subroutine get_free_variable_idx_{{CHR}}(j)
+  subroutine alloc_mem_{{CHR}}(n, j)
     implicit none
+    integer, intent(in) :: n
     integer, intent(out) :: j
 
     integer, dimension(:), allocatable :: itmp
     {{FTYPE}}, dimension(:), allocatable :: tmp
     integer :: sz
 
-    if (.not.allocated(sum_map_{{CHR}})) then
+    if (.not.allocated(imem_{{CHR}})) then
        sz = 0
     else
-       sz = size(sum_map_{{CHR}})
+       sz = size(imem_{{CHR}})
     end if
 
-    if (sz < 2*free_{{CHR}} + 1) then
+    if (sz < free_{{CHR}} + n) then
        ! Enlarge work space
-       if (allocated(sum_map_{{CHR}})) then
-          sz = sz + 2*free_{{CHR}} + 1
+       if (allocated(imem_{{CHR}})) then
+          sz = sz + free_{{CHR}} + n
           allocate(itmp(sz), tmp(sz))
-          itmp(1:size(sum_map_{{CHR}})) = sum_map_{{CHR}}(:)
-          tmp(1:size(sum_mul_{{CHR}})) = sum_mul_{{CHR}}(:)
-          call move_alloc(itmp, sum_map_{{CHR}})
-          call move_alloc(tmp, sum_mul_{{CHR}})
+          itmp(1:size(imem_{{CHR}})) = imem_{{CHR}}(:)
+          tmp(1:size(vmem_{{CHR}})) = vmem_{{CHR}}(:)
+          call move_alloc(itmp, imem_{{CHR}})
+          call move_alloc(tmp, vmem_{{CHR}})
        else
-          allocate(sum_map_{{CHR}}(100), sum_mul_{{CHR}}(100))
+          allocate(imem_{{CHR}}(100), vmem_{{CHR}}(100))
        end if
     end if
 
     j = free_{{CHR}}
-    free_{{CHR}} = free_{{CHR}} + 1
-  end subroutine get_free_variable_idx_{{CHR}}
+    free_{{CHR}} = free_{{CHR}} + n
+  end subroutine alloc_mem_{{CHR}}
 
   subroutine set_independent_{{CHR}}(x, xval, j)
     implicit none
@@ -464,40 +452,13 @@ contains
     {{FTYPE}}, intent(in) :: xval
     integer, intent(in) :: j
 
+    call alloc_mem_{{CHR}}(1, x%j)
+
+    x%n = 1
     x%value = xval
-    call get_free_variable_idx_{{CHR}}(x%i)
-    x%v = 1
-
-    ! Independent variable
-    sum_map_{{CHR}}(1 + 2*(x%i-1)) = 0
-    sum_map_{{CHR}}(2 + 2*(x%i-1)) = j
+    imem_{{CHR}}(x%j) = j
+    vmem_{{CHR}}(x%j) = 1
   end subroutine set_independent_{{CHR}}
-
-  subroutine sum_taylor_{{CHR}}(alpha, beta, a, b, c)
-    ! dc := alpha*da + beta*db
-    implicit none
-    {{FTYPE}}, intent(in) :: alpha, beta
-    type({{TYPE}}), intent(in) :: a, b
-    type({{TYPE}}), intent(inout) :: c
-
-    if (a%v == 0 .or. a%i == 0) then
-       c%v = beta * b%v
-       c%i = b%i
-    else if (b%v == 0 .or. b%i == 0) then
-       c%v = alpha * a%v
-       c%i = a%i
-    else if (a%i == b%i) then
-       c%v = alpha * a%v + beta * b%v
-       c%i = a%i
-    else
-       call get_free_variable_idx_{{CHR}}(c%i)
-       c%v = 1
-       sum_map_{{CHR}}(1 + 2*(c%i-1)) = a%i
-       sum_map_{{CHR}}(2 + 2*(c%i-1)) = b%i
-       sum_mul_{{CHR}}(1 + 2*(c%i-1)) = alpha * a%v
-       sum_mul_{{CHR}}(2 + 2*(c%i-1)) = beta * b%v
-    end if
-  end subroutine sum_taylor_{{CHR}}
 
   subroutine set_independent_many_{{CHR}}(x, xval)
     implicit none
@@ -528,101 +489,29 @@ contains
     end do
   end subroutine get_value_many_{{CHR}}
 
-{{py:
-def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
-    if accumulate is None:
-        accumulate = """
-        work(:,ia) = work(:,ia) + sum_mul_{chr}(1+2*(j-1)) * work(:,j)
-        work(:,ib) = work(:,ib) + sum_mul_{chr}(2+2*(j-1)) * work(:,j)
-        """.format(chr=chr)
-    if clear is None:
-        clear = "work(:,j) = 0"
-    return """
-    ! Traverse the tape
-    do j = i, 1, -1
-       if (iwork(j) .ne. 0) then
-          ia = sum_map_{chr}(1+2*(j-1))
-          ib = sum_map_{chr}(2+2*(j-1))
-
-          if (ia == 0) then
-             {assign}
-          else
-             {accumulate}
-             iwork(ia) = 1
-             iwork(ib) = 1
-          end if
-          iwork(j) = 0
-          {clear}
-       end if
-    end do
-""".format(ftype=ftype, chr=chr, assign=assign, accumulate=accumulate, clear=clear)
-}}
-
   function get_nnz_{{CHR}}(y) result(nnz)
     type({{TYPE}}), dimension(:), intent(in) :: y
     integer :: nnz
-
-    integer, dimension(free_{{CHR}}) :: iwork
-    integer :: k, j, ia, ib
-
     nnz = 0
-    iwork = 0
-    do k = 1, size(y,1)
-       i = y(k)%i
-       iwork(i) = 1
-       {{walk_tape(FTYPE, CHR, 
-                   "nnz = nnz + 1", 
-                   "", "")}}
+    do i = 1, size(y,1)
+       nnz = nnz + y(i)%n
     end do
   end function get_nnz_{{CHR}}
-
-  subroutine get_row_nnz_{{CHR}}(y, nnz)
-    type({{TYPE}}), dimension(:), intent(in) :: y
-    integer, dimension(*), intent(out) :: nnz
-
-    integer, dimension(free_{{CHR}}) :: iwork
-    integer :: k, j, ia, ib
-
-    nnz(1:size(y,1)) = 0
-    iwork = 0
-    do k = 1, size(y,1)
-       i = y(k)%i
-       iwork(i) = 1
-       {{walk_tape(FTYPE, CHR, 
-                   "nnz(k) = nnz(k) + 1", 
-                   "", "")}}
-    end do
-  end subroutine get_row_nnz_{{CHR}}
 
   subroutine get_dense_jacobian_{{CHR}}(y, jac_dense)
     implicit none
     type({{TYPE}}), dimension(:), intent(inout) :: y
     {{FTYPE}}, dimension(:,:), intent(out) :: jac_dense
 
-    {{FTYPE}}, dimension(block_size,free_{{CHR}}) :: work
-    integer, dimension(free_{{CHR}}) :: iwork
-    integer :: i, k, j, ia, ib, kmin, kmax
-    {{FTYPE}} :: v
+    integer :: i, p, j
 
     jac_dense = 0
 
-    work = 0
-    iwork = 0
-
-    do kmin = 1, size(y,1), block_size
-       kmax = min(kmin + block_size - 1, size(y,1))
-
-       i = y(kmin)%i
-       do k = kmin, kmax
-          i = max(i, y(k)%i)
+    do i = 1, size(y,1)
+       do p = 1, y(i)%n
+          jac_dense(i, imem_{{CHR}}(y(i)%j + p - 1)) = jac_dense(i, imem_{{CHR}}(y(i)%j + p - 1)) &
+               + vmem_{{CHR}}(y(i)%j + p - 1)
        end do
-
-       do k = kmin, kmax
-          work(k-kmin+1, y(k)%i) = y(k)%v
-          iwork(y(k)%i) = 1
-       end do
-
-       {{walk_tape(FTYPE, CHR, "jac_dense(kmin:kmax,ib) = work(1:(kmax-kmin+1),j)")}}
     end do
   end subroutine get_dense_jacobian_{{CHR}}
 
@@ -632,83 +521,106 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     {{FTYPE}}, dimension(:), intent(out) :: jac_val
     integer, dimension(:), intent(out) :: jac_i, jac_j
 
-    {{FTYPE}}, dimension(block_size,free_{{CHR}}) :: work
-    integer, dimension(free_{{CHR}}) :: iwork
-    integer :: i, kmin, kmax, k, j, ia, ib, pos
-    {{FTYPE}} :: v
+    integer :: i, p, j, k
 
-    pos = 1
-    work = 0
-    iwork = 0
-
-    do kmin = 1, size(y,1), block_size
-       kmax = min(kmin + block_size - 1, size(y,1))
-
-       i = y(kmin)%i
-       do k = kmin, kmax
-          i = max(i, y(k)%i)
-          work(k-kmin+1, y(k)%i) = y(k)%v
-          iwork(y(k)%i) = 1
-       end do
-
-       {{walk_tape(FTYPE, CHR, """
-            do k = kmin, kmax
-               if (work(k-kmin+1,j).ne.0) then
-                   jac_i(pos) = k
-                   jac_j(pos) = ib
-                   jac_val(pos) = work(k-kmin+1,j)
-                   pos = pos + 1
-                end if
-            end do
-        """)}}
+    k = 1
+    do i = 1, size(y,1)
+       if (y(i)%n > 0) then
+          jac_i(k:k+y(i)%n-1) = i
+          jac_j(k:k+y(i)%n-1) = imem_{{CHR}}(y(i)%j:y(i)%j+y(i)%n-1)
+          jac_val(k:k+y(i)%n-1) = vmem_{{CHR}}(y(i)%j:y(i)%j+y(i)%n-1)
+          k = k + y(i)%n
+       end if
     end do
   end subroutine get_coo_jacobian_{{CHR}}
 
   subroutine get_csr_jacobian_{{CHR}}(y, jac_val, jac_indices, jac_indptr)
     implicit none
     type({{TYPE}}), dimension(:), intent(inout) :: y
-    {{FTYPE}}, dimension(*), intent(out) :: jac_val
-    integer, dimension(*), intent(out) :: jac_indices, jac_indptr
+    {{FTYPE}}, dimension(:), intent(out) :: jac_val
+    integer, dimension(:), intent(out) :: jac_indices, jac_indptr
 
-    {{FTYPE}}, dimension(block_size,free_{{CHR}}) :: work
-    integer, dimension(free_{{CHR}}) :: iwork
-    integer, dimension(block_size) :: pos
-    integer :: i, j, k, kmax, kmin, ia, ib
-    {{FTYPE}} :: v
+    integer :: i, p, j, k
 
+    k = 1
     jac_indptr(1) = 1
-    call get_row_nnz_{{CHR}}(y, jac_indptr(2))
-    do k = 2, size(y,1)+1
-       jac_indptr(k) = jac_indptr(k) + jac_indptr(k-1)
-    end do
-
-    work = 0
-    iwork = 0
-
-    do kmin = 1, size(y,1), block_size
-       kmax = min(kmin + block_size - 1, size(y,1))
-
-       i = y(kmin)%i
-       do k = kmin, kmax
-          i = max(i, y(k)%i)
-          work(k-kmin+1, y(k)%i) = y(k)%v
-          iwork(y(k)%i) = 1
-       end do
-
-       pos = 1
-
-       {{walk_tape(FTYPE, CHR, """
-            do k = kmin, kmax
-               if (work(k-kmin+1,j).ne.0) then
-                  jac_indices(jac_indptr(k+1) - pos(k-kmin+1)) = ib
-                  jac_val(jac_indptr(k+1) - pos(k-kmin+1)) = work(k-kmin+1,j)
-                  pos(k-kmin+1) = pos(k-kmin+1) + 1
-                end if
-            end do
-        """)}}
+    do i = 1, size(y,1)
+       if (y(i)%n > 0) then
+          jac_indices(k:k+y(i)%n-1) = imem_{{CHR}}(y(i)%j:y(i)%j+y(i)%n-1)
+          jac_val(k:k+y(i)%n-1) = vmem_{{CHR}}(y(i)%j:y(i)%j+y(i)%n-1)
+          k = k + y(i)%n
+       end if
+       jac_indptr(i+1) = k
     end do
   end subroutine get_csr_jacobian_{{CHR}}
 
+  {{pure}} subroutine sum_taylor_{{CHR}}(alpha, beta, a, b, c)
+    ! c := alpha*a + beta*b
+    implicit none
+    {{FTYPE}}, intent(in) :: alpha, beta
+    type({{TYPE}}), intent(in) :: a, b
+    type({{TYPE}}), intent(inout) :: c
+
+    {{FTYPE}} :: tmp
+    integer :: p, q, r
+
+    integer, dimension(:), pointer :: ia, ib, ic
+    {{FTYPE}}, dimension(:), pointer :: va, vb, vc
+
+    ia => imem_{{CHR}}(a%j:a%j+a%n-1)
+    ib => imem_{{CHR}}(b%j:b%j+b%n-1)
+    ic => imem_{{CHR}}(c%j:c%j+c%n-1)
+
+    va => vmem_{{CHR}}(a%j:a%j+a%n-1)
+    vb => vmem_{{CHR}}(b%j:b%j+b%n-1)
+    vc => vmem_{{CHR}}(c%j:c%j+c%n-1)
+
+    ! Sum sorted, until either va or vb exhausted
+    p = 1
+    q = 1
+    r = 1
+    do
+       if (p > a%n .or. q > b%n) exit
+
+       if (ia(p) < ib(q)) then
+          vc(r) = alpha * va(p)
+          ic(r) = ia(p)
+          p = p + 1
+          r = r + 1
+       else if (ia(p) > ib(q)) then
+          vc(r) = beta * vb(q)
+          ic(r) = ib(q)
+          q = q + 1
+          r = r + 1
+       else
+          tmp = alpha * va(p) + beta * vb(q)
+          if (tmp .ne. 0) then
+             vc(r) = tmp
+             ic(r) = ia(p)
+             r = r + 1
+          end if
+          p = p + 1
+          q = q + 1
+       end if
+    end do
+
+    ! Copy rest
+    do p = p, a%n, 1
+       vc(r) = alpha * va(p)
+       ic(r) = ia(p)
+       r = r + 1
+    end do
+    do q = q, b%n, 1
+       vc(r) = beta * vb(q)
+       ic(r) = ib(q)
+       r = r + 1
+    end do
+
+    ! Finish
+    c%n = r - 1
+  end subroutine sum_taylor_{{CHR}}
+
+  
   !--------------------------------------------------------------------------
   ! Overloaded operators
   !--------------------------------------------------------------------------
@@ -723,8 +635,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     type({{TYPE}}), intent(out) :: x
     {{FTYPE2}}, intent(in) :: y
     x%value = y
-    x%i = 0
-    x%v = 0
+    x%n = 0
   end subroutine assign_{{CHR}}{{CHR2}}
   {{endfor}}
 
@@ -768,6 +679,8 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     type({{TYPE}}) :: z
 
     z%value = x%value + y%value
+    z%n = x%n + y%n
+    call alloc_mem_{{CHR}}(z%n, z%j)
     call sum_taylor({{CAST}}(1d0), {{CAST}}(1d0), x, y, z)
   end function add_{{CHR}}{{CHR}}
 
@@ -778,8 +691,10 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     {{FTYPE2}}, intent(in) :: y
     type({{TYPE}}) :: z
     z%value = x%value + y
-    z%i = x%i
-    z%v = x%v
+    z%n = x%n
+    call alloc_mem_{{CHR}}(z%n, z%j)
+    imem_{{CHR}}(z%j:z%j+z%n-1) = imem_{{CHR}}(x%j:x%j+x%n-1)
+    vmem_{{CHR}}(z%j:z%j+z%n-1) = vmem_{{CHR}}(x%j:x%j+x%n-1)
   end function add_{{CHR}}{{CHR2}}
 
   {{pure_elemental}} function add_{{CHR2}}{{CHR}}(x, y) result(z)
@@ -885,7 +800,12 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     implicit none
     type({{TYPE}}), intent(in) :: x, y
     type({{TYPE}}) :: z
+
+    integer :: n
+
     z%value = x%value - y%value
+    z%n = x%n + y%n
+    call alloc_mem_{{CHR}}(z%n, z%j)
     call sum_taylor({{CAST}}(1d0), {{CAST}}(-1d0), x, y, z)
   end function sub_{{CHR}}{{CHR}}
 
@@ -896,8 +816,10 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     {{FTYPE2}}, intent(in) :: y
     type({{TYPE}}) :: z
     z%value = x%value - y
-    z%v = x%v
-    z%i = x%i
+    z%n = x%n
+    call alloc_mem_{{CHR}}(z%n, z%j)
+    imem_{{CHR}}(z%j:z%j+z%n-1) = imem_{{CHR}}(x%j:x%j+x%n-1)
+    vmem_{{CHR}}(z%j:z%j+z%n-1) = vmem_{{CHR}}(x%j:x%j+x%n-1)
   end function sub_{{CHR}}{{CHR2}}
 
   {{pure_elemental}} function sub_{{CHR2}}{{CHR}}(x, y) result(z)
@@ -906,8 +828,10 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     type({{TYPE}}), intent(in) :: y
     type({{TYPE}}) :: z
     z%value = x - y%value
-    z%i = y%i
-    z%v = -y%v
+    z%n = y%n
+    call alloc_mem_{{CHR}}(z%n, z%j)
+    imem_{{CHR}}(z%j:z%j+z%n-1) = imem_{{CHR}}(y%j:y%j+y%n-1)
+    vmem_{{CHR}}(z%j:z%j+z%n-1) = -vmem_{{CHR}}(y%j:y%j+y%n-1)
   end function sub_{{CHR2}}{{CHR}}
   {{endfor}}
 
@@ -1026,6 +950,8 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     type({{TYPE}}) :: z
 
     z%value = x%value * y%value
+    z%n = x%n + y%n
+    call alloc_mem_{{CHR}}(z%n, z%j)
     call sum_taylor(y%value, x%value, x, y, z)
   end function mul_{{CHR}}{{CHR}}
 
@@ -1035,9 +961,16 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     type({{TYPE}}), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
     type({{TYPE}}) :: z
-    z%value = x%value * y
-    z%i = x%i
-    z%v = x%v * y
+    if (y == 0) then
+       z%value = 0
+       z%n = 0
+    else
+       z%value = x%value * y
+       z%n = x%n
+       call alloc_mem_{{CHR}}(z%n, z%j)
+       imem_{{CHR}}(z%j:z%j+z%n-1) = imem_{{CHR}}(x%j:x%j+x%n-1)
+       vmem_{{CHR}}(z%j:z%j+z%n-1) = vmem_{{CHR}}(x%j:x%j+x%n-1) * y
+    end if
   end function mul_{{CHR}}{{CHR2}}
 
   {{pure_elemental}} function mul_{{CHR2}}{{CHR}}(x, y) result(z)
@@ -1143,6 +1076,8 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     type({{TYPE}}), intent(in) :: x, y
     type({{TYPE}}) :: z
     z%value = x%value / y%value
+    z%n = x%n + y%n
+    call alloc_mem_{{CHR}}(z%n, z%j)
     call sum_taylor(1d0/y%value, -x%value/(y%value**2), x, y, z)
   end function div_{{CHR}}{{CHR}}
 
@@ -1492,7 +1427,6 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im%value = aimag(v)
   end function log_b
   {{endif}}
-
 {{endfor}}
 
   {{elemental_versions('assign', 'assign', ops='ai ad bi bd bz ba qi qd qz'.split())}}
