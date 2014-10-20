@@ -16,6 +16,7 @@ program test_laplacian
   type(adjac_double), dimension(n) :: y
   integer i, j, nnz
 
+  call adjac_reset()
   do j = 1, n
      call adjac_set_independent(x(j), dble(j), j)
   end do
