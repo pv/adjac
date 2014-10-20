@@ -1,7 +1,6 @@
 *~
 *.mod
 *.test
-/adjac.f95
 /examples/simple
 /examples/laplacian
 /examples/bench_simple
