@@ -13,6 +13,8 @@ Provides three AD data types:
 
 and the support routines:
 
+- adjac_reset: initialize storage space
+- adjac_free: free storage space
 - adjac_set_independent: initialize independent variable (dy_i/dx_j = delta_ij)
 - adjac_get_value: get values from a dependent variables
 - adjac_get_nnz: get number of nonzero entries in the Jacobian
