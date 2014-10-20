@@ -38,12 +38,12 @@ module adjac
   private
 
   type, public :: adjac_double
-     double precision :: value
+     double precision :: value, vmul
      integer :: j, n
   end type adjac_double
 
   type, public :: adjac_complexan
-     double complex :: value
+     double complex :: value, vmul
      integer :: j, n
   end type adjac_complexan
 
@@ -391,6 +391,13 @@ contains
     implicit none
     free_a = 1
     free_q = 1
+
+    if (.not. allocated(imem_a)) then
+       allocate(imem_a(100), vmem_a(100))
+    end if
+    if (.not. allocated(imem_q)) then
+       allocate(imem_q(100), vmem_q(100))
+    end if
   end subroutine adjac_reset
 
   subroutine adjac_free()
@@ -430,16 +437,12 @@ contains
 
     if (sz < free_{{CHR}} + n) then
        ! Enlarge work space
-       if (allocated(imem_{{CHR}})) then
-          sz = sz + free_{{CHR}} + n
-          allocate(itmp(sz), tmp(sz))
-          itmp(1:size(imem_{{CHR}})) = imem_{{CHR}}(:)
-          tmp(1:size(vmem_{{CHR}})) = vmem_{{CHR}}(:)
-          call move_alloc(itmp, imem_{{CHR}})
-          call move_alloc(tmp, vmem_{{CHR}})
-       else
-          allocate(imem_{{CHR}}(100), vmem_{{CHR}}(100))
-       end if
+       sz = sz + free_{{CHR}} + n
+       allocate(itmp(sz), tmp(sz))
+       itmp(1:size(imem_{{CHR}})) = imem_{{CHR}}(:)
+       tmp(1:size(vmem_{{CHR}})) = vmem_{{CHR}}(:)
+       call move_alloc(itmp, imem_{{CHR}})
+       call move_alloc(tmp, vmem_{{CHR}})
     end if
 
     j = free_{{CHR}}
@@ -456,6 +459,7 @@ contains
 
     x%n = 1
     x%value = xval
+    x%vmul = 1
     imem_{{CHR}}(x%j) = j
     vmem_{{CHR}}(x%j) = 1
   end subroutine set_independent_{{CHR}}
@@ -510,7 +514,7 @@ contains
     do i = 1, size(y,1)
        do p = 1, y(i)%n
           jac_dense(i, imem_{{CHR}}(y(i)%j + p - 1)) = jac_dense(i, imem_{{CHR}}(y(i)%j + p - 1)) &
-               + vmem_{{CHR}}(y(i)%j + p - 1)
+               + y(i)%vmul * vmem_{{CHR}}(y(i)%j + p - 1)
        end do
     end do
   end subroutine get_dense_jacobian_{{CHR}}
@@ -528,7 +532,7 @@ contains
        if (y(i)%n > 0) then
           jac_i(k:k+y(i)%n-1) = i
           jac_j(k:k+y(i)%n-1) = imem_{{CHR}}(y(i)%j:y(i)%j+y(i)%n-1)
-          jac_val(k:k+y(i)%n-1) = vmem_{{CHR}}(y(i)%j:y(i)%j+y(i)%n-1)
+          jac_val(k:k+y(i)%n-1) = y(i)%vmul * vmem_{{CHR}}(y(i)%j:y(i)%j+y(i)%n-1)
           k = k + y(i)%n
        end if
     end do
@@ -547,17 +551,17 @@ contains
     do i = 1, size(y,1)
        if (y(i)%n > 0) then
           jac_indices(k:k+y(i)%n-1) = imem_{{CHR}}(y(i)%j:y(i)%j+y(i)%n-1)
-          jac_val(k:k+y(i)%n-1) = vmem_{{CHR}}(y(i)%j:y(i)%j+y(i)%n-1)
+          jac_val(k:k+y(i)%n-1) = y(i)%vmul * vmem_{{CHR}}(y(i)%j:y(i)%j+y(i)%n-1)
           k = k + y(i)%n
        end if
        jac_indptr(i+1) = k
     end do
   end subroutine get_csr_jacobian_{{CHR}}
 
-  {{pure}} subroutine sum_taylor_{{CHR}}(alpha, beta, a, b, c)
+  {{pure}} subroutine sum_taylor_{{CHR}}(alphap, betap, a, b, c)
     ! c := alpha*a + beta*b
     implicit none
-    {{FTYPE}}, intent(in) :: alpha, beta
+    {{FTYPE}}, intent(in) :: alphap, betap
     type({{TYPE}}), intent(in) :: a, b
     type({{TYPE}}), intent(inout) :: c
 
@@ -566,6 +570,10 @@ contains
 
     integer, dimension(:), pointer :: ia, ib, ic
     {{FTYPE}}, dimension(:), pointer :: va, vb, vc
+    {{FTYPE}} :: alpha, beta
+
+    alpha = alphap * a%vmul
+    beta = betap * b%vmul
 
     ia => imem_{{CHR}}(a%j:a%j+a%n-1)
     ib => imem_{{CHR}}(b%j:b%j+b%n-1)
@@ -618,6 +626,7 @@ contains
 
     ! Finish
     c%n = r - 1
+    c%vmul = 1
   end subroutine sum_taylor_{{CHR}}
 
   
@@ -691,10 +700,9 @@ contains
     {{FTYPE2}}, intent(in) :: y
     type({{TYPE}}) :: z
     z%value = x%value + y
+    z%j = x%j
     z%n = x%n
-    call alloc_mem_{{CHR}}(z%n, z%j)
-    imem_{{CHR}}(z%j:z%j+z%n-1) = imem_{{CHR}}(x%j:x%j+x%n-1)
-    vmem_{{CHR}}(z%j:z%j+z%n-1) = vmem_{{CHR}}(x%j:x%j+x%n-1)
+    z%vmul = x%vmul
   end function add_{{CHR}}{{CHR2}}
 
   {{pure_elemental}} function add_{{CHR2}}{{CHR}}(x, y) result(z)
@@ -816,10 +824,9 @@ contains
     {{FTYPE2}}, intent(in) :: y
     type({{TYPE}}) :: z
     z%value = x%value - y
+    z%j = x%j
     z%n = x%n
-    call alloc_mem_{{CHR}}(z%n, z%j)
-    imem_{{CHR}}(z%j:z%j+z%n-1) = imem_{{CHR}}(x%j:x%j+x%n-1)
-    vmem_{{CHR}}(z%j:z%j+z%n-1) = vmem_{{CHR}}(x%j:x%j+x%n-1)
+    z%vmul = x%vmul
   end function sub_{{CHR}}{{CHR2}}
 
   {{pure_elemental}} function sub_{{CHR2}}{{CHR}}(x, y) result(z)
@@ -828,10 +835,9 @@ contains
     type({{TYPE}}), intent(in) :: y
     type({{TYPE}}) :: z
     z%value = x - y%value
+    z%j = y%j
     z%n = y%n
-    call alloc_mem_{{CHR}}(z%n, z%j)
-    imem_{{CHR}}(z%j:z%j+z%n-1) = imem_{{CHR}}(y%j:y%j+y%n-1)
-    vmem_{{CHR}}(z%j:z%j+z%n-1) = -vmem_{{CHR}}(y%j:y%j+y%n-1)
+    z%vmul = -y%vmul
   end function sub_{{CHR2}}{{CHR}}
   {{endfor}}
 
@@ -966,10 +972,9 @@ contains
        z%n = 0
     else
        z%value = x%value * y
+       z%j = x%j
        z%n = x%n
-       call alloc_mem_{{CHR}}(z%n, z%j)
-       imem_{{CHR}}(z%j:z%j+z%n-1) = imem_{{CHR}}(x%j:x%j+x%n-1)
-       vmem_{{CHR}}(z%j:z%j+z%n-1) = vmem_{{CHR}}(x%j:x%j+x%n-1) * y
+       z%vmul = x%vmul * y
     end if
   end function mul_{{CHR}}{{CHR2}}
 
