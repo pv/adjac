@@ -970,6 +970,8 @@ contains
     if (y == 0) then
        z%value = 0
        z%n = 0
+       z%j = 0
+       z%vmul = 0
     else
        z%value = x%value * y
        z%j = x%j
