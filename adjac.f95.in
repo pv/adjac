@@ -645,6 +645,8 @@ contains
     {{FTYPE2}}, intent(in) :: y
     x%value = y
     x%n = 0
+    x%j = 0
+    x%vmul = 0
   end subroutine assign_{{CHR}}{{CHR2}}
   {{endfor}}
 
