@@ -940,7 +940,7 @@ contains
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
-    z = (0d0,0d0) - z
+    z = (0d0,0d0) - x
   end function neg_b
   {{endif}}
 
