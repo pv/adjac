@@ -682,7 +682,7 @@ contains
   !! operator(+)
   !!
 
-  ! X + Y = x + y + (x_j - y_j) dj
+  ! X + Y = x + y + (x_j + y_j) dj
 
   {{pure_elemental}} function add_{{CHR}}{{CHR}}(x, y) result(z)
     implicit none
