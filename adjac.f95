@@ -1141,7 +1141,7 @@ contains
   !! operator(+)
   !!
 
-  ! X + Y = x + y + (x_j - y_j) dj
+  ! X + Y = x + y + (x_j + y_j) dj
 
    function add_aa(x, y) result(z)
     implicit none
@@ -2359,7 +2359,7 @@ contains
   !! operator(+)
   !!
 
-  ! X + Y = x + y + (x_j - y_j) dj
+  ! X + Y = x + y + (x_j + y_j) dj
 
    function add_qq(x, y) result(z)
     implicit none
