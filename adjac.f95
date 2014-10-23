@@ -1094,6 +1094,8 @@ contains
     integer, intent(in) :: y
     x%value = y
     x%n = 0
+    x%j = 0
+    x%vmul = 0
   end subroutine assign_ai
    subroutine assign_ad(x, y)
     implicit none
@@ -1101,6 +1103,8 @@ contains
     double precision, intent(in) :: y
     x%value = y
     x%n = 0
+    x%j = 0
+    x%vmul = 0
   end subroutine assign_ad
    subroutine assign_bi(x, y)
     implicit none
@@ -1450,7 +1454,7 @@ contains
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
-    z = (0d0,0d0) - z
+    z = (0d0,0d0) - x
   end function neg_b
 
   !!
@@ -1478,6 +1482,8 @@ contains
     if (y == 0) then
        z%value = 0
        z%n = 0
+       z%j = 0
+       z%vmul = 0
     else
        z%value = x%value * y
        z%j = x%j
@@ -1501,6 +1507,8 @@ contains
     if (y == 0) then
        z%value = 0
        z%n = 0
+       z%j = 0
+       z%vmul = 0
     else
        z%value = x%value * y
        z%j = x%j
@@ -2325,6 +2333,8 @@ contains
     integer, intent(in) :: y
     x%value = y
     x%n = 0
+    x%j = 0
+    x%vmul = 0
   end subroutine assign_qi
    subroutine assign_qd(x, y)
     implicit none
@@ -2332,6 +2342,8 @@ contains
     double precision, intent(in) :: y
     x%value = y
     x%n = 0
+    x%j = 0
+    x%vmul = 0
   end subroutine assign_qd
    subroutine assign_qz(x, y)
     implicit none
@@ -2339,6 +2351,8 @@ contains
     double complex, intent(in) :: y
     x%value = y
     x%n = 0
+    x%j = 0
+    x%vmul = 0
   end subroutine assign_qz
 
   !!
@@ -2533,6 +2547,8 @@ contains
     if (y == 0) then
        z%value = 0
        z%n = 0
+       z%j = 0
+       z%vmul = 0
     else
        z%value = x%value * y
        z%j = x%j
@@ -2556,6 +2572,8 @@ contains
     if (y == 0) then
        z%value = 0
        z%n = 0
+       z%j = 0
+       z%vmul = 0
     else
        z%value = x%value * y
        z%j = x%j
@@ -2579,6 +2597,8 @@ contains
     if (y == 0) then
        z%value = 0
        z%n = 0
+       z%j = 0
+       z%vmul = 0
     else
        z%value = x%value * y
        z%j = x%j
