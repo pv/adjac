@@ -14,6 +14,8 @@ ADOLC_CFLAGS=-I/usr/include/adolc
 ADOLC_LIBS=-ladolc
 ADEPT_CFLAGS=-Iadept-1.0/include
 ADEPT_LIBS=-Ladept-1.0/lib -ladept
+CPPAD_CFLAGS=$(shell pkg-config --cflags cppad)
+CPPAD_LIBS=$(shell pkg-config --libs cppad)
 
 all: examples test
 
@@ -61,6 +63,9 @@ examples/%_adolc: examples/%_adolc.cpp
 examples/%_adept: examples/%_adept.cpp
 	$(CXX) $(CXXFLAGS) $(ADEPT_CFLAGS) -o $@ $^ $(ADEPT_LIBS)
 
+examples/%_cppad: examples/%_cppad.cpp
+	$(CXX) $(CXXFLAGS) $(CPPAD_CFLAGS) -o $@ $^ $(CPPAD_LIBS)
+
 compare_adolc: examples/bench_simple examples/bench_simple_adolc
 	@echo "-- bench_simple ----------------------------------------"
 	@echo "* ADOLC (tape+eval)"
@@ -72,6 +77,13 @@ compare_adept: examples/bench_simple examples/bench_simple_adept
 	@echo "-- bench_simple ----------------------------------------"
 	@echo "* ADEPT"
 	time ./examples/bench_simple_adept
+	@echo "* ADJAC"
+	time ./examples/bench_simple
+
+compare_cppad: examples/bench_simple examples/bench_simple_cppad
+	@echo "-- bench_simple ----------------------------------------"
+	@echo "* ADEPT"
+	time ./examples/bench_simple_cppad
 	@echo "* ADJAC"
 	time ./examples/bench_simple
 
