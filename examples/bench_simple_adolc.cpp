@@ -7,10 +7,16 @@
 
 #ifdef ADOLC_TAPELESS
 #define NUMBER_DIRECTIONS N
+#ifdef OLD_TAPELESS
 #include <adouble.h>
 #include <adalloc.h>
 typedef adtl::adouble adouble;
 ADOLC_TAPELESS_UNIQUE_INTERNALS;
+#else
+#include <adolc/adtl.h>
+#include <adalloc.h>
+typedef adtl::adouble adouble;
+#endif
 #else
 #include <adolc.h>
 #endif
@@ -33,6 +39,10 @@ void laplacian(adouble x[N], adouble y[N])
 #ifdef ADOLC_TAPELESS
 void doit(double x[N], double y[N], double **J)
 {
+#ifndef OLD_TAPELESS
+    adtl::setNumDir(N);
+#endif
+
     adouble xad[N], yad[N];
     int i, j;
 
@@ -45,9 +55,9 @@ void doit(double x[N], double y[N], double **J)
         y[i] = yad[i].getValue();
     }
     for (i = 0; i < N; i++) {
-    	for (j = 0; j < N; j++) {
-    	    J[i][j] = yad[i].getADValue(j);
-	}
+        for (j = 0; j < N; j++) {
+            J[i][j] = yad[i].getADValue(j);
+        }
     }
 }
 #else

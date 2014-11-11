@@ -60,16 +60,25 @@ examples/%: examples/%.f95 adjac.o
 examples/%_adolc: examples/%_adolc.cpp
 	$(CXX) $(CXXFLAGS) $(ADOLC_CFLAGS) -o $@ $^ $(ADOLC_LIBS)
 
+examples/bench_simple_tapeless_adolc: examples/bench_simple_tapeless_adolc.cpp examples/bench_simple_adolc.cpp
+	if pkg-config --atleast-version=2.5 adolc; then \
+	    exec $(CXX) $(CXXFLAGS) $(ADOLC_CFLAGS) -o $@ $< $(ADOLC_LIBS); \
+	else \
+	    exec $(CXX) $(CXXFLAGS) $(ADOLC_CFLAGS) -DOLD_TAPELESS -o $@ $< $(ADOLC_LIBS); \
+	fi
+
 examples/%_adept: examples/%_adept.cpp
 	$(CXX) $(CXXFLAGS) $(ADEPT_CFLAGS) -o $@ $^ $(ADEPT_LIBS)
 
 examples/%_cppad: examples/%_cppad.cpp
 	$(CXX) $(CXXFLAGS) $(CPPAD_CFLAGS) -o $@ $^ $(CPPAD_LIBS)
 
-compare_adolc: examples/bench_simple examples/bench_simple_adolc
+compare_adolc: examples/bench_simple examples/bench_simple_adolc examples/bench_simple_tapeless_adolc
 	@echo "-- bench_simple ----------------------------------------"
 	@echo "* ADOLC (tape+eval)"
 	time ./examples/bench_simple_adolc
+	@echo "* ADOLC (tapeless)"
+	time ./examples/bench_simple_tapeless_adolc
 	@echo "* ADJAC"
 	time ./examples/bench_simple
 
