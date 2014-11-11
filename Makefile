@@ -1,4 +1,3 @@
-
 FC=gfortran
 CXX=g++
 
@@ -17,7 +16,7 @@ ADEPT_LIBS=-Ladept-1.0/lib -ladept
 CPPAD_CFLAGS=$(shell pkg-config --cflags cppad)
 CPPAD_LIBS=$(shell pkg-config --libs cppad)
 
-all: examples test
+all: examples test libadjac.a
 
 examples: $(EXAMPLES)
 
@@ -48,14 +47,23 @@ test: $(TESTS)
 adjac.f95: adjac.f95.in generate.py
 	python generate.py adjac.f95.in adjac.f95
 
+sparse_sum.c: sparse_sum.c.in generate.py
+	python generate.py sparse_sum.c.in sparse_sum.c
+
 %.o: %.f95
 	$(FC) $(FFLAGS) -c -o $@ $^
 
-tests/%.test: tests/%.f95 adjac.o
-	$(FC) $(FFLAGS) -o $@ -Itests $^
+%.o: %.c
+	gcc -std=c99 $(FFLAGS) -c -o $@ $^
 
-examples/%: examples/%.f95 adjac.o
-	$(FC) $(FFLAGS) -o $@ $^
+libadjac.a: adjac.o sparse_sum.o
+	ar cru libadjac.a $^
+
+tests/%.test: tests/%.f95 libadjac.a
+	$(FC) $(FFLAGS) -o $@ -Itests $^ -L. -ladjac
+
+examples/%: examples/%.f95 libadjac.a
+	$(FC) $(FFLAGS) -o $@ $^ -L. -ladjac
 
 examples/%_adolc: examples/%_adolc.cpp
 	$(CXX) $(CXXFLAGS) $(ADOLC_CFLAGS) -o $@ $^ $(ADOLC_LIBS)

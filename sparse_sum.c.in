@@ -1,0 +1,78 @@
+/* -*-c-*- */
+#include <complex.h>
+
+#if __STDC_VERSION__ < 199901L
+#define restrict __restrict
+#endif
+
+{{for TYPE, CHR in [('double', 'd'), ('double complex', 'z')]:}}
+int
+sparse_vector_sum_{{CHR}}_({{TYPE}} *restrict alphap, {{TYPE}} *restrict betap,
+                           int *restrict na, int *restrict nb, int *restrict nc,
+                           int *restrict ia, int *restrict ib, int *restrict ic,
+                           {{TYPE}} *restrict va, {{TYPE}} *restrict vb, {{TYPE}} *restrict vc)
+{
+    {{TYPE}} tmp;
+    int *ic0, *ia_end, *ib_end;
+
+    ia_end = ia + (*na);
+    ib_end = ib + (*nb);
+    ic0 = ic;
+
+    while (ia < ia_end && ib < ib_end)
+    {
+        if (*ia < *ib) {
+            *vc = (*alphap) * (*va);
+            *ic = *ia;
+            ++vc;
+            ++ic;
+
+            ++va;
+            ++ia;
+        }
+        else if (*ia > *ib) {
+            *vc = (*betap) * (*vb);
+            *ic = *ib;
+            ++vc;
+            ++ic;
+
+            ++vb;
+            ++ib;
+        }
+        else {
+            tmp = (*alphap) * (*va) + (*betap) * (*vb);
+            if (tmp) {
+                *vc = tmp;
+                *ic = *ia;
+                ++vc;
+                ++ic;
+            }
+            ++va;
+            ++vb;
+            ++ia;
+            ++ib;
+        }
+    }
+
+    while (ia < ia_end) {
+        *vc = (*alphap) * (*va);
+        *ic = *ia;
+        ++vc;
+        ++ic;
+        ++va;
+        ++ia;
+    }
+
+    while (ib < ib_end) {
+        *vc = (*betap) * (*vb);
+        *ic = *ib;
+        ++vc;
+        ++ic;
+        ++vb;
+        ++ib;
+    }
+
+    *nc = (int)(ic - ic0);
+    return 0;
+}
+{{endfor}}

@@ -565,68 +565,19 @@ contains
     type({{TYPE}}), intent(in) :: a, b
     type({{TYPE}}), intent(inout) :: c
 
-    {{FTYPE}} :: tmp
-    integer :: p, q, r
-
-    integer, dimension(:), pointer :: ia, ib, ic
-    {{FTYPE}}, dimension(:), pointer :: va, vb, vc
-    {{FTYPE}} :: alpha, beta
-
-    alpha = alphap * a%vmul
-    beta = betap * b%vmul
-
-    ia => imem_{{CHR}}(a%j:a%j+a%n-1)
-    ib => imem_{{CHR}}(b%j:b%j+b%n-1)
-    ic => imem_{{CHR}}(c%j:c%j+c%n-1)
-
-    va => vmem_{{CHR}}(a%j:a%j+a%n-1)
-    vb => vmem_{{CHR}}(b%j:b%j+b%n-1)
-    vc => vmem_{{CHR}}(c%j:c%j+c%n-1)
-
-    ! Sum sorted, until either va or vb exhausted
-    p = 1
-    q = 1
-    r = 1
-    do
-       if (p > a%n .or. q > b%n) exit
-
-       if (ia(p) < ib(q)) then
-          vc(r) = alpha * va(p)
-          ic(r) = ia(p)
-          p = p + 1
-          r = r + 1
-       else if (ia(p) > ib(q)) then
-          vc(r) = beta * vb(q)
-          ic(r) = ib(q)
-          q = q + 1
-          r = r + 1
-       else
-          tmp = alpha * va(p) + beta * vb(q)
-          if (tmp .ne. 0) then
-             vc(r) = tmp
-             ic(r) = ia(p)
-             r = r + 1
-          end if
-          p = p + 1
-          q = q + 1
-       end if
-    end do
-
-    ! Copy rest
-    do p = p, a%n, 1
-       vc(r) = alpha * va(p)
-       ic(r) = ia(p)
-       r = r + 1
-    end do
-    do q = q, b%n, 1
-       vc(r) = beta * vb(q)
-       ic(r) = ib(q)
-       r = r + 1
-    end do
-
-    ! Finish
-    c%n = r - 1
+  {{if TYPE == "adjac_double"}}
+    external :: sparse_vector_sum_d
+    call sparse_vector_sum_d(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
+        imem_{{CHR}}(a%j), imem_{{CHR}}(b%j), imem_{{CHR}}(c%j), &
+        vmem_{{CHR}}(a%j), vmem_{{CHR}}(b%j), vmem_{{CHR}}(c%j))
     c%vmul = 1
+  {{else}}
+    external :: sparse_vector_sum_z
+    call sparse_vector_sum_z(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
+        imem_{{CHR}}(a%j), imem_{{CHR}}(b%j), imem_{{CHR}}(c%j), &
+        vmem_{{CHR}}(a%j), vmem_{{CHR}}(b%j), vmem_{{CHR}}(c%j))
+    c%vmul = 1
+  {{endif}}
   end subroutine sum_taylor_{{CHR}}
 
   
