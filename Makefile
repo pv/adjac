@@ -96,6 +96,14 @@ compare_cppad: examples/bench_simple examples/bench_simple_cppad
 	@echo "* ADJAC"
 	time ./examples/bench_simple
 
+compare_numdiff: examples/bench_simple examples/bench_simple_numdiff
+	@echo "-- bench_simple ----------------------------------------"
+	@echo "* Numerical differentiation"
+	time ./examples/bench_simple_numdiff
+	@echo "* ADJAC"
+	time ./examples/bench_simple
+
+
 clean:
 	rm -f $(EXAMPLES) $(TESTS) tests/*.out *.o adjac.f95 *.mod $(CXXEXAMPLES)
 

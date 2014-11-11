@@ -8,3 +8,4 @@
 /examples/bench_simple_adolc
 /examples/bench_simple_tapeless_adolc
 /examples/bench_simple_cppad
+/examples/bench_simple_numdiff
