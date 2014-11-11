@@ -1015,67 +1015,10 @@ contains
     type(adjac_double), intent(in) :: a, b
     type(adjac_double), intent(inout) :: c
 
-    double precision :: tmp
-    integer :: p, q, r
-
-    integer, dimension(:), pointer :: ia, ib, ic
-    double precision, dimension(:), pointer :: va, vb, vc
-    double precision :: alpha, beta
-
-    alpha = alphap * a%vmul
-    beta = betap * b%vmul
-
-    ia => imem_a(a%j:a%j+a%n-1)
-    ib => imem_a(b%j:b%j+b%n-1)
-    ic => imem_a(c%j:c%j+c%n-1)
-
-    va => vmem_a(a%j:a%j+a%n-1)
-    vb => vmem_a(b%j:b%j+b%n-1)
-    vc => vmem_a(c%j:c%j+c%n-1)
-
-    ! Sum sorted, until either va or vb exhausted
-    p = 1
-    q = 1
-    r = 1
-    do
-       if (p > a%n .or. q > b%n) exit
-
-       if (ia(p) < ib(q)) then
-          vc(r) = alpha * va(p)
-          ic(r) = ia(p)
-          p = p + 1
-          r = r + 1
-       else if (ia(p) > ib(q)) then
-          vc(r) = beta * vb(q)
-          ic(r) = ib(q)
-          q = q + 1
-          r = r + 1
-       else
-          tmp = alpha * va(p) + beta * vb(q)
-          if (tmp .ne. 0) then
-             vc(r) = tmp
-             ic(r) = ia(p)
-             r = r + 1
-          end if
-          p = p + 1
-          q = q + 1
-       end if
-    end do
-
-    ! Copy rest
-    do p = p, a%n, 1
-       vc(r) = alpha * va(p)
-       ic(r) = ia(p)
-       r = r + 1
-    end do
-    do q = q, b%n, 1
-       vc(r) = beta * vb(q)
-       ic(r) = ib(q)
-       r = r + 1
-    end do
-
-    ! Finish
-    c%n = r - 1
+    external :: sparse_vector_sum_d
+    call sparse_vector_sum_d(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
+        imem_a(a%j), imem_a(b%j), imem_a(c%j), &
+        vmem_a(a%j), vmem_a(b%j), vmem_a(c%j))
     c%vmul = 1
   end subroutine sum_taylor_a
 
@@ -2254,67 +2197,10 @@ contains
     type(adjac_complexan), intent(in) :: a, b
     type(adjac_complexan), intent(inout) :: c
 
-    double complex :: tmp
-    integer :: p, q, r
-
-    integer, dimension(:), pointer :: ia, ib, ic
-    double complex, dimension(:), pointer :: va, vb, vc
-    double complex :: alpha, beta
-
-    alpha = alphap * a%vmul
-    beta = betap * b%vmul
-
-    ia => imem_q(a%j:a%j+a%n-1)
-    ib => imem_q(b%j:b%j+b%n-1)
-    ic => imem_q(c%j:c%j+c%n-1)
-
-    va => vmem_q(a%j:a%j+a%n-1)
-    vb => vmem_q(b%j:b%j+b%n-1)
-    vc => vmem_q(c%j:c%j+c%n-1)
-
-    ! Sum sorted, until either va or vb exhausted
-    p = 1
-    q = 1
-    r = 1
-    do
-       if (p > a%n .or. q > b%n) exit
-
-       if (ia(p) < ib(q)) then
-          vc(r) = alpha * va(p)
-          ic(r) = ia(p)
-          p = p + 1
-          r = r + 1
-       else if (ia(p) > ib(q)) then
-          vc(r) = beta * vb(q)
-          ic(r) = ib(q)
-          q = q + 1
-          r = r + 1
-       else
-          tmp = alpha * va(p) + beta * vb(q)
-          if (tmp .ne. 0) then
-             vc(r) = tmp
-             ic(r) = ia(p)
-             r = r + 1
-          end if
-          p = p + 1
-          q = q + 1
-       end if
-    end do
-
-    ! Copy rest
-    do p = p, a%n, 1
-       vc(r) = alpha * va(p)
-       ic(r) = ia(p)
-       r = r + 1
-    end do
-    do q = q, b%n, 1
-       vc(r) = beta * vb(q)
-       ic(r) = ib(q)
-       r = r + 1
-    end do
-
-    ! Finish
-    c%n = r - 1
+    external :: sparse_vector_sum_z
+    call sparse_vector_sum_z(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
+        imem_q(a%j), imem_q(b%j), imem_q(c%j), &
+        vmem_q(a%j), vmem_q(b%j), vmem_q(c%j))
     c%vmul = 1
   end subroutine sum_taylor_q
 
