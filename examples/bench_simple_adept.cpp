@@ -38,6 +38,10 @@ void doit(double *x, double *y, double *J)
     stack.independent(xad, N);
     stack.dependent(yad, N);
     stack.jacobian(J);
+
+    for (i = 0; i < N; ++i) {
+	y[i] = yad[i].value();
+    }
 }
 
 
