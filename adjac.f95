@@ -53,9 +53,9 @@ module adjac
   end type adjac_complex
 
   integer :: free_a = 1, free_q = 1
-  integer, dimension(:), allocatable, target :: imem_a, imem_q
-  double precision, dimension(:), allocatable, target :: vmem_a
-  double complex, dimension(:), allocatable, target :: vmem_q
+  integer, dimension(:), allocatable :: imem_a, imem_q
+  double precision, dimension(:), allocatable :: vmem_a
+  double complex, dimension(:), allocatable :: vmem_q
 
   public assignment(=)
   interface assignment(=)
