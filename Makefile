@@ -90,12 +90,17 @@ compare_adolc: examples/bench_simple examples/bench_simple_adolc examples/bench_
 	@echo "* ADJAC"
 	time ./examples/bench_simple
 
-compare_adept: examples/bench_simple examples/bench_simple_adept
+compare_adept: examples/bench_simple examples/bench_simple_adept examples/bench_advection examples/bench_advection_adept
 	@echo "-- bench_simple ----------------------------------------"
 	@echo "* ADEPT"
 	time ./examples/bench_simple_adept
 	@echo "* ADJAC"
 	time ./examples/bench_simple
+	@echo "-- bench_advection ----------------------------------------"
+	@echo "* ADEPT"
+	time ./examples/bench_advection_adept
+	@echo "* ADJAC"
+	time ./examples/bench_advection
 
 compare_cppad: examples/bench_simple examples/bench_simple_cppad
 	@echo "-- bench_simple ----------------------------------------"
