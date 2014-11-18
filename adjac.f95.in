@@ -560,24 +560,33 @@ contains
 
   {{pure}} subroutine sum_taylor_{{CHR}}(alphap, betap, a, b, c)
     ! c := alpha*a + beta*b
+    use iso_c_binding
     implicit none
     {{FTYPE}}, intent(in) :: alphap, betap
     type({{TYPE}}), intent(in) :: a, b
     type({{TYPE}}), intent(inout) :: c
 
-  {{if TYPE == "adjac_double"}}
-    external :: sparse_vector_sum_d
-    call sparse_vector_sum_d(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
+    interface
+       subroutine sparse_vector_sum_{{CHR}}(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
+            bind(C,name="sparse_vector_sum_{{CHR}}")
+         use iso_c_binding
+         integer(kind=c_int), intent(in) :: na, nb, ia(*), ib(*)
+         integer(kind=c_int), intent(inout) :: nc
+         integer(kind=c_int), intent(out) :: ic(*)
+         {{if TYPE == "adjac_double"}}
+         real(kind=c_double), intent(in) :: alpha, beta, va(*), vb(*)
+         real(kind=c_double), intent(out) :: vc(*)
+         {{else}}
+         complex(kind=c_double_complex), intent(in) :: alpha, beta, va(*), vb(*)
+         complex(kind=c_double_complex), intent(out) :: vc(*)
+         {{endif}}
+       end subroutine sparse_vector_sum_{{CHR}}
+    end interface
+
+    call sparse_vector_sum_{{CHR}}(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
         imem_{{CHR}}(a%j), imem_{{CHR}}(b%j), imem_{{CHR}}(c%j), &
         vmem_{{CHR}}(a%j), vmem_{{CHR}}(b%j), vmem_{{CHR}}(c%j))
     c%vmul = 1
-  {{else}}
-    external :: sparse_vector_sum_z
-    call sparse_vector_sum_z(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
-        imem_{{CHR}}(a%j), imem_{{CHR}}(b%j), imem_{{CHR}}(c%j), &
-        vmem_{{CHR}}(a%j), vmem_{{CHR}}(b%j), vmem_{{CHR}}(c%j))
-    c%vmul = 1
-  {{endif}}
   end subroutine sum_taylor_{{CHR}}
 
   

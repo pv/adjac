@@ -5,12 +5,12 @@
 #define restrict __restrict
 #endif
 
-{{for TYPE, CHR in [('double', 'd'), ('double complex', 'z')]:}}
-int
-sparse_vector_sum_{{CHR}}_({{TYPE}} *restrict alphap, {{TYPE}} *restrict betap,
-                           int *restrict na, int *restrict nb, int *restrict nc,
-                           int *restrict ia, int *restrict ib, int *restrict ic,
-                           {{TYPE}} *restrict va, {{TYPE}} *restrict vb, {{TYPE}} *restrict vc)
+{{for TYPE, CHR in [('double', 'a'), ('double complex', 'q')]:}}
+void
+sparse_vector_sum_{{CHR}}({{TYPE}} *restrict alphap, {{TYPE}} *restrict betap,
+                          int *restrict na, int *restrict nb, int *restrict nc,
+                          int *restrict ia, int *restrict ib, int *restrict ic,
+                          {{TYPE}} *restrict va, {{TYPE}} *restrict vb, {{TYPE}} *restrict vc)
 {
     {{TYPE}} tmp;
     int *ic0, *ia_end, *ib_end;
@@ -73,6 +73,5 @@ sparse_vector_sum_{{CHR}}_({{TYPE}} *restrict alphap, {{TYPE}} *restrict betap,
     }
 
     *nc = (int)(ic - ic0);
-    return 0;
 }
 {{endfor}}
