@@ -5,11 +5,11 @@
 #if __STDC_VERSION__ < 199901L
 #define restrict __restrict
 #endif
-int
-sparse_vector_sum_d_(double *restrict alphap, double *restrict betap,
-                           int *restrict na, int *restrict nb, int *restrict nc,
-                           int *restrict ia, int *restrict ib, int *restrict ic,
-                           double *restrict va, double *restrict vb, double *restrict vc)
+void
+sparse_vector_sum_a(double *restrict alphap, double *restrict betap,
+                          int *restrict na, int *restrict nb, int *restrict nc,
+                          int *restrict ia, int *restrict ib, int *restrict ic,
+                          double *restrict va, double *restrict vb, double *restrict vc)
 {
     double tmp;
     int *ic0, *ia_end, *ib_end;
@@ -72,13 +72,12 @@ sparse_vector_sum_d_(double *restrict alphap, double *restrict betap,
     }
 
     *nc = (int)(ic - ic0);
-    return 0;
 }
-int
-sparse_vector_sum_z_(double complex *restrict alphap, double complex *restrict betap,
-                           int *restrict na, int *restrict nb, int *restrict nc,
-                           int *restrict ia, int *restrict ib, int *restrict ic,
-                           double complex *restrict va, double complex *restrict vb, double complex *restrict vc)
+void
+sparse_vector_sum_q(double complex *restrict alphap, double complex *restrict betap,
+                          int *restrict na, int *restrict nb, int *restrict nc,
+                          int *restrict ia, int *restrict ib, int *restrict ic,
+                          double complex *restrict va, double complex *restrict vb, double complex *restrict vc)
 {
     double complex tmp;
     int *ic0, *ia_end, *ib_end;
@@ -141,5 +140,4 @@ sparse_vector_sum_z_(double complex *restrict alphap, double complex *restrict b
     }
 
     *nc = (int)(ic - ic0);
-    return 0;
 }

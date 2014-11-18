@@ -1010,13 +1010,25 @@ contains
 
    subroutine sum_taylor_a(alphap, betap, a, b, c)
     ! c := alpha*a + beta*b
+    use iso_c_binding
     implicit none
     double precision, intent(in) :: alphap, betap
     type(adjac_double), intent(in) :: a, b
     type(adjac_double), intent(inout) :: c
 
-    external :: sparse_vector_sum_d
-    call sparse_vector_sum_d(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
+    interface
+       subroutine sparse_vector_sum_a(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
+            bind(C,name="sparse_vector_sum_a")
+         use iso_c_binding
+         integer(kind=c_int), intent(in) :: na, nb, ia(*), ib(*)
+         integer(kind=c_int), intent(inout) :: nc
+         integer(kind=c_int), intent(out) :: ic(*)
+         real(kind=c_double), intent(in) :: alpha, beta, va(*), vb(*)
+         real(kind=c_double), intent(out) :: vc(*)
+       end subroutine sparse_vector_sum_a
+    end interface
+
+    call sparse_vector_sum_a(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
         imem_a(a%j), imem_a(b%j), imem_a(c%j), &
         vmem_a(a%j), vmem_a(b%j), vmem_a(c%j))
     c%vmul = 1
@@ -2192,13 +2204,25 @@ contains
 
    subroutine sum_taylor_q(alphap, betap, a, b, c)
     ! c := alpha*a + beta*b
+    use iso_c_binding
     implicit none
     double complex, intent(in) :: alphap, betap
     type(adjac_complexan), intent(in) :: a, b
     type(adjac_complexan), intent(inout) :: c
 
-    external :: sparse_vector_sum_z
-    call sparse_vector_sum_z(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
+    interface
+       subroutine sparse_vector_sum_q(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
+            bind(C,name="sparse_vector_sum_q")
+         use iso_c_binding
+         integer(kind=c_int), intent(in) :: na, nb, ia(*), ib(*)
+         integer(kind=c_int), intent(inout) :: nc
+         integer(kind=c_int), intent(out) :: ic(*)
+         complex(kind=c_double_complex), intent(in) :: alpha, beta, va(*), vb(*)
+         complex(kind=c_double_complex), intent(out) :: vc(*)
+       end subroutine sparse_vector_sum_q
+    end interface
+
+    call sparse_vector_sum_q(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
         imem_q(a%j), imem_q(b%j), imem_q(c%j), &
         vmem_q(a%j), vmem_q(b%j), vmem_q(c%j))
     c%vmul = 1
