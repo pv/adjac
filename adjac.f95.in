@@ -51,6 +51,7 @@ module adjac
      type(adjac_double) :: re, im
   end type adjac_complex
 
+  logical :: jac_product_mode = .false.
   integer :: free_a = 1, free_q = 1
   integer, dimension(:), allocatable :: imem_a, imem_q
   double precision, dimension(:), allocatable :: vmem_a
@@ -387,10 +388,27 @@ def elemental_versions(name, rtype, ops=None):
 
 contains
 
-  subroutine adjac_reset()
+  subroutine fatal_error(msg)
     implicit none
+    character(len=*), intent(in) :: msg
+    write(*,*) 'adjac: error: ', trim(msg)
+    stop
+  end subroutine fatal_error
+
+  subroutine adjac_reset(product_mode)
+    implicit none
+    logical, optional, intent(in) :: product_mode
+
     free_a = 1
     free_q = 1
+
+    if (present(product_mode)) then
+       jac_product_mode = product_mode
+    end if
+
+    if (jac_product_mode) then
+       return
+    end if
 
     if (.not. allocated(imem_a)) then
        allocate(imem_a(100), vmem_a(100))
@@ -429,6 +447,11 @@ contains
     {{FTYPE}}, dimension(:), allocatable :: tmp
     integer :: sz
 
+    if (jac_product_mode) then
+       j = -1
+       return
+    end if
+
     if (.not.allocated(imem_{{CHR}})) then
        sz = 0
     else
@@ -449,48 +472,81 @@ contains
     free_{{CHR}} = free_{{CHR}} + n
   end subroutine alloc_mem_{{CHR}}
 
-  subroutine set_independent_{{CHR}}(x, xval, j)
+  subroutine set_independent_{{CHR}}(x, xval, j, dx)
     implicit none
     type({{TYPE}}), intent(out) :: x
     {{FTYPE}}, intent(in) :: xval
+    {{FTYPE}}, optional, intent(in) :: dx
     integer, intent(in) :: j
 
     call alloc_mem_{{CHR}}(1, x%j)
 
     x%n = 1
     x%value = xval
-    x%vmul = 1
-    imem_{{CHR}}(x%j) = j
-    vmem_{{CHR}}(x%j) = 1
+    if (jac_product_mode) then
+       if (.not.present(dx)) then
+          call fatal_error('no dx given to adjac_set_independent when jacobian product mode is active')
+       end if
+       x%vmul = dx
+       x%n = 0
+       x%j = -1
+    else
+       x%vmul = 1
+       imem_{{CHR}}(x%j) = j
+       vmem_{{CHR}}(x%j) = 1
+    end if
   end subroutine set_independent_{{CHR}}
 
-  subroutine set_independent_many_{{CHR}}(x, xval)
+  subroutine set_independent_many_{{CHR}}(x, xval, dx)
     implicit none
     type({{TYPE}}), dimension(:), intent(inout) :: x
     {{FTYPE}}, dimension(size(x)), intent(in) :: xval
+    {{FTYPE}}, dimension(size(x)), optional, intent(in) :: dx
 
     integer :: j
 
-    do j = 1, size(x,1)
-       call set_independent_{{CHR}}(x(j), xval(j), j)
-    end do
+    if (present(dx)) then
+       do j = 1, size(x,1)
+          call set_independent_{{CHR}}(x(j), xval(j), j, dx(j))
+       end do
+    else
+       do j = 1, size(x,1)
+          call set_independent_{{CHR}}(x(j), xval(j), j)
+       end do
+    end if
   end subroutine set_independent_many_{{CHR}}
 
-  subroutine get_value_one_{{CHR}}(y, val)
+  subroutine get_value_one_{{CHR}}(y, val, dy)
     implicit none
     type({{TYPE}}), intent(in) :: y
     {{FTYPE}}, intent(out) :: val
+    {{FTYPE}}, optional, intent(out) :: dy
     val = y%value
+    if (present(dy)) then
+       if (.not. jac_product_mode) then
+          call fatal_error('call to adjac_get_value with dy when jacobian product mode is not active')
+       end if
+       dy = y%vmul
+    end if
   end subroutine get_value_one_{{CHR}}
 
-  subroutine get_value_many_{{CHR}}(y, val)
+  subroutine get_value_many_{{CHR}}(y, val, dy)
     implicit none
     type({{TYPE}}), dimension(:), intent(in) :: y
     {{FTYPE}}, dimension(size(y,1)), intent(out) :: val
+    {{FTYPE}}, dimension(size(y,1)), optional, intent(out) :: dy
     integer :: j
     do j = 1, size(val,1)
        val(j) = y(j)%value
     end do
+    if (present(dy)) then
+       if (.not. jac_product_mode) then
+          call fatal_error('call to adjac_get_value with dy when jacobian product mode is not active')
+       end if
+       do j = 1, size(val,1)
+          dy(j) = y(j)%vmul
+       end do
+    end if
   end subroutine get_value_many_{{CHR}}
 
   function get_nnz_{{CHR}}(y) result(nnz)
@@ -508,6 +564,10 @@ contains
     {{FTYPE}}, dimension(:,:), intent(out) :: jac_dense
 
     integer :: i, p, j
+
+    if (jac_product_mode) then
+       call fatal_error('call to adjac_get_dense_jacobian when jacobian product mode is active')
+    end if
 
     jac_dense = 0
 
@@ -527,6 +587,10 @@ contains
 
     integer :: i, p, j, k
 
+    if (jac_product_mode) then
+       call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
+    end if
+
     k = 1
     do i = 1, size(y,1)
        if (y(i)%n > 0) then
@@ -545,6 +609,10 @@ contains
     integer, dimension(:), intent(out) :: jac_indices, jac_indptr
 
     integer :: i, p, j, k
+
+    if (jac_product_mode) then
+       call fatal_error('call to adjac_get_csr_jacobian when jacobian product mode is active')
+    end if
 
     k = 1
     jac_indptr(1) = 1
@@ -583,10 +651,14 @@ contains
        end subroutine sparse_vector_sum_{{CHR}}
     end interface
 
-    call sparse_vector_sum_{{CHR}}(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
-        imem_{{CHR}}(a%j), imem_{{CHR}}(b%j), imem_{{CHR}}(c%j), &
-        vmem_{{CHR}}(a%j), vmem_{{CHR}}(b%j), vmem_{{CHR}}(c%j))
-    c%vmul = 1
+    if (jac_product_mode) then
+       c%vmul = alphap * a%vmul + betap * b%vmul
+    else
+       call sparse_vector_sum_{{CHR}}(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
+            imem_{{CHR}}(a%j), imem_{{CHR}}(b%j), imem_{{CHR}}(c%j), &
+            vmem_{{CHR}}(a%j), vmem_{{CHR}}(b%j), vmem_{{CHR}}(c%j))
+       c%vmul = 1
+    end if
   end subroutine sum_taylor_{{CHR}}
 
   

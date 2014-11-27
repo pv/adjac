@@ -12,6 +12,7 @@ program test_laplacian
   double precision, allocatable, dimension(:) :: jac_val, jac_val2
   integer, allocatable, dimension(:) :: jac_i, jac_j, jac_indices, jac_indptr
 
+  double precision, dimension(n) :: p, xval, dy, dy2
   type(adjac_double), dimension(n) :: x
   type(adjac_double), dimension(n) :: y
   integer i, j, nnz
@@ -22,12 +23,7 @@ program test_laplacian
   end do
 
   ! Some calculation, for example the Laplacian plus nonlinearity
-  y(1) = x(1)
-  y(n) = x(n)
-  do j = 2, n-1
-     y(j) = x(j-1) - 2d0*x(j) + x(j+1)
-  end do
-
+  call laplacian(x, y)
   call adjac_get_value(y, y_value)
   write(*,*) y_value
 
@@ -53,4 +49,34 @@ program test_laplacian
   write(*,*) jac_val2
   write(*,*) jac_indices
   write(*,*) jac_indptr
+
+  ! Evaluate jacobian-vector products
+  do j = 1, n
+     p(j) = 1d0/(1 + j)
+     xval(j) = dble(j)
+  end do
+  call adjac_reset(.true.)
+  call adjac_set_independent(x, xval, p)
+  call laplacian(x, y)
+  call adjac_get_value(y, y_value, dy)
+  dy2 = matmul(jac, p)
+
+  if (maxval(abs(dy - dy2)) > 1d-12) then
+     write(*,*) 'jac product FAIL'
+  else
+     write(*,*) 'jac product OK'
+  end if
+contains
+  subroutine laplacian(x, y)
+    implicit none 
+    type(adjac_double), dimension(:), intent(in) :: x
+    type(adjac_double), dimension(:), intent(out) :: y
+    integer :: n
+    n = size(x)
+    y(1) = x(1)
+    y(n) = x(n)
+    do j = 2, n-1
+       y(j) = x(j-1) - 2d0*x(j) + x(j+1)
+    end do
+  end subroutine laplacian
 end program test_laplacian

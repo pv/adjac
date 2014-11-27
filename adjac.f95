@@ -52,6 +52,7 @@ module adjac
      type(adjac_double) :: re, im
   end type adjac_complex
 
+  logical :: jac_product_mode = .false.
   integer :: free_a = 1, free_q = 1
   integer, dimension(:), allocatable :: imem_a, imem_q
   double precision, dimension(:), allocatable :: vmem_a
@@ -843,10 +844,27 @@ module adjac
 
 contains
 
-  subroutine adjac_reset()
+  subroutine fatal_error(msg)
     implicit none
+    character(len=*), intent(in) :: msg
+    write(*,*) 'adjac: error: ', trim(msg)
+    stop
+  end subroutine fatal_error
+
+  subroutine adjac_reset(product_mode)
+    implicit none
+    logical, optional, intent(in) :: product_mode
+
     free_a = 1
     free_q = 1
+
+    if (present(product_mode)) then
+       jac_product_mode = product_mode
+    end if
+
+    if (jac_product_mode) then
+       return
+    end if
 
     if (.not. allocated(imem_a)) then
        allocate(imem_a(100), vmem_a(100))
@@ -879,6 +897,11 @@ contains
     double precision, dimension(:), allocatable :: tmp
     integer :: sz
 
+    if (jac_product_mode) then
+       j = -1
+       return
+    end if
+
     if (.not.allocated(imem_a)) then
        sz = 0
     else
@@ -899,48 +922,81 @@ contains
     free_a = free_a + n
   end subroutine alloc_mem_a
 
-  subroutine set_independent_a(x, xval, j)
+  subroutine set_independent_a(x, xval, j, dx)
     implicit none
     type(adjac_double), intent(out) :: x
     double precision, intent(in) :: xval
+    double precision, optional, intent(in) :: dx
     integer, intent(in) :: j
 
     call alloc_mem_a(1, x%j)
 
     x%n = 1
     x%value = xval
-    x%vmul = 1
-    imem_a(x%j) = j
-    vmem_a(x%j) = 1
+    if (jac_product_mode) then
+       if (.not.present(dx)) then
+          call fatal_error('no dx given to adjac_set_independent when jacobian product mode is active')
+       end if
+       x%vmul = dx
+       x%n = 0
+       x%j = -1
+    else
+       x%vmul = 1
+       imem_a(x%j) = j
+       vmem_a(x%j) = 1
+    end if
   end subroutine set_independent_a
 
-  subroutine set_independent_many_a(x, xval)
+  subroutine set_independent_many_a(x, xval, dx)
     implicit none
     type(adjac_double), dimension(:), intent(inout) :: x
     double precision, dimension(size(x)), intent(in) :: xval
+    double precision, dimension(size(x)), optional, intent(in) :: dx
 
     integer :: j
 
-    do j = 1, size(x,1)
-       call set_independent_a(x(j), xval(j), j)
-    end do
+    if (present(dx)) then
+       do j = 1, size(x,1)
+          call set_independent_a(x(j), xval(j), j, dx(j))
+       end do
+    else
+       do j = 1, size(x,1)
+          call set_independent_a(x(j), xval(j), j)
+       end do
+    end if
   end subroutine set_independent_many_a
 
-  subroutine get_value_one_a(y, val)
+  subroutine get_value_one_a(y, val, dy)
     implicit none
     type(adjac_double), intent(in) :: y
     double precision, intent(out) :: val
+    double precision, optional, intent(out) :: dy
     val = y%value
+    if (present(dy)) then
+       if (.not. jac_product_mode) then
+          call fatal_error('call to adjac_get_value with dy when jacobian product mode is not active')
+       end if
+       dy = y%vmul
+    end if
   end subroutine get_value_one_a
 
-  subroutine get_value_many_a(y, val)
+  subroutine get_value_many_a(y, val, dy)
     implicit none
     type(adjac_double), dimension(:), intent(in) :: y
     double precision, dimension(size(y,1)), intent(out) :: val
+    double precision, dimension(size(y,1)), optional, intent(out) :: dy
     integer :: j
     do j = 1, size(val,1)
        val(j) = y(j)%value
     end do
+    if (present(dy)) then
+       if (.not. jac_product_mode) then
+          call fatal_error('call to adjac_get_value with dy when jacobian product mode is not active')
+       end if
+       do j = 1, size(val,1)
+          dy(j) = y(j)%vmul
+       end do
+    end if
   end subroutine get_value_many_a
 
   function get_nnz_a(y) result(nnz)
@@ -958,6 +1014,10 @@ contains
     double precision, dimension(:,:), intent(out) :: jac_dense
 
     integer :: i, p, j
+
+    if (jac_product_mode) then
+       call fatal_error('call to adjac_get_dense_jacobian when jacobian product mode is active')
+    end if
 
     jac_dense = 0
 
@@ -977,6 +1037,10 @@ contains
 
     integer :: i, p, j, k
 
+    if (jac_product_mode) then
+       call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
+    end if
+
     k = 1
     do i = 1, size(y,1)
        if (y(i)%n > 0) then
@@ -995,6 +1059,10 @@ contains
     integer, dimension(:), intent(out) :: jac_indices, jac_indptr
 
     integer :: i, p, j, k
+
+    if (jac_product_mode) then
+       call fatal_error('call to adjac_get_csr_jacobian when jacobian product mode is active')
+    end if
 
     k = 1
     jac_indptr(1) = 1
@@ -1028,10 +1096,14 @@ contains
        end subroutine sparse_vector_sum_a
     end interface
 
-    call sparse_vector_sum_a(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
-        imem_a(a%j), imem_a(b%j), imem_a(c%j), &
-        vmem_a(a%j), vmem_a(b%j), vmem_a(c%j))
-    c%vmul = 1
+    if (jac_product_mode) then
+       c%vmul = alphap * a%vmul + betap * b%vmul
+    else
+       call sparse_vector_sum_a(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
+            imem_a(a%j), imem_a(b%j), imem_a(c%j), &
+            vmem_a(a%j), vmem_a(b%j), vmem_a(c%j))
+       c%vmul = 1
+    end if
   end subroutine sum_taylor_a
 
   
@@ -2073,6 +2145,11 @@ contains
     double complex, dimension(:), allocatable :: tmp
     integer :: sz
 
+    if (jac_product_mode) then
+       j = -1
+       return
+    end if
+
     if (.not.allocated(imem_q)) then
        sz = 0
     else
@@ -2093,48 +2170,81 @@ contains
     free_q = free_q + n
   end subroutine alloc_mem_q
 
-  subroutine set_independent_q(x, xval, j)
+  subroutine set_independent_q(x, xval, j, dx)
     implicit none
     type(adjac_complexan), intent(out) :: x
     double complex, intent(in) :: xval
+    double complex, optional, intent(in) :: dx
     integer, intent(in) :: j
 
     call alloc_mem_q(1, x%j)
 
     x%n = 1
     x%value = xval
-    x%vmul = 1
-    imem_q(x%j) = j
-    vmem_q(x%j) = 1
+    if (jac_product_mode) then
+       if (.not.present(dx)) then
+          call fatal_error('no dx given to adjac_set_independent when jacobian product mode is active')
+       end if
+       x%vmul = dx
+       x%n = 0
+       x%j = -1
+    else
+       x%vmul = 1
+       imem_q(x%j) = j
+       vmem_q(x%j) = 1
+    end if
   end subroutine set_independent_q
 
-  subroutine set_independent_many_q(x, xval)
+  subroutine set_independent_many_q(x, xval, dx)
     implicit none
     type(adjac_complexan), dimension(:), intent(inout) :: x
     double complex, dimension(size(x)), intent(in) :: xval
+    double complex, dimension(size(x)), optional, intent(in) :: dx
 
     integer :: j
 
-    do j = 1, size(x,1)
-       call set_independent_q(x(j), xval(j), j)
-    end do
+    if (present(dx)) then
+       do j = 1, size(x,1)
+          call set_independent_q(x(j), xval(j), j, dx(j))
+       end do
+    else
+       do j = 1, size(x,1)
+          call set_independent_q(x(j), xval(j), j)
+       end do
+    end if
   end subroutine set_independent_many_q
 
-  subroutine get_value_one_q(y, val)
+  subroutine get_value_one_q(y, val, dy)
     implicit none
     type(adjac_complexan), intent(in) :: y
     double complex, intent(out) :: val
+    double complex, optional, intent(out) :: dy
     val = y%value
+    if (present(dy)) then
+       if (.not. jac_product_mode) then
+          call fatal_error('call to adjac_get_value with dy when jacobian product mode is not active')
+       end if
+       dy = y%vmul
+    end if
   end subroutine get_value_one_q
 
-  subroutine get_value_many_q(y, val)
+  subroutine get_value_many_q(y, val, dy)
     implicit none
     type(adjac_complexan), dimension(:), intent(in) :: y
     double complex, dimension(size(y,1)), intent(out) :: val
+    double complex, dimension(size(y,1)), optional, intent(out) :: dy
     integer :: j
     do j = 1, size(val,1)
        val(j) = y(j)%value
     end do
+    if (present(dy)) then
+       if (.not. jac_product_mode) then
+          call fatal_error('call to adjac_get_value with dy when jacobian product mode is not active')
+       end if
+       do j = 1, size(val,1)
+          dy(j) = y(j)%vmul
+       end do
+    end if
   end subroutine get_value_many_q
 
   function get_nnz_q(y) result(nnz)
@@ -2152,6 +2262,10 @@ contains
     double complex, dimension(:,:), intent(out) :: jac_dense
 
     integer :: i, p, j
+
+    if (jac_product_mode) then
+       call fatal_error('call to adjac_get_dense_jacobian when jacobian product mode is active')
+    end if
 
     jac_dense = 0
 
@@ -2171,6 +2285,10 @@ contains
 
     integer :: i, p, j, k
 
+    if (jac_product_mode) then
+       call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
+    end if
+
     k = 1
     do i = 1, size(y,1)
        if (y(i)%n > 0) then
@@ -2189,6 +2307,10 @@ contains
     integer, dimension(:), intent(out) :: jac_indices, jac_indptr
 
     integer :: i, p, j, k
+
+    if (jac_product_mode) then
+       call fatal_error('call to adjac_get_csr_jacobian when jacobian product mode is active')
+    end if
 
     k = 1
     jac_indptr(1) = 1
@@ -2222,10 +2344,14 @@ contains
        end subroutine sparse_vector_sum_q
     end interface
 
-    call sparse_vector_sum_q(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
-        imem_q(a%j), imem_q(b%j), imem_q(c%j), &
-        vmem_q(a%j), vmem_q(b%j), vmem_q(c%j))
-    c%vmul = 1
+    if (jac_product_mode) then
+       c%vmul = alphap * a%vmul + betap * b%vmul
+    else
+       call sparse_vector_sum_q(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
+            imem_q(a%j), imem_q(b%j), imem_q(c%j), &
+            vmem_q(a%j), vmem_q(b%j), vmem_q(c%j))
+       c%vmul = 1
+    end if
   end subroutine sum_taylor_q
 
   
