@@ -4,8 +4,6 @@
 *.o
 *.so
 *.a
-/adjac.f95
-/sparse_sum.c
 /examples/simple
 /examples/laplacian
 /examples/bench_simple
