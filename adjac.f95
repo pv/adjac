@@ -1121,7 +1121,7 @@ contains
     integer, intent(in) :: y
     x%value = y
     x%n = 0
-    x%j = 0
+    x%j = 1
     x%vmul = 0
   end subroutine assign_ai
    subroutine assign_ad(x, y)
@@ -1130,7 +1130,7 @@ contains
     double precision, intent(in) :: y
     x%value = y
     x%n = 0
-    x%j = 0
+    x%j = 1
     x%vmul = 0
   end subroutine assign_ad
    subroutine assign_bi(x, y)
@@ -1509,7 +1509,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%n = 0
-       z%j = 0
+       z%j = 1
        z%vmul = 0
     else
        z%value = x%value * y
@@ -1534,7 +1534,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%n = 0
-       z%j = 0
+       z%j = 1
        z%vmul = 0
     else
        z%value = x%value * y
@@ -2369,7 +2369,7 @@ contains
     integer, intent(in) :: y
     x%value = y
     x%n = 0
-    x%j = 0
+    x%j = 1
     x%vmul = 0
   end subroutine assign_qi
    subroutine assign_qd(x, y)
@@ -2378,7 +2378,7 @@ contains
     double precision, intent(in) :: y
     x%value = y
     x%n = 0
-    x%j = 0
+    x%j = 1
     x%vmul = 0
   end subroutine assign_qd
    subroutine assign_qz(x, y)
@@ -2387,7 +2387,7 @@ contains
     double complex, intent(in) :: y
     x%value = y
     x%n = 0
-    x%j = 0
+    x%j = 1
     x%vmul = 0
   end subroutine assign_qz
 
@@ -2583,7 +2583,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%n = 0
-       z%j = 0
+       z%j = 1
        z%vmul = 0
     else
        z%value = x%value * y
@@ -2608,7 +2608,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%n = 0
-       z%j = 0
+       z%j = 1
        z%vmul = 0
     else
        z%value = x%value * y
@@ -2633,7 +2633,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%n = 0
-       z%j = 0
+       z%j = 1
        z%vmul = 0
     else
        z%value = x%value * y

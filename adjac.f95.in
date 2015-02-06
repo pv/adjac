@@ -677,7 +677,7 @@ contains
     {{FTYPE2}}, intent(in) :: y
     x%value = y
     x%n = 0
-    x%j = 0
+    x%j = 1
     x%vmul = 0
   end subroutine assign_{{CHR}}{{CHR2}}
   {{endfor}}
@@ -1004,7 +1004,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%n = 0
-       z%j = 0
+       z%j = 1
        z%vmul = 0
     else
        z%value = x%value * y
