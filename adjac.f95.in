@@ -68,7 +68,10 @@ def binops(name):
     for c in chrs:
         ops += ['a'+c, 'b'+c, 'q'+c, c+'a', c+'b', c+'q']
     oldops = list(ops)
-    for suf in ['_1', '_2', '_01', '_10', '_02', '_20']:
+    for suf in ['_1', '_01', '_10',
+                '_2', '_02', '_20',
+                '_3', '_03', '_30',
+                '_4', '_04', '_40']:
         ops.extend([x + suf for x in oldops])
     s = "\n".join("     module procedure " + name + "_" + op for op in ops)
     return s.lstrip()
@@ -111,6 +114,7 @@ def elemental_versions(name, rtype, ops=None):
         c(i) = {name}_{op}(a(i), b)
       end do
     end function {name}_{op}_10
+
     function {name}_{op}_2(a, b) result(c)
       implicit none
       {typea}, dimension(:,:), intent(in) :: a
@@ -147,6 +151,98 @@ def elemental_versions(name, rtype, ops=None):
         end do
       end do
     end function {name}_{op}_20
+
+    function {name}_{op}_3(a, b) result(c)
+      implicit none
+      {typea}, dimension(:,:,:), intent(in) :: a
+      {typeb}, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      {typec}, dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = {name}_{op}(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function {name}_{op}_3
+    function {name}_{op}_03(a, b) result(c)
+      implicit none
+      {typea}, intent(in) :: a
+      {typeb}, dimension(:,:,:), intent(in) :: b
+      {typec}, dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = {name}_{op}(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function {name}_{op}_03
+    function {name}_{op}_30(a, b) result(c)
+      implicit none
+      {typea}, dimension(:,:,:), intent(in) :: a
+      {typeb}, intent(in) :: b
+      {typec}, dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = {name}_{op}(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function {name}_{op}_30
+
+    function {name}_{op}_4(a, b) result(c)
+      implicit none
+      {typea}, dimension(:,:,:,:), intent(in) :: a
+      {typeb}, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      {typec}, dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = {name}_{op}(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function {name}_{op}_4
+    function {name}_{op}_04(a, b) result(c)
+      implicit none
+      {typea}, intent(in) :: a
+      {typeb}, dimension(:,:,:,:), intent(in) :: b
+      {typec}, dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = {name}_{op}(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function {name}_{op}_04
+    function {name}_{op}_40(a, b) result(c)
+      implicit none
+      {typea}, dimension(:,:,:,:), intent(in) :: a
+      {typeb}, intent(in) :: b
+      {typec}, dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = {name}_{op}(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function {name}_{op}_40
     """
 
     unop_code = """
@@ -170,6 +266,34 @@ def elemental_versions(name, rtype, ops=None):
         end do
       end do
     end function {name}_{op}_2
+    function {name}_{op}_3(a) result(c)
+      implicit none
+      {typea}, dimension(:,:,:), intent(in) :: a
+      {typec}, dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = {name}_{op}(a(i,j,k))
+          end do
+        end do
+      end do
+    end function {name}_{op}_3
+    function {name}_{op}_4(a) result(c)
+      implicit none
+      {typea}, dimension(:,:,:,:), intent(in) :: a
+      {typec}, dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = {name}_{op}(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function {name}_{op}_4
     """
 
     assign_code = """
@@ -213,6 +337,62 @@ def elemental_versions(name, rtype, ops=None):
         end do
       end do
     end subroutine {name}_{op}_20
+    subroutine {name}_{op}_3(c, a)
+      implicit none
+      {typea}, dimension(:,:,:), intent(in) :: a
+      {typec}, dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call {name}_{op}(c(i,j,k), a(i,j,k))
+          end do
+        end do
+      end do
+    end subroutine {name}_{op}_3
+    subroutine {name}_{op}_30(c, a)
+      implicit none
+      {typea}, intent(in) :: a
+      {typec}, dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call {name}_{op}(c(i,j,k), a)
+          end do
+        end do
+      end do
+    end subroutine {name}_{op}_30
+    subroutine {name}_{op}_4(c, a)
+      implicit none
+      {typea}, dimension(:,:,:,:), intent(in) :: a
+      {typec}, dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call {name}_{op}(c(i,j,k,l), a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end subroutine {name}_{op}_4
+    subroutine {name}_{op}_40(c, a)
+      implicit none
+      {typea}, intent(in) :: a
+      {typec}, dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call {name}_{op}(c(i,j,k,l), a)
+            end do
+          end do
+        end do
+      end do
+    end subroutine {name}_{op}_40
     """
 
     base_code = {'binop': binop_code, 'unop': unop_code, 'assign': assign_code}[rtype]
@@ -263,6 +443,22 @@ def elemental_versions(name, rtype, ops=None):
      module procedure assign_ai_20, assign_ad_20
      module procedure assign_bi_20, assign_bd_20, assign_bz_20, assign_ba_20
      module procedure assign_qi_20, assign_qd_20, assign_qz_20
+
+     module procedure assign_ai_3, assign_ad_3
+     module procedure assign_bi_3, assign_bd_3, assign_bz_3, assign_ba_3
+     module procedure assign_qi_3, assign_qd_3, assign_qz_3
+
+     module procedure assign_ai_30, assign_ad_30
+     module procedure assign_bi_30, assign_bd_30, assign_bz_30, assign_ba_30
+     module procedure assign_qi_30, assign_qd_30, assign_qz_30
+
+     module procedure assign_ai_4, assign_ad_4
+     module procedure assign_bi_4, assign_bd_4, assign_bz_4, assign_ba_4
+     module procedure assign_qi_4, assign_qd_4, assign_qz_4
+
+     module procedure assign_ai_40, assign_ad_40
+     module procedure assign_bi_40, assign_bd_40, assign_bz_40, assign_ba_40
+     module procedure assign_qi_40, assign_qd_40, assign_qz_40
   end interface
 
   public operator(+)
@@ -276,6 +472,8 @@ def elemental_versions(name, rtype, ops=None):
      module procedure neg_a, neg_b, neg_q
      module procedure neg_a_1, neg_b_1, neg_q_1
      module procedure neg_a_2, neg_b_2, neg_q_2
+     module procedure neg_a_3, neg_b_3, neg_q_3
+     module procedure neg_a_4, neg_b_4, neg_q_4
   end interface
 
   public operator(*)
@@ -293,6 +491,18 @@ def elemental_versions(name, rtype, ops=None):
      module procedure pow_ai, pow_ad, pow_qi, pow_qd, pow_qz
      module procedure pow_ai_1, pow_ad_1, pow_qi_1, pow_qd_1, pow_qz_1
      module procedure pow_ai_2, pow_ad_2, pow_qi_2, pow_qd_2, pow_qz_2
+     module procedure pow_ai_3, pow_ad_3, pow_qi_3, pow_qd_3, pow_qz_3
+     module procedure pow_ai_4, pow_ad_4, pow_qi_4, pow_qd_4, pow_qz_4
+
+     module procedure pow_ai_10, pow_ad_10, pow_qi_10, pow_qd_10, pow_qz_10
+     module procedure pow_ai_20, pow_ad_20, pow_qi_20, pow_qd_20, pow_qz_20
+     module procedure pow_ai_30, pow_ad_30, pow_qi_30, pow_qd_30, pow_qz_30
+     module procedure pow_ai_40, pow_ad_40, pow_qi_40, pow_qd_40, pow_qz_40
+
+     module procedure pow_ai_01, pow_ad_01, pow_qi_01, pow_qd_01, pow_qz_01
+     module procedure pow_ai_02, pow_ad_02, pow_qi_02, pow_qd_02, pow_qz_02
+     module procedure pow_ai_03, pow_ad_03, pow_qi_03, pow_qd_03, pow_qz_03
+     module procedure pow_ai_04, pow_ad_04, pow_qi_04, pow_qd_04, pow_qz_04
   end interface operator(**)
 
   public matmul
@@ -307,6 +517,8 @@ def elemental_versions(name, rtype, ops=None):
      module procedure dble_a, dble_b
      module procedure dble_a_1, dble_b_1
      module procedure dble_a_2, dble_b_2
+     module procedure dble_a_3, dble_b_3
+     module procedure dble_a_4, dble_b_4
   end interface dble
 
   public aimag
@@ -314,6 +526,8 @@ def elemental_versions(name, rtype, ops=None):
      module procedure aimag_b
      module procedure aimag_b_1
      module procedure aimag_b_2
+     module procedure aimag_b_3
+     module procedure aimag_b_4
   end interface aimag
 
   public conjg
@@ -321,6 +535,8 @@ def elemental_versions(name, rtype, ops=None):
      module procedure conjg_b
      module procedure conjg_b_1
      module procedure conjg_b_2
+     module procedure conjg_b_3
+     module procedure conjg_b_4
   end interface conjg
 
   public exp
@@ -328,6 +544,8 @@ def elemental_versions(name, rtype, ops=None):
      module procedure exp_a, exp_b, exp_q
      module procedure exp_a_1, exp_b_1, exp_q_1
      module procedure exp_a_2, exp_b_2, exp_q_2
+     module procedure exp_a_3, exp_b_3, exp_q_3
+     module procedure exp_a_4, exp_b_4, exp_q_4
   end interface exp
 
   public sin
@@ -335,6 +553,8 @@ def elemental_versions(name, rtype, ops=None):
      module procedure sin_a, sin_b, sin_q
      module procedure sin_a_1, sin_b_1, sin_q_1
      module procedure sin_a_2, sin_b_2, sin_q_2
+     module procedure sin_a_3, sin_b_3, sin_q_3
+     module procedure sin_a_4, sin_b_4, sin_q_4
   end interface sin
 
   public cos
@@ -342,6 +562,8 @@ def elemental_versions(name, rtype, ops=None):
      module procedure cos_a, cos_b, cos_q
      module procedure cos_a_1, cos_b_1, cos_q_1
      module procedure cos_a_2, cos_b_2, cos_q_2
+     module procedure cos_a_3, cos_b_3, cos_q_3
+     module procedure cos_a_4, cos_b_4, cos_q_4
   end interface cos
 
   public log
@@ -349,6 +571,8 @@ def elemental_versions(name, rtype, ops=None):
      module procedure log_a, log_b, log_q
      module procedure log_a_1, log_b_1, log_q_1
      module procedure log_a_2, log_b_2, log_q_2
+     module procedure log_a_3, log_b_3, log_q_3
+     module procedure log_a_4, log_b_4, log_q_4
   end interface log
 
   interface adjac_set_independent
@@ -563,7 +787,7 @@ contains
     type({{TYPE}}), dimension(:), intent(inout) :: y
     {{FTYPE}}, dimension(:,:), intent(out) :: jac_dense
 
-    integer :: i, p, j
+    integer :: i, p
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_dense_jacobian when jacobian product mode is active')
@@ -585,7 +809,7 @@ contains
     {{FTYPE}}, dimension(:), intent(out) :: jac_val
     integer, dimension(:), intent(out) :: jac_i, jac_j
 
-    integer :: i, p, j, k
+    integer :: i, k
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
@@ -608,7 +832,7 @@ contains
     {{FTYPE}}, dimension(:), intent(out) :: jac_val
     integer, dimension(:), intent(out) :: jac_indices, jac_indptr
 
-    integer :: i, p, j, k
+    integer :: i, k
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_csr_jacobian when jacobian product mode is active')
@@ -842,8 +1066,6 @@ contains
     implicit none
     type({{TYPE}}), intent(in) :: x, y
     type({{TYPE}}) :: z
-
-    integer :: n
 
     z%value = x%value - y%value
     z%n = x%n + y%n

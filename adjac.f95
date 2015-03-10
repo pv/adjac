@@ -79,6 +79,22 @@ module adjac
      module procedure assign_ai_20, assign_ad_20
      module procedure assign_bi_20, assign_bd_20, assign_bz_20, assign_ba_20
      module procedure assign_qi_20, assign_qd_20, assign_qz_20
+
+     module procedure assign_ai_3, assign_ad_3
+     module procedure assign_bi_3, assign_bd_3, assign_bz_3, assign_ba_3
+     module procedure assign_qi_3, assign_qd_3, assign_qz_3
+
+     module procedure assign_ai_30, assign_ad_30
+     module procedure assign_bi_30, assign_bd_30, assign_bz_30, assign_ba_30
+     module procedure assign_qi_30, assign_qd_30, assign_qz_30
+
+     module procedure assign_ai_4, assign_ad_4
+     module procedure assign_bi_4, assign_bd_4, assign_bz_4, assign_ba_4
+     module procedure assign_qi_4, assign_qd_4, assign_qz_4
+
+     module procedure assign_ai_40, assign_ad_40
+     module procedure assign_bi_40, assign_bd_40, assign_bz_40, assign_ba_40
+     module procedure assign_qi_40, assign_qd_40, assign_qz_40
   end interface
 
   public operator(+)
@@ -129,29 +145,6 @@ module adjac
      module procedure add_za_1
      module procedure add_zb_1
      module procedure add_zq_1
-     module procedure add_aa_2
-     module procedure add_bb_2
-     module procedure add_qq_2
-     module procedure add_ab_2
-     module procedure add_ba_2
-     module procedure add_ai_2
-     module procedure add_bi_2
-     module procedure add_qi_2
-     module procedure add_ia_2
-     module procedure add_ib_2
-     module procedure add_iq_2
-     module procedure add_ad_2
-     module procedure add_bd_2
-     module procedure add_qd_2
-     module procedure add_da_2
-     module procedure add_db_2
-     module procedure add_dq_2
-     module procedure add_az_2
-     module procedure add_bz_2
-     module procedure add_qz_2
-     module procedure add_za_2
-     module procedure add_zb_2
-     module procedure add_zq_2
      module procedure add_aa_01
      module procedure add_bb_01
      module procedure add_qq_01
@@ -198,6 +191,29 @@ module adjac
      module procedure add_za_10
      module procedure add_zb_10
      module procedure add_zq_10
+     module procedure add_aa_2
+     module procedure add_bb_2
+     module procedure add_qq_2
+     module procedure add_ab_2
+     module procedure add_ba_2
+     module procedure add_ai_2
+     module procedure add_bi_2
+     module procedure add_qi_2
+     module procedure add_ia_2
+     module procedure add_ib_2
+     module procedure add_iq_2
+     module procedure add_ad_2
+     module procedure add_bd_2
+     module procedure add_qd_2
+     module procedure add_da_2
+     module procedure add_db_2
+     module procedure add_dq_2
+     module procedure add_az_2
+     module procedure add_bz_2
+     module procedure add_qz_2
+     module procedure add_za_2
+     module procedure add_zb_2
+     module procedure add_zq_2
      module procedure add_aa_02
      module procedure add_bb_02
      module procedure add_qq_02
@@ -244,6 +260,144 @@ module adjac
      module procedure add_za_20
      module procedure add_zb_20
      module procedure add_zq_20
+     module procedure add_aa_3
+     module procedure add_bb_3
+     module procedure add_qq_3
+     module procedure add_ab_3
+     module procedure add_ba_3
+     module procedure add_ai_3
+     module procedure add_bi_3
+     module procedure add_qi_3
+     module procedure add_ia_3
+     module procedure add_ib_3
+     module procedure add_iq_3
+     module procedure add_ad_3
+     module procedure add_bd_3
+     module procedure add_qd_3
+     module procedure add_da_3
+     module procedure add_db_3
+     module procedure add_dq_3
+     module procedure add_az_3
+     module procedure add_bz_3
+     module procedure add_qz_3
+     module procedure add_za_3
+     module procedure add_zb_3
+     module procedure add_zq_3
+     module procedure add_aa_03
+     module procedure add_bb_03
+     module procedure add_qq_03
+     module procedure add_ab_03
+     module procedure add_ba_03
+     module procedure add_ai_03
+     module procedure add_bi_03
+     module procedure add_qi_03
+     module procedure add_ia_03
+     module procedure add_ib_03
+     module procedure add_iq_03
+     module procedure add_ad_03
+     module procedure add_bd_03
+     module procedure add_qd_03
+     module procedure add_da_03
+     module procedure add_db_03
+     module procedure add_dq_03
+     module procedure add_az_03
+     module procedure add_bz_03
+     module procedure add_qz_03
+     module procedure add_za_03
+     module procedure add_zb_03
+     module procedure add_zq_03
+     module procedure add_aa_30
+     module procedure add_bb_30
+     module procedure add_qq_30
+     module procedure add_ab_30
+     module procedure add_ba_30
+     module procedure add_ai_30
+     module procedure add_bi_30
+     module procedure add_qi_30
+     module procedure add_ia_30
+     module procedure add_ib_30
+     module procedure add_iq_30
+     module procedure add_ad_30
+     module procedure add_bd_30
+     module procedure add_qd_30
+     module procedure add_da_30
+     module procedure add_db_30
+     module procedure add_dq_30
+     module procedure add_az_30
+     module procedure add_bz_30
+     module procedure add_qz_30
+     module procedure add_za_30
+     module procedure add_zb_30
+     module procedure add_zq_30
+     module procedure add_aa_4
+     module procedure add_bb_4
+     module procedure add_qq_4
+     module procedure add_ab_4
+     module procedure add_ba_4
+     module procedure add_ai_4
+     module procedure add_bi_4
+     module procedure add_qi_4
+     module procedure add_ia_4
+     module procedure add_ib_4
+     module procedure add_iq_4
+     module procedure add_ad_4
+     module procedure add_bd_4
+     module procedure add_qd_4
+     module procedure add_da_4
+     module procedure add_db_4
+     module procedure add_dq_4
+     module procedure add_az_4
+     module procedure add_bz_4
+     module procedure add_qz_4
+     module procedure add_za_4
+     module procedure add_zb_4
+     module procedure add_zq_4
+     module procedure add_aa_04
+     module procedure add_bb_04
+     module procedure add_qq_04
+     module procedure add_ab_04
+     module procedure add_ba_04
+     module procedure add_ai_04
+     module procedure add_bi_04
+     module procedure add_qi_04
+     module procedure add_ia_04
+     module procedure add_ib_04
+     module procedure add_iq_04
+     module procedure add_ad_04
+     module procedure add_bd_04
+     module procedure add_qd_04
+     module procedure add_da_04
+     module procedure add_db_04
+     module procedure add_dq_04
+     module procedure add_az_04
+     module procedure add_bz_04
+     module procedure add_qz_04
+     module procedure add_za_04
+     module procedure add_zb_04
+     module procedure add_zq_04
+     module procedure add_aa_40
+     module procedure add_bb_40
+     module procedure add_qq_40
+     module procedure add_ab_40
+     module procedure add_ba_40
+     module procedure add_ai_40
+     module procedure add_bi_40
+     module procedure add_qi_40
+     module procedure add_ia_40
+     module procedure add_ib_40
+     module procedure add_iq_40
+     module procedure add_ad_40
+     module procedure add_bd_40
+     module procedure add_qd_40
+     module procedure add_da_40
+     module procedure add_db_40
+     module procedure add_dq_40
+     module procedure add_az_40
+     module procedure add_bz_40
+     module procedure add_qz_40
+     module procedure add_za_40
+     module procedure add_zb_40
+     module procedure add_zq_40
   end interface
 
   public operator(-)
@@ -294,29 +448,6 @@ module adjac
      module procedure sub_za_1
      module procedure sub_zb_1
      module procedure sub_zq_1
-     module procedure sub_aa_2
-     module procedure sub_bb_2
-     module procedure sub_qq_2
-     module procedure sub_ab_2
-     module procedure sub_ba_2
-     module procedure sub_ai_2
-     module procedure sub_bi_2
-     module procedure sub_qi_2
-     module procedure sub_ia_2
-     module procedure sub_ib_2
-     module procedure sub_iq_2
-     module procedure sub_ad_2
-     module procedure sub_bd_2
-     module procedure sub_qd_2
-     module procedure sub_da_2
-     module procedure sub_db_2
-     module procedure sub_dq_2
-     module procedure sub_az_2
-     module procedure sub_bz_2
-     module procedure sub_qz_2
-     module procedure sub_za_2
-     module procedure sub_zb_2
-     module procedure sub_zq_2
      module procedure sub_aa_01
      module procedure sub_bb_01
      module procedure sub_qq_01
@@ -363,6 +494,29 @@ module adjac
      module procedure sub_za_10
      module procedure sub_zb_10
      module procedure sub_zq_10
+     module procedure sub_aa_2
+     module procedure sub_bb_2
+     module procedure sub_qq_2
+     module procedure sub_ab_2
+     module procedure sub_ba_2
+     module procedure sub_ai_2
+     module procedure sub_bi_2
+     module procedure sub_qi_2
+     module procedure sub_ia_2
+     module procedure sub_ib_2
+     module procedure sub_iq_2
+     module procedure sub_ad_2
+     module procedure sub_bd_2
+     module procedure sub_qd_2
+     module procedure sub_da_2
+     module procedure sub_db_2
+     module procedure sub_dq_2
+     module procedure sub_az_2
+     module procedure sub_bz_2
+     module procedure sub_qz_2
+     module procedure sub_za_2
+     module procedure sub_zb_2
+     module procedure sub_zq_2
      module procedure sub_aa_02
      module procedure sub_bb_02
      module procedure sub_qq_02
@@ -409,9 +563,149 @@ module adjac
      module procedure sub_za_20
      module procedure sub_zb_20
      module procedure sub_zq_20
+     module procedure sub_aa_3
+     module procedure sub_bb_3
+     module procedure sub_qq_3
+     module procedure sub_ab_3
+     module procedure sub_ba_3
+     module procedure sub_ai_3
+     module procedure sub_bi_3
+     module procedure sub_qi_3
+     module procedure sub_ia_3
+     module procedure sub_ib_3
+     module procedure sub_iq_3
+     module procedure sub_ad_3
+     module procedure sub_bd_3
+     module procedure sub_qd_3
+     module procedure sub_da_3
+     module procedure sub_db_3
+     module procedure sub_dq_3
+     module procedure sub_az_3
+     module procedure sub_bz_3
+     module procedure sub_qz_3
+     module procedure sub_za_3
+     module procedure sub_zb_3
+     module procedure sub_zq_3
+     module procedure sub_aa_03
+     module procedure sub_bb_03
+     module procedure sub_qq_03
+     module procedure sub_ab_03
+     module procedure sub_ba_03
+     module procedure sub_ai_03
+     module procedure sub_bi_03
+     module procedure sub_qi_03
+     module procedure sub_ia_03
+     module procedure sub_ib_03
+     module procedure sub_iq_03
+     module procedure sub_ad_03
+     module procedure sub_bd_03
+     module procedure sub_qd_03
+     module procedure sub_da_03
+     module procedure sub_db_03
+     module procedure sub_dq_03
+     module procedure sub_az_03
+     module procedure sub_bz_03
+     module procedure sub_qz_03
+     module procedure sub_za_03
+     module procedure sub_zb_03
+     module procedure sub_zq_03
+     module procedure sub_aa_30
+     module procedure sub_bb_30
+     module procedure sub_qq_30
+     module procedure sub_ab_30
+     module procedure sub_ba_30
+     module procedure sub_ai_30
+     module procedure sub_bi_30
+     module procedure sub_qi_30
+     module procedure sub_ia_30
+     module procedure sub_ib_30
+     module procedure sub_iq_30
+     module procedure sub_ad_30
+     module procedure sub_bd_30
+     module procedure sub_qd_30
+     module procedure sub_da_30
+     module procedure sub_db_30
+     module procedure sub_dq_30
+     module procedure sub_az_30
+     module procedure sub_bz_30
+     module procedure sub_qz_30
+     module procedure sub_za_30
+     module procedure sub_zb_30
+     module procedure sub_zq_30
+     module procedure sub_aa_4
+     module procedure sub_bb_4
+     module procedure sub_qq_4
+     module procedure sub_ab_4
+     module procedure sub_ba_4
+     module procedure sub_ai_4
+     module procedure sub_bi_4
+     module procedure sub_qi_4
+     module procedure sub_ia_4
+     module procedure sub_ib_4
+     module procedure sub_iq_4
+     module procedure sub_ad_4
+     module procedure sub_bd_4
+     module procedure sub_qd_4
+     module procedure sub_da_4
+     module procedure sub_db_4
+     module procedure sub_dq_4
+     module procedure sub_az_4
+     module procedure sub_bz_4
+     module procedure sub_qz_4
+     module procedure sub_za_4
+     module procedure sub_zb_4
+     module procedure sub_zq_4
+     module procedure sub_aa_04
+     module procedure sub_bb_04
+     module procedure sub_qq_04
+     module procedure sub_ab_04
+     module procedure sub_ba_04
+     module procedure sub_ai_04
+     module procedure sub_bi_04
+     module procedure sub_qi_04
+     module procedure sub_ia_04
+     module procedure sub_ib_04
+     module procedure sub_iq_04
+     module procedure sub_ad_04
+     module procedure sub_bd_04
+     module procedure sub_qd_04
+     module procedure sub_da_04
+     module procedure sub_db_04
+     module procedure sub_dq_04
+     module procedure sub_az_04
+     module procedure sub_bz_04
+     module procedure sub_qz_04
+     module procedure sub_za_04
+     module procedure sub_zb_04
+     module procedure sub_zq_04
+     module procedure sub_aa_40
+     module procedure sub_bb_40
+     module procedure sub_qq_40
+     module procedure sub_ab_40
+     module procedure sub_ba_40
+     module procedure sub_ai_40
+     module procedure sub_bi_40
+     module procedure sub_qi_40
+     module procedure sub_ia_40
+     module procedure sub_ib_40
+     module procedure sub_iq_40
+     module procedure sub_ad_40
+     module procedure sub_bd_40
+     module procedure sub_qd_40
+     module procedure sub_da_40
+     module procedure sub_db_40
+     module procedure sub_dq_40
+     module procedure sub_az_40
+     module procedure sub_bz_40
+     module procedure sub_qz_40
+     module procedure sub_za_40
+     module procedure sub_zb_40
+     module procedure sub_zq_40
      module procedure neg_a, neg_b, neg_q
      module procedure neg_a_1, neg_b_1, neg_q_1
      module procedure neg_a_2, neg_b_2, neg_q_2
+     module procedure neg_a_3, neg_b_3, neg_q_3
+     module procedure neg_a_4, neg_b_4, neg_q_4
   end interface
 
   public operator(*)
@@ -462,29 +756,6 @@ module adjac
      module procedure mul_za_1
      module procedure mul_zb_1
      module procedure mul_zq_1
-     module procedure mul_aa_2
-     module procedure mul_bb_2
-     module procedure mul_qq_2
-     module procedure mul_ab_2
-     module procedure mul_ba_2
-     module procedure mul_ai_2
-     module procedure mul_bi_2
-     module procedure mul_qi_2
-     module procedure mul_ia_2
-     module procedure mul_ib_2
-     module procedure mul_iq_2
-     module procedure mul_ad_2
-     module procedure mul_bd_2
-     module procedure mul_qd_2
-     module procedure mul_da_2
-     module procedure mul_db_2
-     module procedure mul_dq_2
-     module procedure mul_az_2
-     module procedure mul_bz_2
-     module procedure mul_qz_2
-     module procedure mul_za_2
-     module procedure mul_zb_2
-     module procedure mul_zq_2
      module procedure mul_aa_01
      module procedure mul_bb_01
      module procedure mul_qq_01
@@ -531,6 +802,29 @@ module adjac
      module procedure mul_za_10
      module procedure mul_zb_10
      module procedure mul_zq_10
+     module procedure mul_aa_2
+     module procedure mul_bb_2
+     module procedure mul_qq_2
+     module procedure mul_ab_2
+     module procedure mul_ba_2
+     module procedure mul_ai_2
+     module procedure mul_bi_2
+     module procedure mul_qi_2
+     module procedure mul_ia_2
+     module procedure mul_ib_2
+     module procedure mul_iq_2
+     module procedure mul_ad_2
+     module procedure mul_bd_2
+     module procedure mul_qd_2
+     module procedure mul_da_2
+     module procedure mul_db_2
+     module procedure mul_dq_2
+     module procedure mul_az_2
+     module procedure mul_bz_2
+     module procedure mul_qz_2
+     module procedure mul_za_2
+     module procedure mul_zb_2
+     module procedure mul_zq_2
      module procedure mul_aa_02
      module procedure mul_bb_02
      module procedure mul_qq_02
@@ -577,6 +871,144 @@ module adjac
      module procedure mul_za_20
      module procedure mul_zb_20
      module procedure mul_zq_20
+     module procedure mul_aa_3
+     module procedure mul_bb_3
+     module procedure mul_qq_3
+     module procedure mul_ab_3
+     module procedure mul_ba_3
+     module procedure mul_ai_3
+     module procedure mul_bi_3
+     module procedure mul_qi_3
+     module procedure mul_ia_3
+     module procedure mul_ib_3
+     module procedure mul_iq_3
+     module procedure mul_ad_3
+     module procedure mul_bd_3
+     module procedure mul_qd_3
+     module procedure mul_da_3
+     module procedure mul_db_3
+     module procedure mul_dq_3
+     module procedure mul_az_3
+     module procedure mul_bz_3
+     module procedure mul_qz_3
+     module procedure mul_za_3
+     module procedure mul_zb_3
+     module procedure mul_zq_3
+     module procedure mul_aa_03
+     module procedure mul_bb_03
+     module procedure mul_qq_03
+     module procedure mul_ab_03
+     module procedure mul_ba_03
+     module procedure mul_ai_03
+     module procedure mul_bi_03
+     module procedure mul_qi_03
+     module procedure mul_ia_03
+     module procedure mul_ib_03
+     module procedure mul_iq_03
+     module procedure mul_ad_03
+     module procedure mul_bd_03
+     module procedure mul_qd_03
+     module procedure mul_da_03
+     module procedure mul_db_03
+     module procedure mul_dq_03
+     module procedure mul_az_03
+     module procedure mul_bz_03
+     module procedure mul_qz_03
+     module procedure mul_za_03
+     module procedure mul_zb_03
+     module procedure mul_zq_03
+     module procedure mul_aa_30
+     module procedure mul_bb_30
+     module procedure mul_qq_30
+     module procedure mul_ab_30
+     module procedure mul_ba_30
+     module procedure mul_ai_30
+     module procedure mul_bi_30
+     module procedure mul_qi_30
+     module procedure mul_ia_30
+     module procedure mul_ib_30
+     module procedure mul_iq_30
+     module procedure mul_ad_30
+     module procedure mul_bd_30
+     module procedure mul_qd_30
+     module procedure mul_da_30
+     module procedure mul_db_30
+     module procedure mul_dq_30
+     module procedure mul_az_30
+     module procedure mul_bz_30
+     module procedure mul_qz_30
+     module procedure mul_za_30
+     module procedure mul_zb_30
+     module procedure mul_zq_30
+     module procedure mul_aa_4
+     module procedure mul_bb_4
+     module procedure mul_qq_4
+     module procedure mul_ab_4
+     module procedure mul_ba_4
+     module procedure mul_ai_4
+     module procedure mul_bi_4
+     module procedure mul_qi_4
+     module procedure mul_ia_4
+     module procedure mul_ib_4
+     module procedure mul_iq_4
+     module procedure mul_ad_4
+     module procedure mul_bd_4
+     module procedure mul_qd_4
+     module procedure mul_da_4
+     module procedure mul_db_4
+     module procedure mul_dq_4
+     module procedure mul_az_4
+     module procedure mul_bz_4
+     module procedure mul_qz_4
+     module procedure mul_za_4
+     module procedure mul_zb_4
+     module procedure mul_zq_4
+     module procedure mul_aa_04
+     module procedure mul_bb_04
+     module procedure mul_qq_04
+     module procedure mul_ab_04
+     module procedure mul_ba_04
+     module procedure mul_ai_04
+     module procedure mul_bi_04
+     module procedure mul_qi_04
+     module procedure mul_ia_04
+     module procedure mul_ib_04
+     module procedure mul_iq_04
+     module procedure mul_ad_04
+     module procedure mul_bd_04
+     module procedure mul_qd_04
+     module procedure mul_da_04
+     module procedure mul_db_04
+     module procedure mul_dq_04
+     module procedure mul_az_04
+     module procedure mul_bz_04
+     module procedure mul_qz_04
+     module procedure mul_za_04
+     module procedure mul_zb_04
+     module procedure mul_zq_04
+     module procedure mul_aa_40
+     module procedure mul_bb_40
+     module procedure mul_qq_40
+     module procedure mul_ab_40
+     module procedure mul_ba_40
+     module procedure mul_ai_40
+     module procedure mul_bi_40
+     module procedure mul_qi_40
+     module procedure mul_ia_40
+     module procedure mul_ib_40
+     module procedure mul_iq_40
+     module procedure mul_ad_40
+     module procedure mul_bd_40
+     module procedure mul_qd_40
+     module procedure mul_da_40
+     module procedure mul_db_40
+     module procedure mul_dq_40
+     module procedure mul_az_40
+     module procedure mul_bz_40
+     module procedure mul_qz_40
+     module procedure mul_za_40
+     module procedure mul_zb_40
+     module procedure mul_zq_40
   end interface operator(*)
 
   public operator(/)
@@ -627,29 +1059,6 @@ module adjac
      module procedure div_za_1
      module procedure div_zb_1
      module procedure div_zq_1
-     module procedure div_aa_2
-     module procedure div_bb_2
-     module procedure div_qq_2
-     module procedure div_ab_2
-     module procedure div_ba_2
-     module procedure div_ai_2
-     module procedure div_bi_2
-     module procedure div_qi_2
-     module procedure div_ia_2
-     module procedure div_ib_2
-     module procedure div_iq_2
-     module procedure div_ad_2
-     module procedure div_bd_2
-     module procedure div_qd_2
-     module procedure div_da_2
-     module procedure div_db_2
-     module procedure div_dq_2
-     module procedure div_az_2
-     module procedure div_bz_2
-     module procedure div_qz_2
-     module procedure div_za_2
-     module procedure div_zb_2
-     module procedure div_zq_2
      module procedure div_aa_01
      module procedure div_bb_01
      module procedure div_qq_01
@@ -696,6 +1105,29 @@ module adjac
      module procedure div_za_10
      module procedure div_zb_10
      module procedure div_zq_10
+     module procedure div_aa_2
+     module procedure div_bb_2
+     module procedure div_qq_2
+     module procedure div_ab_2
+     module procedure div_ba_2
+     module procedure div_ai_2
+     module procedure div_bi_2
+     module procedure div_qi_2
+     module procedure div_ia_2
+     module procedure div_ib_2
+     module procedure div_iq_2
+     module procedure div_ad_2
+     module procedure div_bd_2
+     module procedure div_qd_2
+     module procedure div_da_2
+     module procedure div_db_2
+     module procedure div_dq_2
+     module procedure div_az_2
+     module procedure div_bz_2
+     module procedure div_qz_2
+     module procedure div_za_2
+     module procedure div_zb_2
+     module procedure div_zq_2
      module procedure div_aa_02
      module procedure div_bb_02
      module procedure div_qq_02
@@ -742,6 +1174,144 @@ module adjac
      module procedure div_za_20
      module procedure div_zb_20
      module procedure div_zq_20
+     module procedure div_aa_3
+     module procedure div_bb_3
+     module procedure div_qq_3
+     module procedure div_ab_3
+     module procedure div_ba_3
+     module procedure div_ai_3
+     module procedure div_bi_3
+     module procedure div_qi_3
+     module procedure div_ia_3
+     module procedure div_ib_3
+     module procedure div_iq_3
+     module procedure div_ad_3
+     module procedure div_bd_3
+     module procedure div_qd_3
+     module procedure div_da_3
+     module procedure div_db_3
+     module procedure div_dq_3
+     module procedure div_az_3
+     module procedure div_bz_3
+     module procedure div_qz_3
+     module procedure div_za_3
+     module procedure div_zb_3
+     module procedure div_zq_3
+     module procedure div_aa_03
+     module procedure div_bb_03
+     module procedure div_qq_03
+     module procedure div_ab_03
+     module procedure div_ba_03
+     module procedure div_ai_03
+     module procedure div_bi_03
+     module procedure div_qi_03
+     module procedure div_ia_03
+     module procedure div_ib_03
+     module procedure div_iq_03
+     module procedure div_ad_03
+     module procedure div_bd_03
+     module procedure div_qd_03
+     module procedure div_da_03
+     module procedure div_db_03
+     module procedure div_dq_03
+     module procedure div_az_03
+     module procedure div_bz_03
+     module procedure div_qz_03
+     module procedure div_za_03
+     module procedure div_zb_03
+     module procedure div_zq_03
+     module procedure div_aa_30
+     module procedure div_bb_30
+     module procedure div_qq_30
+     module procedure div_ab_30
+     module procedure div_ba_30
+     module procedure div_ai_30
+     module procedure div_bi_30
+     module procedure div_qi_30
+     module procedure div_ia_30
+     module procedure div_ib_30
+     module procedure div_iq_30
+     module procedure div_ad_30
+     module procedure div_bd_30
+     module procedure div_qd_30
+     module procedure div_da_30
+     module procedure div_db_30
+     module procedure div_dq_30
+     module procedure div_az_30
+     module procedure div_bz_30
+     module procedure div_qz_30
+     module procedure div_za_30
+     module procedure div_zb_30
+     module procedure div_zq_30
+     module procedure div_aa_4
+     module procedure div_bb_4
+     module procedure div_qq_4
+     module procedure div_ab_4
+     module procedure div_ba_4
+     module procedure div_ai_4
+     module procedure div_bi_4
+     module procedure div_qi_4
+     module procedure div_ia_4
+     module procedure div_ib_4
+     module procedure div_iq_4
+     module procedure div_ad_4
+     module procedure div_bd_4
+     module procedure div_qd_4
+     module procedure div_da_4
+     module procedure div_db_4
+     module procedure div_dq_4
+     module procedure div_az_4
+     module procedure div_bz_4
+     module procedure div_qz_4
+     module procedure div_za_4
+     module procedure div_zb_4
+     module procedure div_zq_4
+     module procedure div_aa_04
+     module procedure div_bb_04
+     module procedure div_qq_04
+     module procedure div_ab_04
+     module procedure div_ba_04
+     module procedure div_ai_04
+     module procedure div_bi_04
+     module procedure div_qi_04
+     module procedure div_ia_04
+     module procedure div_ib_04
+     module procedure div_iq_04
+     module procedure div_ad_04
+     module procedure div_bd_04
+     module procedure div_qd_04
+     module procedure div_da_04
+     module procedure div_db_04
+     module procedure div_dq_04
+     module procedure div_az_04
+     module procedure div_bz_04
+     module procedure div_qz_04
+     module procedure div_za_04
+     module procedure div_zb_04
+     module procedure div_zq_04
+     module procedure div_aa_40
+     module procedure div_bb_40
+     module procedure div_qq_40
+     module procedure div_ab_40
+     module procedure div_ba_40
+     module procedure div_ai_40
+     module procedure div_bi_40
+     module procedure div_qi_40
+     module procedure div_ia_40
+     module procedure div_ib_40
+     module procedure div_iq_40
+     module procedure div_ad_40
+     module procedure div_bd_40
+     module procedure div_qd_40
+     module procedure div_da_40
+     module procedure div_db_40
+     module procedure div_dq_40
+     module procedure div_az_40
+     module procedure div_bz_40
+     module procedure div_qz_40
+     module procedure div_za_40
+     module procedure div_zb_40
+     module procedure div_zq_40
   end interface operator(/)
 
   public operator(**)
@@ -749,6 +1319,18 @@ module adjac
      module procedure pow_ai, pow_ad, pow_qi, pow_qd, pow_qz
      module procedure pow_ai_1, pow_ad_1, pow_qi_1, pow_qd_1, pow_qz_1
      module procedure pow_ai_2, pow_ad_2, pow_qi_2, pow_qd_2, pow_qz_2
+     module procedure pow_ai_3, pow_ad_3, pow_qi_3, pow_qd_3, pow_qz_3
+     module procedure pow_ai_4, pow_ad_4, pow_qi_4, pow_qd_4, pow_qz_4
+
+     module procedure pow_ai_10, pow_ad_10, pow_qi_10, pow_qd_10, pow_qz_10
+     module procedure pow_ai_20, pow_ad_20, pow_qi_20, pow_qd_20, pow_qz_20
+     module procedure pow_ai_30, pow_ad_30, pow_qi_30, pow_qd_30, pow_qz_30
+     module procedure pow_ai_40, pow_ad_40, pow_qi_40, pow_qd_40, pow_qz_40
+
+     module procedure pow_ai_01, pow_ad_01, pow_qi_01, pow_qd_01, pow_qz_01
+     module procedure pow_ai_02, pow_ad_02, pow_qi_02, pow_qd_02, pow_qz_02
+     module procedure pow_ai_03, pow_ad_03, pow_qi_03, pow_qd_03, pow_qz_03
+     module procedure pow_ai_04, pow_ad_04, pow_qi_04, pow_qd_04, pow_qz_04
   end interface operator(**)
 
   public matmul
@@ -763,6 +1345,8 @@ module adjac
      module procedure dble_a, dble_b
      module procedure dble_a_1, dble_b_1
      module procedure dble_a_2, dble_b_2
+     module procedure dble_a_3, dble_b_3
+     module procedure dble_a_4, dble_b_4
   end interface dble
 
   public aimag
@@ -770,6 +1354,8 @@ module adjac
      module procedure aimag_b
      module procedure aimag_b_1
      module procedure aimag_b_2
+     module procedure aimag_b_3
+     module procedure aimag_b_4
   end interface aimag
 
   public conjg
@@ -777,6 +1363,8 @@ module adjac
      module procedure conjg_b
      module procedure conjg_b_1
      module procedure conjg_b_2
+     module procedure conjg_b_3
+     module procedure conjg_b_4
   end interface conjg
 
   public exp
@@ -784,6 +1372,8 @@ module adjac
      module procedure exp_a, exp_b, exp_q
      module procedure exp_a_1, exp_b_1, exp_q_1
      module procedure exp_a_2, exp_b_2, exp_q_2
+     module procedure exp_a_3, exp_b_3, exp_q_3
+     module procedure exp_a_4, exp_b_4, exp_q_4
   end interface exp
 
   public sin
@@ -791,6 +1381,8 @@ module adjac
      module procedure sin_a, sin_b, sin_q
      module procedure sin_a_1, sin_b_1, sin_q_1
      module procedure sin_a_2, sin_b_2, sin_q_2
+     module procedure sin_a_3, sin_b_3, sin_q_3
+     module procedure sin_a_4, sin_b_4, sin_q_4
   end interface sin
 
   public cos
@@ -798,6 +1390,8 @@ module adjac
      module procedure cos_a, cos_b, cos_q
      module procedure cos_a_1, cos_b_1, cos_q_1
      module procedure cos_a_2, cos_b_2, cos_q_2
+     module procedure cos_a_3, cos_b_3, cos_q_3
+     module procedure cos_a_4, cos_b_4, cos_q_4
   end interface cos
 
   public log
@@ -805,6 +1399,8 @@ module adjac
      module procedure log_a, log_b, log_q
      module procedure log_a_1, log_b_1, log_q_1
      module procedure log_a_2, log_b_2, log_q_2
+     module procedure log_a_3, log_b_3, log_q_3
+     module procedure log_a_4, log_b_4, log_q_4
   end interface log
 
   interface adjac_set_independent
@@ -1013,7 +1609,7 @@ contains
     type(adjac_double), dimension(:), intent(inout) :: y
     double precision, dimension(:,:), intent(out) :: jac_dense
 
-    integer :: i, p, j
+    integer :: i, p
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_dense_jacobian when jacobian product mode is active')
@@ -1035,7 +1631,7 @@ contains
     double precision, dimension(:), intent(out) :: jac_val
     integer, dimension(:), intent(out) :: jac_i, jac_j
 
-    integer :: i, p, j, k
+    integer :: i, k
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
@@ -1058,7 +1654,7 @@ contains
     double precision, dimension(:), intent(out) :: jac_val
     integer, dimension(:), intent(out) :: jac_indices, jac_indptr
 
-    integer :: i, p, j, k
+    integer :: i, k
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_csr_jacobian when jacobian product mode is active')
@@ -1321,8 +1917,6 @@ contains
     implicit none
     type(adjac_double), intent(in) :: x, y
     type(adjac_double) :: z
-
-    integer :: n
 
     z%value = x%value - y%value
     z%n = x%n + y%n
@@ -2261,7 +2855,7 @@ contains
     type(adjac_complexan), dimension(:), intent(inout) :: y
     double complex, dimension(:,:), intent(out) :: jac_dense
 
-    integer :: i, p, j
+    integer :: i, p
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_dense_jacobian when jacobian product mode is active')
@@ -2283,7 +2877,7 @@ contains
     double complex, dimension(:), intent(out) :: jac_val
     integer, dimension(:), intent(out) :: jac_i, jac_j
 
-    integer :: i, p, j, k
+    integer :: i, k
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
@@ -2306,7 +2900,7 @@ contains
     double complex, dimension(:), intent(out) :: jac_val
     integer, dimension(:), intent(out) :: jac_indices, jac_indptr
 
-    integer :: i, p, j, k
+    integer :: i, k
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_csr_jacobian when jacobian product mode is active')
@@ -2473,8 +3067,6 @@ contains
     implicit none
     type(adjac_complexan), intent(in) :: x, y
     type(adjac_complexan) :: z
-
-    integer :: n
 
     z%value = x%value - y%value
     z%n = x%n + y%n
@@ -3024,6 +3616,62 @@ contains
         end do
       end do
     end subroutine assign_ai_20
+    subroutine assign_ai_3(c, a)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_ai(c(i,j,k), a(i,j,k))
+          end do
+        end do
+      end do
+    end subroutine assign_ai_3
+    subroutine assign_ai_30(c, a)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_ai(c(i,j,k), a)
+          end do
+        end do
+      end do
+    end subroutine assign_ai_30
+    subroutine assign_ai_4(c, a)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_ai(c(i,j,k,l), a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_ai_4
+    subroutine assign_ai_40(c, a)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_ai(c(i,j,k,l), a)
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_ai_40
     
     subroutine assign_ad_1(c, a)
       implicit none
@@ -3065,6 +3713,62 @@ contains
         end do
       end do
     end subroutine assign_ad_20
+    subroutine assign_ad_3(c, a)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_ad(c(i,j,k), a(i,j,k))
+          end do
+        end do
+      end do
+    end subroutine assign_ad_3
+    subroutine assign_ad_30(c, a)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_ad(c(i,j,k), a)
+          end do
+        end do
+      end do
+    end subroutine assign_ad_30
+    subroutine assign_ad_4(c, a)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_ad(c(i,j,k,l), a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_ad_4
+    subroutine assign_ad_40(c, a)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_ad(c(i,j,k,l), a)
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_ad_40
     
     subroutine assign_bi_1(c, a)
       implicit none
@@ -3106,6 +3810,62 @@ contains
         end do
       end do
     end subroutine assign_bi_20
+    subroutine assign_bi_3(c, a)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_bi(c(i,j,k), a(i,j,k))
+          end do
+        end do
+      end do
+    end subroutine assign_bi_3
+    subroutine assign_bi_30(c, a)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_bi(c(i,j,k), a)
+          end do
+        end do
+      end do
+    end subroutine assign_bi_30
+    subroutine assign_bi_4(c, a)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_bi(c(i,j,k,l), a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_bi_4
+    subroutine assign_bi_40(c, a)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_bi(c(i,j,k,l), a)
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_bi_40
     
     subroutine assign_bd_1(c, a)
       implicit none
@@ -3147,6 +3907,62 @@ contains
         end do
       end do
     end subroutine assign_bd_20
+    subroutine assign_bd_3(c, a)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_bd(c(i,j,k), a(i,j,k))
+          end do
+        end do
+      end do
+    end subroutine assign_bd_3
+    subroutine assign_bd_30(c, a)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_bd(c(i,j,k), a)
+          end do
+        end do
+      end do
+    end subroutine assign_bd_30
+    subroutine assign_bd_4(c, a)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_bd(c(i,j,k,l), a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_bd_4
+    subroutine assign_bd_40(c, a)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_bd(c(i,j,k,l), a)
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_bd_40
     
     subroutine assign_bz_1(c, a)
       implicit none
@@ -3188,6 +4004,62 @@ contains
         end do
       end do
     end subroutine assign_bz_20
+    subroutine assign_bz_3(c, a)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_bz(c(i,j,k), a(i,j,k))
+          end do
+        end do
+      end do
+    end subroutine assign_bz_3
+    subroutine assign_bz_30(c, a)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_bz(c(i,j,k), a)
+          end do
+        end do
+      end do
+    end subroutine assign_bz_30
+    subroutine assign_bz_4(c, a)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_bz(c(i,j,k,l), a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_bz_4
+    subroutine assign_bz_40(c, a)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_bz(c(i,j,k,l), a)
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_bz_40
     
     subroutine assign_ba_1(c, a)
       implicit none
@@ -3229,6 +4101,62 @@ contains
         end do
       end do
     end subroutine assign_ba_20
+    subroutine assign_ba_3(c, a)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_ba(c(i,j,k), a(i,j,k))
+          end do
+        end do
+      end do
+    end subroutine assign_ba_3
+    subroutine assign_ba_30(c, a)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_ba(c(i,j,k), a)
+          end do
+        end do
+      end do
+    end subroutine assign_ba_30
+    subroutine assign_ba_4(c, a)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_ba(c(i,j,k,l), a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_ba_4
+    subroutine assign_ba_40(c, a)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_ba(c(i,j,k,l), a)
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_ba_40
     
     subroutine assign_qi_1(c, a)
       implicit none
@@ -3270,6 +4198,62 @@ contains
         end do
       end do
     end subroutine assign_qi_20
+    subroutine assign_qi_3(c, a)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_qi(c(i,j,k), a(i,j,k))
+          end do
+        end do
+      end do
+    end subroutine assign_qi_3
+    subroutine assign_qi_30(c, a)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_qi(c(i,j,k), a)
+          end do
+        end do
+      end do
+    end subroutine assign_qi_30
+    subroutine assign_qi_4(c, a)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_qi(c(i,j,k,l), a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_qi_4
+    subroutine assign_qi_40(c, a)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_qi(c(i,j,k,l), a)
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_qi_40
     
     subroutine assign_qd_1(c, a)
       implicit none
@@ -3311,6 +4295,62 @@ contains
         end do
       end do
     end subroutine assign_qd_20
+    subroutine assign_qd_3(c, a)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_qd(c(i,j,k), a(i,j,k))
+          end do
+        end do
+      end do
+    end subroutine assign_qd_3
+    subroutine assign_qd_30(c, a)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_qd(c(i,j,k), a)
+          end do
+        end do
+      end do
+    end subroutine assign_qd_30
+    subroutine assign_qd_4(c, a)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_qd(c(i,j,k,l), a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_qd_4
+    subroutine assign_qd_40(c, a)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_qd(c(i,j,k,l), a)
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_qd_40
     
     subroutine assign_qz_1(c, a)
       implicit none
@@ -3352,6 +4392,62 @@ contains
         end do
       end do
     end subroutine assign_qz_20
+    subroutine assign_qz_3(c, a)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_qz(c(i,j,k), a(i,j,k))
+          end do
+        end do
+      end do
+    end subroutine assign_qz_3
+    subroutine assign_qz_30(c, a)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(out) :: c
+      integer :: i, j, k
+      do k = 1, size(c,3)
+        do j = 1, size(c,2)
+          do i = 1, size(c,1)
+            call assign_qz(c(i,j,k), a)
+          end do
+        end do
+      end do
+    end subroutine assign_qz_30
+    subroutine assign_qz_4(c, a)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_qz(c(i,j,k,l), a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_qz_4
+    subroutine assign_qz_40(c, a)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(out) :: c
+      integer :: i, j, k, l
+      do l = 1, size(c,4)
+        do k = 1, size(c,3)
+          do j = 1, size(c,2)
+            do i = 1, size(c,1)
+              call assign_qz(c(i,j,k,l), a)
+            end do
+          end do
+        end do
+      end do
+    end subroutine assign_qz_40
     
   
     function add_aa_1(a, b) result(c)
@@ -3384,6 +4480,7 @@ contains
         c(i) = add_aa(a(i), b)
       end do
     end function add_aa_10
+
     function add_aa_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -3420,6 +4517,98 @@ contains
         end do
       end do
     end function add_aa_20
+
+    function add_aa_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_aa(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_aa_3
+    function add_aa_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_aa(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_aa_03
+    function add_aa_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_aa(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_aa_30
+
+    function add_aa_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_aa(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_aa_4
+    function add_aa_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_aa(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_aa_04
+    function add_aa_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_aa(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_aa_40
     
     function add_bb_1(a, b) result(c)
       implicit none
@@ -3451,6 +4640,7 @@ contains
         c(i) = add_bb(a(i), b)
       end do
     end function add_bb_10
+
     function add_bb_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -3487,6 +4677,98 @@ contains
         end do
       end do
     end function add_bb_20
+
+    function add_bb_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_bb(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_bb_3
+    function add_bb_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_bb(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_bb_03
+    function add_bb_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_bb(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_bb_30
+
+    function add_bb_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_bb(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_bb_4
+    function add_bb_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_bb(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_bb_04
+    function add_bb_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_bb(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_bb_40
     
     function add_qq_1(a, b) result(c)
       implicit none
@@ -3518,6 +4800,7 @@ contains
         c(i) = add_qq(a(i), b)
       end do
     end function add_qq_10
+
     function add_qq_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -3554,6 +4837,98 @@ contains
         end do
       end do
     end function add_qq_20
+
+    function add_qq_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_qq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_qq_3
+    function add_qq_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_qq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_qq_03
+    function add_qq_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_qq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_qq_30
+
+    function add_qq_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_qq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_qq_4
+    function add_qq_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_qq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_qq_04
+    function add_qq_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_qq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_qq_40
     
     function add_ab_1(a, b) result(c)
       implicit none
@@ -3585,6 +4960,7 @@ contains
         c(i) = add_ab(a(i), b)
       end do
     end function add_ab_10
+
     function add_ab_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -3621,6 +4997,98 @@ contains
         end do
       end do
     end function add_ab_20
+
+    function add_ab_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_ab(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_ab_3
+    function add_ab_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_ab(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_ab_03
+    function add_ab_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_ab(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_ab_30
+
+    function add_ab_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_ab(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_ab_4
+    function add_ab_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_ab(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_ab_04
+    function add_ab_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_ab(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_ab_40
     
     function add_ba_1(a, b) result(c)
       implicit none
@@ -3652,6 +5120,7 @@ contains
         c(i) = add_ba(a(i), b)
       end do
     end function add_ba_10
+
     function add_ba_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -3688,6 +5157,98 @@ contains
         end do
       end do
     end function add_ba_20
+
+    function add_ba_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_ba(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_ba_3
+    function add_ba_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_ba(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_ba_03
+    function add_ba_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_ba(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_ba_30
+
+    function add_ba_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_ba(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_ba_4
+    function add_ba_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_ba(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_ba_04
+    function add_ba_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_ba(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_ba_40
     
     function add_ai_1(a, b) result(c)
       implicit none
@@ -3719,6 +5280,7 @@ contains
         c(i) = add_ai(a(i), b)
       end do
     end function add_ai_10
+
     function add_ai_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -3755,6 +5317,98 @@ contains
         end do
       end do
     end function add_ai_20
+
+    function add_ai_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_ai(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_ai_3
+    function add_ai_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      integer, dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_ai(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_ai_03
+    function add_ai_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_ai(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_ai_30
+
+    function add_ai_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_ai(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_ai_4
+    function add_ai_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      integer, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_ai(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_ai_04
+    function add_ai_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_ai(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_ai_40
     
     function add_bi_1(a, b) result(c)
       implicit none
@@ -3786,6 +5440,7 @@ contains
         c(i) = add_bi(a(i), b)
       end do
     end function add_bi_10
+
     function add_bi_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -3822,6 +5477,98 @@ contains
         end do
       end do
     end function add_bi_20
+
+    function add_bi_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_bi(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_bi_3
+    function add_bi_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      integer, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_bi(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_bi_03
+    function add_bi_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_bi(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_bi_30
+
+    function add_bi_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_bi(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_bi_4
+    function add_bi_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      integer, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_bi(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_bi_04
+    function add_bi_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_bi(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_bi_40
     
     function add_qi_1(a, b) result(c)
       implicit none
@@ -3853,6 +5600,7 @@ contains
         c(i) = add_qi(a(i), b)
       end do
     end function add_qi_10
+
     function add_qi_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -3889,6 +5637,98 @@ contains
         end do
       end do
     end function add_qi_20
+
+    function add_qi_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_qi(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_qi_3
+    function add_qi_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      integer, dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_qi(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_qi_03
+    function add_qi_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_qi(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_qi_30
+
+    function add_qi_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_qi(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_qi_4
+    function add_qi_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      integer, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_qi(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_qi_04
+    function add_qi_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_qi(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_qi_40
     
     function add_ia_1(a, b) result(c)
       implicit none
@@ -3920,6 +5760,7 @@ contains
         c(i) = add_ia(a(i), b)
       end do
     end function add_ia_10
+
     function add_ia_2(a, b) result(c)
       implicit none
       integer, dimension(:,:), intent(in) :: a
@@ -3956,6 +5797,98 @@ contains
         end do
       end do
     end function add_ia_20
+
+    function add_ia_3(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_ia(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_ia_3
+    function add_ia_03(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_ia(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_ia_03
+    function add_ia_30(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_ia(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_ia_30
+
+    function add_ia_4(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_ia(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_ia_4
+    function add_ia_04(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_ia(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_ia_04
+    function add_ia_40(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_ia(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_ia_40
     
     function add_ib_1(a, b) result(c)
       implicit none
@@ -3987,6 +5920,7 @@ contains
         c(i) = add_ib(a(i), b)
       end do
     end function add_ib_10
+
     function add_ib_2(a, b) result(c)
       implicit none
       integer, dimension(:,:), intent(in) :: a
@@ -4023,6 +5957,98 @@ contains
         end do
       end do
     end function add_ib_20
+
+    function add_ib_3(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_ib(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_ib_3
+    function add_ib_03(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_ib(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_ib_03
+    function add_ib_30(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_ib(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_ib_30
+
+    function add_ib_4(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_ib(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_ib_4
+    function add_ib_04(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_ib(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_ib_04
+    function add_ib_40(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_ib(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_ib_40
     
     function add_iq_1(a, b) result(c)
       implicit none
@@ -4054,6 +6080,7 @@ contains
         c(i) = add_iq(a(i), b)
       end do
     end function add_iq_10
+
     function add_iq_2(a, b) result(c)
       implicit none
       integer, dimension(:,:), intent(in) :: a
@@ -4090,6 +6117,98 @@ contains
         end do
       end do
     end function add_iq_20
+
+    function add_iq_3(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_iq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_iq_3
+    function add_iq_03(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_iq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_iq_03
+    function add_iq_30(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_iq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_iq_30
+
+    function add_iq_4(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_iq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_iq_4
+    function add_iq_04(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_iq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_iq_04
+    function add_iq_40(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_iq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_iq_40
     
     function add_ad_1(a, b) result(c)
       implicit none
@@ -4121,6 +6240,7 @@ contains
         c(i) = add_ad(a(i), b)
       end do
     end function add_ad_10
+
     function add_ad_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -4157,6 +6277,98 @@ contains
         end do
       end do
     end function add_ad_20
+
+    function add_ad_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_ad(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_ad_3
+    function add_ad_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double precision, dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_ad(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_ad_03
+    function add_ad_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_ad(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_ad_30
+
+    function add_ad_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_ad(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_ad_4
+    function add_ad_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double precision, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_ad(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_ad_04
+    function add_ad_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_ad(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_ad_40
     
     function add_bd_1(a, b) result(c)
       implicit none
@@ -4188,6 +6400,7 @@ contains
         c(i) = add_bd(a(i), b)
       end do
     end function add_bd_10
+
     function add_bd_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -4224,6 +6437,98 @@ contains
         end do
       end do
     end function add_bd_20
+
+    function add_bd_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_bd(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_bd_3
+    function add_bd_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double precision, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_bd(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_bd_03
+    function add_bd_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_bd(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_bd_30
+
+    function add_bd_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_bd(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_bd_4
+    function add_bd_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double precision, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_bd(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_bd_04
+    function add_bd_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_bd(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_bd_40
     
     function add_qd_1(a, b) result(c)
       implicit none
@@ -4255,6 +6560,7 @@ contains
         c(i) = add_qd(a(i), b)
       end do
     end function add_qd_10
+
     function add_qd_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -4291,6 +6597,98 @@ contains
         end do
       end do
     end function add_qd_20
+
+    function add_qd_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_qd(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_qd_3
+    function add_qd_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double precision, dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_qd(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_qd_03
+    function add_qd_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_qd(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_qd_30
+
+    function add_qd_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_qd(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_qd_4
+    function add_qd_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double precision, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_qd(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_qd_04
+    function add_qd_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_qd(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_qd_40
     
     function add_da_1(a, b) result(c)
       implicit none
@@ -4322,6 +6720,7 @@ contains
         c(i) = add_da(a(i), b)
       end do
     end function add_da_10
+
     function add_da_2(a, b) result(c)
       implicit none
       double precision, dimension(:,:), intent(in) :: a
@@ -4358,6 +6757,98 @@ contains
         end do
       end do
     end function add_da_20
+
+    function add_da_3(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_da(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_da_3
+    function add_da_03(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_da(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_da_03
+    function add_da_30(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_da(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_da_30
+
+    function add_da_4(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_da(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_da_4
+    function add_da_04(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_da(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_da_04
+    function add_da_40(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_da(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_da_40
     
     function add_db_1(a, b) result(c)
       implicit none
@@ -4389,6 +6880,7 @@ contains
         c(i) = add_db(a(i), b)
       end do
     end function add_db_10
+
     function add_db_2(a, b) result(c)
       implicit none
       double precision, dimension(:,:), intent(in) :: a
@@ -4425,6 +6917,98 @@ contains
         end do
       end do
     end function add_db_20
+
+    function add_db_3(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_db(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_db_3
+    function add_db_03(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_db(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_db_03
+    function add_db_30(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_db(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_db_30
+
+    function add_db_4(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_db(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_db_4
+    function add_db_04(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_db(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_db_04
+    function add_db_40(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_db(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_db_40
     
     function add_dq_1(a, b) result(c)
       implicit none
@@ -4456,6 +7040,7 @@ contains
         c(i) = add_dq(a(i), b)
       end do
     end function add_dq_10
+
     function add_dq_2(a, b) result(c)
       implicit none
       double precision, dimension(:,:), intent(in) :: a
@@ -4492,6 +7077,98 @@ contains
         end do
       end do
     end function add_dq_20
+
+    function add_dq_3(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_dq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_dq_3
+    function add_dq_03(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_dq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_dq_03
+    function add_dq_30(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_dq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_dq_30
+
+    function add_dq_4(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_dq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_dq_4
+    function add_dq_04(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_dq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_dq_04
+    function add_dq_40(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_dq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_dq_40
     
     function add_az_1(a, b) result(c)
       implicit none
@@ -4523,6 +7200,7 @@ contains
         c(i) = add_az(a(i), b)
       end do
     end function add_az_10
+
     function add_az_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -4559,6 +7237,98 @@ contains
         end do
       end do
     end function add_az_20
+
+    function add_az_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_az(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_az_3
+    function add_az_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double complex, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_az(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_az_03
+    function add_az_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_az(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_az_30
+
+    function add_az_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_az(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_az_4
+    function add_az_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double complex, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_az(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_az_04
+    function add_az_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_az(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_az_40
     
     function add_bz_1(a, b) result(c)
       implicit none
@@ -4590,6 +7360,7 @@ contains
         c(i) = add_bz(a(i), b)
       end do
     end function add_bz_10
+
     function add_bz_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -4626,6 +7397,98 @@ contains
         end do
       end do
     end function add_bz_20
+
+    function add_bz_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_bz(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_bz_3
+    function add_bz_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double complex, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_bz(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_bz_03
+    function add_bz_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_bz(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_bz_30
+
+    function add_bz_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_bz(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_bz_4
+    function add_bz_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double complex, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_bz(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_bz_04
+    function add_bz_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_bz(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_bz_40
     
     function add_qz_1(a, b) result(c)
       implicit none
@@ -4657,6 +7520,7 @@ contains
         c(i) = add_qz(a(i), b)
       end do
     end function add_qz_10
+
     function add_qz_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -4693,6 +7557,98 @@ contains
         end do
       end do
     end function add_qz_20
+
+    function add_qz_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_qz(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_qz_3
+    function add_qz_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double complex, dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_qz(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_qz_03
+    function add_qz_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_qz(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_qz_30
+
+    function add_qz_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_qz(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_qz_4
+    function add_qz_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double complex, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_qz(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_qz_04
+    function add_qz_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_qz(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_qz_40
     
     function add_za_1(a, b) result(c)
       implicit none
@@ -4724,6 +7680,7 @@ contains
         c(i) = add_za(a(i), b)
       end do
     end function add_za_10
+
     function add_za_2(a, b) result(c)
       implicit none
       double complex, dimension(:,:), intent(in) :: a
@@ -4760,6 +7717,98 @@ contains
         end do
       end do
     end function add_za_20
+
+    function add_za_3(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_za(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_za_3
+    function add_za_03(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_za(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_za_03
+    function add_za_30(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_za(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_za_30
+
+    function add_za_4(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_za(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_za_4
+    function add_za_04(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_za(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_za_04
+    function add_za_40(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_za(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_za_40
     
     function add_zb_1(a, b) result(c)
       implicit none
@@ -4791,6 +7840,7 @@ contains
         c(i) = add_zb(a(i), b)
       end do
     end function add_zb_10
+
     function add_zb_2(a, b) result(c)
       implicit none
       double complex, dimension(:,:), intent(in) :: a
@@ -4827,6 +7877,98 @@ contains
         end do
       end do
     end function add_zb_20
+
+    function add_zb_3(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_zb(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_zb_3
+    function add_zb_03(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_zb(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_zb_03
+    function add_zb_30(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_zb(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_zb_30
+
+    function add_zb_4(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_zb(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_zb_4
+    function add_zb_04(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_zb(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_zb_04
+    function add_zb_40(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_zb(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_zb_40
     
     function add_zq_1(a, b) result(c)
       implicit none
@@ -4858,6 +8000,7 @@ contains
         c(i) = add_zq(a(i), b)
       end do
     end function add_zq_10
+
     function add_zq_2(a, b) result(c)
       implicit none
       double complex, dimension(:,:), intent(in) :: a
@@ -4894,6 +8037,98 @@ contains
         end do
       end do
     end function add_zq_20
+
+    function add_zq_3(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_zq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_zq_3
+    function add_zq_03(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = add_zq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function add_zq_03
+    function add_zq_30(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = add_zq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function add_zq_30
+
+    function add_zq_4(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_zq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_zq_4
+    function add_zq_04(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = add_zq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function add_zq_04
+    function add_zq_40(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = add_zq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function add_zq_40
     
   
     function sub_aa_1(a, b) result(c)
@@ -4926,6 +8161,7 @@ contains
         c(i) = sub_aa(a(i), b)
       end do
     end function sub_aa_10
+
     function sub_aa_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -4962,6 +8198,98 @@ contains
         end do
       end do
     end function sub_aa_20
+
+    function sub_aa_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_aa(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_aa_3
+    function sub_aa_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_aa(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_aa_03
+    function sub_aa_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_aa(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_aa_30
+
+    function sub_aa_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_aa(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_aa_4
+    function sub_aa_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_aa(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_aa_04
+    function sub_aa_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_aa(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_aa_40
     
     function sub_bb_1(a, b) result(c)
       implicit none
@@ -4993,6 +8321,7 @@ contains
         c(i) = sub_bb(a(i), b)
       end do
     end function sub_bb_10
+
     function sub_bb_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -5029,6 +8358,98 @@ contains
         end do
       end do
     end function sub_bb_20
+
+    function sub_bb_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_bb(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_bb_3
+    function sub_bb_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_bb(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_bb_03
+    function sub_bb_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_bb(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_bb_30
+
+    function sub_bb_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_bb(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_bb_4
+    function sub_bb_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_bb(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_bb_04
+    function sub_bb_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_bb(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_bb_40
     
     function sub_qq_1(a, b) result(c)
       implicit none
@@ -5060,6 +8481,7 @@ contains
         c(i) = sub_qq(a(i), b)
       end do
     end function sub_qq_10
+
     function sub_qq_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -5096,6 +8518,98 @@ contains
         end do
       end do
     end function sub_qq_20
+
+    function sub_qq_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_qq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_qq_3
+    function sub_qq_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_qq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_qq_03
+    function sub_qq_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_qq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_qq_30
+
+    function sub_qq_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_qq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_qq_4
+    function sub_qq_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_qq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_qq_04
+    function sub_qq_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_qq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_qq_40
     
     function sub_ab_1(a, b) result(c)
       implicit none
@@ -5127,6 +8641,7 @@ contains
         c(i) = sub_ab(a(i), b)
       end do
     end function sub_ab_10
+
     function sub_ab_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -5163,6 +8678,98 @@ contains
         end do
       end do
     end function sub_ab_20
+
+    function sub_ab_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_ab(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_ab_3
+    function sub_ab_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_ab(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_ab_03
+    function sub_ab_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_ab(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_ab_30
+
+    function sub_ab_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_ab(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_ab_4
+    function sub_ab_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_ab(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_ab_04
+    function sub_ab_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_ab(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_ab_40
     
     function sub_ba_1(a, b) result(c)
       implicit none
@@ -5194,6 +8801,7 @@ contains
         c(i) = sub_ba(a(i), b)
       end do
     end function sub_ba_10
+
     function sub_ba_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -5230,6 +8838,98 @@ contains
         end do
       end do
     end function sub_ba_20
+
+    function sub_ba_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_ba(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_ba_3
+    function sub_ba_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_ba(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_ba_03
+    function sub_ba_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_ba(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_ba_30
+
+    function sub_ba_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_ba(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_ba_4
+    function sub_ba_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_ba(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_ba_04
+    function sub_ba_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_ba(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_ba_40
     
     function sub_ai_1(a, b) result(c)
       implicit none
@@ -5261,6 +8961,7 @@ contains
         c(i) = sub_ai(a(i), b)
       end do
     end function sub_ai_10
+
     function sub_ai_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -5297,6 +8998,98 @@ contains
         end do
       end do
     end function sub_ai_20
+
+    function sub_ai_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_ai(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_ai_3
+    function sub_ai_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      integer, dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_ai(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_ai_03
+    function sub_ai_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_ai(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_ai_30
+
+    function sub_ai_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_ai(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_ai_4
+    function sub_ai_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      integer, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_ai(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_ai_04
+    function sub_ai_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_ai(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_ai_40
     
     function sub_bi_1(a, b) result(c)
       implicit none
@@ -5328,6 +9121,7 @@ contains
         c(i) = sub_bi(a(i), b)
       end do
     end function sub_bi_10
+
     function sub_bi_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -5364,6 +9158,98 @@ contains
         end do
       end do
     end function sub_bi_20
+
+    function sub_bi_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_bi(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_bi_3
+    function sub_bi_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      integer, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_bi(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_bi_03
+    function sub_bi_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_bi(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_bi_30
+
+    function sub_bi_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_bi(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_bi_4
+    function sub_bi_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      integer, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_bi(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_bi_04
+    function sub_bi_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_bi(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_bi_40
     
     function sub_qi_1(a, b) result(c)
       implicit none
@@ -5395,6 +9281,7 @@ contains
         c(i) = sub_qi(a(i), b)
       end do
     end function sub_qi_10
+
     function sub_qi_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -5431,6 +9318,98 @@ contains
         end do
       end do
     end function sub_qi_20
+
+    function sub_qi_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_qi(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_qi_3
+    function sub_qi_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      integer, dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_qi(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_qi_03
+    function sub_qi_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_qi(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_qi_30
+
+    function sub_qi_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_qi(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_qi_4
+    function sub_qi_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      integer, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_qi(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_qi_04
+    function sub_qi_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_qi(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_qi_40
     
     function sub_ia_1(a, b) result(c)
       implicit none
@@ -5462,6 +9441,7 @@ contains
         c(i) = sub_ia(a(i), b)
       end do
     end function sub_ia_10
+
     function sub_ia_2(a, b) result(c)
       implicit none
       integer, dimension(:,:), intent(in) :: a
@@ -5498,6 +9478,98 @@ contains
         end do
       end do
     end function sub_ia_20
+
+    function sub_ia_3(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_ia(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_ia_3
+    function sub_ia_03(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_ia(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_ia_03
+    function sub_ia_30(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_ia(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_ia_30
+
+    function sub_ia_4(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_ia(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_ia_4
+    function sub_ia_04(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_ia(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_ia_04
+    function sub_ia_40(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_ia(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_ia_40
     
     function sub_ib_1(a, b) result(c)
       implicit none
@@ -5529,6 +9601,7 @@ contains
         c(i) = sub_ib(a(i), b)
       end do
     end function sub_ib_10
+
     function sub_ib_2(a, b) result(c)
       implicit none
       integer, dimension(:,:), intent(in) :: a
@@ -5565,6 +9638,98 @@ contains
         end do
       end do
     end function sub_ib_20
+
+    function sub_ib_3(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_ib(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_ib_3
+    function sub_ib_03(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_ib(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_ib_03
+    function sub_ib_30(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_ib(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_ib_30
+
+    function sub_ib_4(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_ib(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_ib_4
+    function sub_ib_04(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_ib(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_ib_04
+    function sub_ib_40(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_ib(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_ib_40
     
     function sub_iq_1(a, b) result(c)
       implicit none
@@ -5596,6 +9761,7 @@ contains
         c(i) = sub_iq(a(i), b)
       end do
     end function sub_iq_10
+
     function sub_iq_2(a, b) result(c)
       implicit none
       integer, dimension(:,:), intent(in) :: a
@@ -5632,6 +9798,98 @@ contains
         end do
       end do
     end function sub_iq_20
+
+    function sub_iq_3(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_iq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_iq_3
+    function sub_iq_03(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_iq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_iq_03
+    function sub_iq_30(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_iq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_iq_30
+
+    function sub_iq_4(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_iq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_iq_4
+    function sub_iq_04(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_iq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_iq_04
+    function sub_iq_40(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_iq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_iq_40
     
     function sub_ad_1(a, b) result(c)
       implicit none
@@ -5663,6 +9921,7 @@ contains
         c(i) = sub_ad(a(i), b)
       end do
     end function sub_ad_10
+
     function sub_ad_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -5699,6 +9958,98 @@ contains
         end do
       end do
     end function sub_ad_20
+
+    function sub_ad_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_ad(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_ad_3
+    function sub_ad_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double precision, dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_ad(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_ad_03
+    function sub_ad_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_ad(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_ad_30
+
+    function sub_ad_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_ad(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_ad_4
+    function sub_ad_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double precision, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_ad(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_ad_04
+    function sub_ad_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_ad(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_ad_40
     
     function sub_bd_1(a, b) result(c)
       implicit none
@@ -5730,6 +10081,7 @@ contains
         c(i) = sub_bd(a(i), b)
       end do
     end function sub_bd_10
+
     function sub_bd_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -5766,6 +10118,98 @@ contains
         end do
       end do
     end function sub_bd_20
+
+    function sub_bd_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_bd(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_bd_3
+    function sub_bd_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double precision, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_bd(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_bd_03
+    function sub_bd_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_bd(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_bd_30
+
+    function sub_bd_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_bd(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_bd_4
+    function sub_bd_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double precision, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_bd(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_bd_04
+    function sub_bd_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_bd(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_bd_40
     
     function sub_qd_1(a, b) result(c)
       implicit none
@@ -5797,6 +10241,7 @@ contains
         c(i) = sub_qd(a(i), b)
       end do
     end function sub_qd_10
+
     function sub_qd_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -5833,6 +10278,98 @@ contains
         end do
       end do
     end function sub_qd_20
+
+    function sub_qd_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_qd(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_qd_3
+    function sub_qd_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double precision, dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_qd(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_qd_03
+    function sub_qd_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_qd(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_qd_30
+
+    function sub_qd_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_qd(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_qd_4
+    function sub_qd_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double precision, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_qd(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_qd_04
+    function sub_qd_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_qd(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_qd_40
     
     function sub_da_1(a, b) result(c)
       implicit none
@@ -5864,6 +10401,7 @@ contains
         c(i) = sub_da(a(i), b)
       end do
     end function sub_da_10
+
     function sub_da_2(a, b) result(c)
       implicit none
       double precision, dimension(:,:), intent(in) :: a
@@ -5900,6 +10438,98 @@ contains
         end do
       end do
     end function sub_da_20
+
+    function sub_da_3(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_da(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_da_3
+    function sub_da_03(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_da(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_da_03
+    function sub_da_30(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_da(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_da_30
+
+    function sub_da_4(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_da(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_da_4
+    function sub_da_04(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_da(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_da_04
+    function sub_da_40(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_da(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_da_40
     
     function sub_db_1(a, b) result(c)
       implicit none
@@ -5931,6 +10561,7 @@ contains
         c(i) = sub_db(a(i), b)
       end do
     end function sub_db_10
+
     function sub_db_2(a, b) result(c)
       implicit none
       double precision, dimension(:,:), intent(in) :: a
@@ -5967,6 +10598,98 @@ contains
         end do
       end do
     end function sub_db_20
+
+    function sub_db_3(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_db(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_db_3
+    function sub_db_03(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_db(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_db_03
+    function sub_db_30(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_db(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_db_30
+
+    function sub_db_4(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_db(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_db_4
+    function sub_db_04(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_db(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_db_04
+    function sub_db_40(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_db(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_db_40
     
     function sub_dq_1(a, b) result(c)
       implicit none
@@ -5998,6 +10721,7 @@ contains
         c(i) = sub_dq(a(i), b)
       end do
     end function sub_dq_10
+
     function sub_dq_2(a, b) result(c)
       implicit none
       double precision, dimension(:,:), intent(in) :: a
@@ -6034,6 +10758,98 @@ contains
         end do
       end do
     end function sub_dq_20
+
+    function sub_dq_3(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_dq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_dq_3
+    function sub_dq_03(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_dq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_dq_03
+    function sub_dq_30(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_dq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_dq_30
+
+    function sub_dq_4(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_dq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_dq_4
+    function sub_dq_04(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_dq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_dq_04
+    function sub_dq_40(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_dq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_dq_40
     
     function sub_az_1(a, b) result(c)
       implicit none
@@ -6065,6 +10881,7 @@ contains
         c(i) = sub_az(a(i), b)
       end do
     end function sub_az_10
+
     function sub_az_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -6101,6 +10918,98 @@ contains
         end do
       end do
     end function sub_az_20
+
+    function sub_az_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_az(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_az_3
+    function sub_az_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double complex, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_az(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_az_03
+    function sub_az_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_az(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_az_30
+
+    function sub_az_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_az(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_az_4
+    function sub_az_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double complex, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_az(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_az_04
+    function sub_az_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_az(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_az_40
     
     function sub_bz_1(a, b) result(c)
       implicit none
@@ -6132,6 +11041,7 @@ contains
         c(i) = sub_bz(a(i), b)
       end do
     end function sub_bz_10
+
     function sub_bz_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -6168,6 +11078,98 @@ contains
         end do
       end do
     end function sub_bz_20
+
+    function sub_bz_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_bz(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_bz_3
+    function sub_bz_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double complex, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_bz(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_bz_03
+    function sub_bz_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_bz(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_bz_30
+
+    function sub_bz_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_bz(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_bz_4
+    function sub_bz_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double complex, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_bz(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_bz_04
+    function sub_bz_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_bz(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_bz_40
     
     function sub_qz_1(a, b) result(c)
       implicit none
@@ -6199,6 +11201,7 @@ contains
         c(i) = sub_qz(a(i), b)
       end do
     end function sub_qz_10
+
     function sub_qz_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -6235,6 +11238,98 @@ contains
         end do
       end do
     end function sub_qz_20
+
+    function sub_qz_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_qz(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_qz_3
+    function sub_qz_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double complex, dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_qz(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_qz_03
+    function sub_qz_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_qz(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_qz_30
+
+    function sub_qz_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_qz(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_qz_4
+    function sub_qz_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double complex, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_qz(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_qz_04
+    function sub_qz_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_qz(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_qz_40
     
     function sub_za_1(a, b) result(c)
       implicit none
@@ -6266,6 +11361,7 @@ contains
         c(i) = sub_za(a(i), b)
       end do
     end function sub_za_10
+
     function sub_za_2(a, b) result(c)
       implicit none
       double complex, dimension(:,:), intent(in) :: a
@@ -6302,6 +11398,98 @@ contains
         end do
       end do
     end function sub_za_20
+
+    function sub_za_3(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_za(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_za_3
+    function sub_za_03(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_za(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_za_03
+    function sub_za_30(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_za(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_za_30
+
+    function sub_za_4(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_za(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_za_4
+    function sub_za_04(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_za(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_za_04
+    function sub_za_40(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_za(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_za_40
     
     function sub_zb_1(a, b) result(c)
       implicit none
@@ -6333,6 +11521,7 @@ contains
         c(i) = sub_zb(a(i), b)
       end do
     end function sub_zb_10
+
     function sub_zb_2(a, b) result(c)
       implicit none
       double complex, dimension(:,:), intent(in) :: a
@@ -6369,6 +11558,98 @@ contains
         end do
       end do
     end function sub_zb_20
+
+    function sub_zb_3(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_zb(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_zb_3
+    function sub_zb_03(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_zb(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_zb_03
+    function sub_zb_30(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_zb(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_zb_30
+
+    function sub_zb_4(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_zb(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_zb_4
+    function sub_zb_04(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_zb(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_zb_04
+    function sub_zb_40(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_zb(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_zb_40
     
     function sub_zq_1(a, b) result(c)
       implicit none
@@ -6400,6 +11681,7 @@ contains
         c(i) = sub_zq(a(i), b)
       end do
     end function sub_zq_10
+
     function sub_zq_2(a, b) result(c)
       implicit none
       double complex, dimension(:,:), intent(in) :: a
@@ -6436,6 +11718,98 @@ contains
         end do
       end do
     end function sub_zq_20
+
+    function sub_zq_3(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_zq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_zq_3
+    function sub_zq_03(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = sub_zq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function sub_zq_03
+    function sub_zq_30(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sub_zq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function sub_zq_30
+
+    function sub_zq_4(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_zq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_zq_4
+    function sub_zq_04(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = sub_zq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sub_zq_04
+    function sub_zq_40(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sub_zq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function sub_zq_40
     
   
     function mul_aa_1(a, b) result(c)
@@ -6468,6 +11842,7 @@ contains
         c(i) = mul_aa(a(i), b)
       end do
     end function mul_aa_10
+
     function mul_aa_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -6504,6 +11879,98 @@ contains
         end do
       end do
     end function mul_aa_20
+
+    function mul_aa_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_aa(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_aa_3
+    function mul_aa_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_aa(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_aa_03
+    function mul_aa_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_aa(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_aa_30
+
+    function mul_aa_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_aa(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_aa_4
+    function mul_aa_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_aa(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_aa_04
+    function mul_aa_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_aa(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_aa_40
     
     function mul_bb_1(a, b) result(c)
       implicit none
@@ -6535,6 +12002,7 @@ contains
         c(i) = mul_bb(a(i), b)
       end do
     end function mul_bb_10
+
     function mul_bb_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -6571,6 +12039,98 @@ contains
         end do
       end do
     end function mul_bb_20
+
+    function mul_bb_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_bb(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_bb_3
+    function mul_bb_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_bb(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_bb_03
+    function mul_bb_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_bb(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_bb_30
+
+    function mul_bb_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_bb(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_bb_4
+    function mul_bb_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_bb(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_bb_04
+    function mul_bb_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_bb(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_bb_40
     
     function mul_qq_1(a, b) result(c)
       implicit none
@@ -6602,6 +12162,7 @@ contains
         c(i) = mul_qq(a(i), b)
       end do
     end function mul_qq_10
+
     function mul_qq_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -6638,6 +12199,98 @@ contains
         end do
       end do
     end function mul_qq_20
+
+    function mul_qq_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_qq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_qq_3
+    function mul_qq_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_qq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_qq_03
+    function mul_qq_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_qq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_qq_30
+
+    function mul_qq_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_qq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_qq_4
+    function mul_qq_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_qq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_qq_04
+    function mul_qq_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_qq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_qq_40
     
     function mul_ab_1(a, b) result(c)
       implicit none
@@ -6669,6 +12322,7 @@ contains
         c(i) = mul_ab(a(i), b)
       end do
     end function mul_ab_10
+
     function mul_ab_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -6705,6 +12359,98 @@ contains
         end do
       end do
     end function mul_ab_20
+
+    function mul_ab_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_ab(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_ab_3
+    function mul_ab_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_ab(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_ab_03
+    function mul_ab_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_ab(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_ab_30
+
+    function mul_ab_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_ab(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_ab_4
+    function mul_ab_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_ab(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_ab_04
+    function mul_ab_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_ab(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_ab_40
     
     function mul_ba_1(a, b) result(c)
       implicit none
@@ -6736,6 +12482,7 @@ contains
         c(i) = mul_ba(a(i), b)
       end do
     end function mul_ba_10
+
     function mul_ba_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -6772,6 +12519,98 @@ contains
         end do
       end do
     end function mul_ba_20
+
+    function mul_ba_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_ba(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_ba_3
+    function mul_ba_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_ba(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_ba_03
+    function mul_ba_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_ba(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_ba_30
+
+    function mul_ba_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_ba(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_ba_4
+    function mul_ba_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_ba(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_ba_04
+    function mul_ba_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_ba(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_ba_40
     
     function mul_ai_1(a, b) result(c)
       implicit none
@@ -6803,6 +12642,7 @@ contains
         c(i) = mul_ai(a(i), b)
       end do
     end function mul_ai_10
+
     function mul_ai_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -6839,6 +12679,98 @@ contains
         end do
       end do
     end function mul_ai_20
+
+    function mul_ai_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_ai(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_ai_3
+    function mul_ai_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      integer, dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_ai(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_ai_03
+    function mul_ai_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_ai(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_ai_30
+
+    function mul_ai_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_ai(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_ai_4
+    function mul_ai_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      integer, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_ai(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_ai_04
+    function mul_ai_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_ai(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_ai_40
     
     function mul_bi_1(a, b) result(c)
       implicit none
@@ -6870,6 +12802,7 @@ contains
         c(i) = mul_bi(a(i), b)
       end do
     end function mul_bi_10
+
     function mul_bi_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -6906,6 +12839,98 @@ contains
         end do
       end do
     end function mul_bi_20
+
+    function mul_bi_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_bi(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_bi_3
+    function mul_bi_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      integer, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_bi(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_bi_03
+    function mul_bi_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_bi(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_bi_30
+
+    function mul_bi_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_bi(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_bi_4
+    function mul_bi_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      integer, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_bi(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_bi_04
+    function mul_bi_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_bi(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_bi_40
     
     function mul_qi_1(a, b) result(c)
       implicit none
@@ -6937,6 +12962,7 @@ contains
         c(i) = mul_qi(a(i), b)
       end do
     end function mul_qi_10
+
     function mul_qi_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -6973,6 +12999,98 @@ contains
         end do
       end do
     end function mul_qi_20
+
+    function mul_qi_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_qi(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_qi_3
+    function mul_qi_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      integer, dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_qi(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_qi_03
+    function mul_qi_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_qi(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_qi_30
+
+    function mul_qi_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_qi(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_qi_4
+    function mul_qi_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      integer, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_qi(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_qi_04
+    function mul_qi_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_qi(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_qi_40
     
     function mul_ia_1(a, b) result(c)
       implicit none
@@ -7004,6 +13122,7 @@ contains
         c(i) = mul_ia(a(i), b)
       end do
     end function mul_ia_10
+
     function mul_ia_2(a, b) result(c)
       implicit none
       integer, dimension(:,:), intent(in) :: a
@@ -7040,6 +13159,98 @@ contains
         end do
       end do
     end function mul_ia_20
+
+    function mul_ia_3(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_ia(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_ia_3
+    function mul_ia_03(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_ia(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_ia_03
+    function mul_ia_30(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_ia(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_ia_30
+
+    function mul_ia_4(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_ia(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_ia_4
+    function mul_ia_04(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_ia(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_ia_04
+    function mul_ia_40(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_ia(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_ia_40
     
     function mul_ib_1(a, b) result(c)
       implicit none
@@ -7071,6 +13282,7 @@ contains
         c(i) = mul_ib(a(i), b)
       end do
     end function mul_ib_10
+
     function mul_ib_2(a, b) result(c)
       implicit none
       integer, dimension(:,:), intent(in) :: a
@@ -7107,6 +13319,98 @@ contains
         end do
       end do
     end function mul_ib_20
+
+    function mul_ib_3(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_ib(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_ib_3
+    function mul_ib_03(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_ib(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_ib_03
+    function mul_ib_30(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_ib(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_ib_30
+
+    function mul_ib_4(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_ib(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_ib_4
+    function mul_ib_04(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_ib(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_ib_04
+    function mul_ib_40(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_ib(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_ib_40
     
     function mul_iq_1(a, b) result(c)
       implicit none
@@ -7138,6 +13442,7 @@ contains
         c(i) = mul_iq(a(i), b)
       end do
     end function mul_iq_10
+
     function mul_iq_2(a, b) result(c)
       implicit none
       integer, dimension(:,:), intent(in) :: a
@@ -7174,6 +13479,98 @@ contains
         end do
       end do
     end function mul_iq_20
+
+    function mul_iq_3(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_iq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_iq_3
+    function mul_iq_03(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_iq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_iq_03
+    function mul_iq_30(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_iq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_iq_30
+
+    function mul_iq_4(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_iq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_iq_4
+    function mul_iq_04(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_iq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_iq_04
+    function mul_iq_40(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_iq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_iq_40
     
     function mul_ad_1(a, b) result(c)
       implicit none
@@ -7205,6 +13602,7 @@ contains
         c(i) = mul_ad(a(i), b)
       end do
     end function mul_ad_10
+
     function mul_ad_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -7241,6 +13639,98 @@ contains
         end do
       end do
     end function mul_ad_20
+
+    function mul_ad_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_ad(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_ad_3
+    function mul_ad_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double precision, dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_ad(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_ad_03
+    function mul_ad_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_ad(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_ad_30
+
+    function mul_ad_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_ad(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_ad_4
+    function mul_ad_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double precision, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_ad(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_ad_04
+    function mul_ad_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_ad(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_ad_40
     
     function mul_bd_1(a, b) result(c)
       implicit none
@@ -7272,6 +13762,7 @@ contains
         c(i) = mul_bd(a(i), b)
       end do
     end function mul_bd_10
+
     function mul_bd_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -7308,6 +13799,98 @@ contains
         end do
       end do
     end function mul_bd_20
+
+    function mul_bd_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_bd(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_bd_3
+    function mul_bd_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double precision, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_bd(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_bd_03
+    function mul_bd_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_bd(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_bd_30
+
+    function mul_bd_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_bd(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_bd_4
+    function mul_bd_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double precision, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_bd(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_bd_04
+    function mul_bd_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_bd(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_bd_40
     
     function mul_qd_1(a, b) result(c)
       implicit none
@@ -7339,6 +13922,7 @@ contains
         c(i) = mul_qd(a(i), b)
       end do
     end function mul_qd_10
+
     function mul_qd_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -7375,6 +13959,98 @@ contains
         end do
       end do
     end function mul_qd_20
+
+    function mul_qd_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_qd(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_qd_3
+    function mul_qd_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double precision, dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_qd(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_qd_03
+    function mul_qd_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_qd(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_qd_30
+
+    function mul_qd_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_qd(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_qd_4
+    function mul_qd_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double precision, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_qd(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_qd_04
+    function mul_qd_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_qd(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_qd_40
     
     function mul_da_1(a, b) result(c)
       implicit none
@@ -7406,6 +14082,7 @@ contains
         c(i) = mul_da(a(i), b)
       end do
     end function mul_da_10
+
     function mul_da_2(a, b) result(c)
       implicit none
       double precision, dimension(:,:), intent(in) :: a
@@ -7442,6 +14119,98 @@ contains
         end do
       end do
     end function mul_da_20
+
+    function mul_da_3(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_da(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_da_3
+    function mul_da_03(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_da(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_da_03
+    function mul_da_30(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_da(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_da_30
+
+    function mul_da_4(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_da(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_da_4
+    function mul_da_04(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_da(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_da_04
+    function mul_da_40(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_da(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_da_40
     
     function mul_db_1(a, b) result(c)
       implicit none
@@ -7473,6 +14242,7 @@ contains
         c(i) = mul_db(a(i), b)
       end do
     end function mul_db_10
+
     function mul_db_2(a, b) result(c)
       implicit none
       double precision, dimension(:,:), intent(in) :: a
@@ -7509,6 +14279,98 @@ contains
         end do
       end do
     end function mul_db_20
+
+    function mul_db_3(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_db(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_db_3
+    function mul_db_03(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_db(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_db_03
+    function mul_db_30(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_db(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_db_30
+
+    function mul_db_4(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_db(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_db_4
+    function mul_db_04(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_db(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_db_04
+    function mul_db_40(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_db(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_db_40
     
     function mul_dq_1(a, b) result(c)
       implicit none
@@ -7540,6 +14402,7 @@ contains
         c(i) = mul_dq(a(i), b)
       end do
     end function mul_dq_10
+
     function mul_dq_2(a, b) result(c)
       implicit none
       double precision, dimension(:,:), intent(in) :: a
@@ -7576,6 +14439,98 @@ contains
         end do
       end do
     end function mul_dq_20
+
+    function mul_dq_3(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_dq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_dq_3
+    function mul_dq_03(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_dq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_dq_03
+    function mul_dq_30(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_dq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_dq_30
+
+    function mul_dq_4(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_dq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_dq_4
+    function mul_dq_04(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_dq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_dq_04
+    function mul_dq_40(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_dq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_dq_40
     
     function mul_az_1(a, b) result(c)
       implicit none
@@ -7607,6 +14562,7 @@ contains
         c(i) = mul_az(a(i), b)
       end do
     end function mul_az_10
+
     function mul_az_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -7643,6 +14599,98 @@ contains
         end do
       end do
     end function mul_az_20
+
+    function mul_az_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_az(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_az_3
+    function mul_az_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double complex, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_az(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_az_03
+    function mul_az_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_az(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_az_30
+
+    function mul_az_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_az(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_az_4
+    function mul_az_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double complex, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_az(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_az_04
+    function mul_az_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_az(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_az_40
     
     function mul_bz_1(a, b) result(c)
       implicit none
@@ -7674,6 +14722,7 @@ contains
         c(i) = mul_bz(a(i), b)
       end do
     end function mul_bz_10
+
     function mul_bz_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -7710,6 +14759,98 @@ contains
         end do
       end do
     end function mul_bz_20
+
+    function mul_bz_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_bz(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_bz_3
+    function mul_bz_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double complex, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_bz(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_bz_03
+    function mul_bz_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_bz(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_bz_30
+
+    function mul_bz_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_bz(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_bz_4
+    function mul_bz_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double complex, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_bz(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_bz_04
+    function mul_bz_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_bz(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_bz_40
     
     function mul_qz_1(a, b) result(c)
       implicit none
@@ -7741,6 +14882,7 @@ contains
         c(i) = mul_qz(a(i), b)
       end do
     end function mul_qz_10
+
     function mul_qz_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -7777,6 +14919,98 @@ contains
         end do
       end do
     end function mul_qz_20
+
+    function mul_qz_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_qz(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_qz_3
+    function mul_qz_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double complex, dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_qz(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_qz_03
+    function mul_qz_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_qz(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_qz_30
+
+    function mul_qz_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_qz(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_qz_4
+    function mul_qz_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double complex, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_qz(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_qz_04
+    function mul_qz_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_qz(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_qz_40
     
     function mul_za_1(a, b) result(c)
       implicit none
@@ -7808,6 +15042,7 @@ contains
         c(i) = mul_za(a(i), b)
       end do
     end function mul_za_10
+
     function mul_za_2(a, b) result(c)
       implicit none
       double complex, dimension(:,:), intent(in) :: a
@@ -7844,6 +15079,98 @@ contains
         end do
       end do
     end function mul_za_20
+
+    function mul_za_3(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_za(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_za_3
+    function mul_za_03(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_za(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_za_03
+    function mul_za_30(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_za(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_za_30
+
+    function mul_za_4(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_za(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_za_4
+    function mul_za_04(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_za(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_za_04
+    function mul_za_40(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_za(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_za_40
     
     function mul_zb_1(a, b) result(c)
       implicit none
@@ -7875,6 +15202,7 @@ contains
         c(i) = mul_zb(a(i), b)
       end do
     end function mul_zb_10
+
     function mul_zb_2(a, b) result(c)
       implicit none
       double complex, dimension(:,:), intent(in) :: a
@@ -7911,6 +15239,98 @@ contains
         end do
       end do
     end function mul_zb_20
+
+    function mul_zb_3(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_zb(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_zb_3
+    function mul_zb_03(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_zb(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_zb_03
+    function mul_zb_30(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_zb(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_zb_30
+
+    function mul_zb_4(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_zb(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_zb_4
+    function mul_zb_04(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_zb(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_zb_04
+    function mul_zb_40(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_zb(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_zb_40
     
     function mul_zq_1(a, b) result(c)
       implicit none
@@ -7942,6 +15362,7 @@ contains
         c(i) = mul_zq(a(i), b)
       end do
     end function mul_zq_10
+
     function mul_zq_2(a, b) result(c)
       implicit none
       double complex, dimension(:,:), intent(in) :: a
@@ -7978,6 +15399,98 @@ contains
         end do
       end do
     end function mul_zq_20
+
+    function mul_zq_3(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_zq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_zq_3
+    function mul_zq_03(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = mul_zq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function mul_zq_03
+    function mul_zq_30(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = mul_zq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function mul_zq_30
+
+    function mul_zq_4(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_zq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_zq_4
+    function mul_zq_04(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = mul_zq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function mul_zq_04
+    function mul_zq_40(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = mul_zq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function mul_zq_40
     
   
     function div_aa_1(a, b) result(c)
@@ -8010,6 +15523,7 @@ contains
         c(i) = div_aa(a(i), b)
       end do
     end function div_aa_10
+
     function div_aa_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -8046,6 +15560,98 @@ contains
         end do
       end do
     end function div_aa_20
+
+    function div_aa_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_aa(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_aa_3
+    function div_aa_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_aa(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_aa_03
+    function div_aa_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_aa(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_aa_30
+
+    function div_aa_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_aa(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_aa_4
+    function div_aa_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_aa(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_aa_04
+    function div_aa_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_aa(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_aa_40
     
     function div_bb_1(a, b) result(c)
       implicit none
@@ -8077,6 +15683,7 @@ contains
         c(i) = div_bb(a(i), b)
       end do
     end function div_bb_10
+
     function div_bb_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -8113,6 +15720,98 @@ contains
         end do
       end do
     end function div_bb_20
+
+    function div_bb_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_bb(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_bb_3
+    function div_bb_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_bb(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_bb_03
+    function div_bb_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_bb(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_bb_30
+
+    function div_bb_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_bb(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_bb_4
+    function div_bb_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_bb(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_bb_04
+    function div_bb_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_bb(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_bb_40
     
     function div_qq_1(a, b) result(c)
       implicit none
@@ -8144,6 +15843,7 @@ contains
         c(i) = div_qq(a(i), b)
       end do
     end function div_qq_10
+
     function div_qq_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -8180,6 +15880,98 @@ contains
         end do
       end do
     end function div_qq_20
+
+    function div_qq_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_qq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_qq_3
+    function div_qq_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_qq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_qq_03
+    function div_qq_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_qq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_qq_30
+
+    function div_qq_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_qq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_qq_4
+    function div_qq_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_qq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_qq_04
+    function div_qq_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_qq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_qq_40
     
     function div_ab_1(a, b) result(c)
       implicit none
@@ -8211,6 +16003,7 @@ contains
         c(i) = div_ab(a(i), b)
       end do
     end function div_ab_10
+
     function div_ab_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -8247,6 +16040,98 @@ contains
         end do
       end do
     end function div_ab_20
+
+    function div_ab_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_ab(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_ab_3
+    function div_ab_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_ab(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_ab_03
+    function div_ab_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_ab(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_ab_30
+
+    function div_ab_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_ab(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_ab_4
+    function div_ab_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_ab(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_ab_04
+    function div_ab_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_ab(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_ab_40
     
     function div_ba_1(a, b) result(c)
       implicit none
@@ -8278,6 +16163,7 @@ contains
         c(i) = div_ba(a(i), b)
       end do
     end function div_ba_10
+
     function div_ba_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -8314,6 +16200,98 @@ contains
         end do
       end do
     end function div_ba_20
+
+    function div_ba_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_ba(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_ba_3
+    function div_ba_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_ba(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_ba_03
+    function div_ba_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_ba(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_ba_30
+
+    function div_ba_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_ba(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_ba_4
+    function div_ba_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_ba(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_ba_04
+    function div_ba_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_ba(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_ba_40
     
     function div_ai_1(a, b) result(c)
       implicit none
@@ -8345,6 +16323,7 @@ contains
         c(i) = div_ai(a(i), b)
       end do
     end function div_ai_10
+
     function div_ai_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -8381,6 +16360,98 @@ contains
         end do
       end do
     end function div_ai_20
+
+    function div_ai_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_ai(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_ai_3
+    function div_ai_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      integer, dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_ai(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_ai_03
+    function div_ai_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_ai(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_ai_30
+
+    function div_ai_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_ai(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_ai_4
+    function div_ai_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      integer, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_ai(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_ai_04
+    function div_ai_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_ai(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_ai_40
     
     function div_bi_1(a, b) result(c)
       implicit none
@@ -8412,6 +16483,7 @@ contains
         c(i) = div_bi(a(i), b)
       end do
     end function div_bi_10
+
     function div_bi_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -8448,6 +16520,98 @@ contains
         end do
       end do
     end function div_bi_20
+
+    function div_bi_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_bi(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_bi_3
+    function div_bi_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      integer, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_bi(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_bi_03
+    function div_bi_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_bi(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_bi_30
+
+    function div_bi_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_bi(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_bi_4
+    function div_bi_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      integer, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_bi(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_bi_04
+    function div_bi_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_bi(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_bi_40
     
     function div_qi_1(a, b) result(c)
       implicit none
@@ -8479,6 +16643,7 @@ contains
         c(i) = div_qi(a(i), b)
       end do
     end function div_qi_10
+
     function div_qi_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -8515,6 +16680,98 @@ contains
         end do
       end do
     end function div_qi_20
+
+    function div_qi_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_qi(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_qi_3
+    function div_qi_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      integer, dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_qi(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_qi_03
+    function div_qi_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_qi(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_qi_30
+
+    function div_qi_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_qi(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_qi_4
+    function div_qi_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      integer, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_qi(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_qi_04
+    function div_qi_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_qi(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_qi_40
     
     function div_ia_1(a, b) result(c)
       implicit none
@@ -8546,6 +16803,7 @@ contains
         c(i) = div_ia(a(i), b)
       end do
     end function div_ia_10
+
     function div_ia_2(a, b) result(c)
       implicit none
       integer, dimension(:,:), intent(in) :: a
@@ -8582,6 +16840,98 @@ contains
         end do
       end do
     end function div_ia_20
+
+    function div_ia_3(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_ia(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_ia_3
+    function div_ia_03(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_ia(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_ia_03
+    function div_ia_30(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_ia(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_ia_30
+
+    function div_ia_4(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_ia(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_ia_4
+    function div_ia_04(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_ia(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_ia_04
+    function div_ia_40(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_ia(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_ia_40
     
     function div_ib_1(a, b) result(c)
       implicit none
@@ -8613,6 +16963,7 @@ contains
         c(i) = div_ib(a(i), b)
       end do
     end function div_ib_10
+
     function div_ib_2(a, b) result(c)
       implicit none
       integer, dimension(:,:), intent(in) :: a
@@ -8649,6 +17000,98 @@ contains
         end do
       end do
     end function div_ib_20
+
+    function div_ib_3(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_ib(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_ib_3
+    function div_ib_03(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_ib(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_ib_03
+    function div_ib_30(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_ib(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_ib_30
+
+    function div_ib_4(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_ib(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_ib_4
+    function div_ib_04(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_ib(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_ib_04
+    function div_ib_40(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_ib(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_ib_40
     
     function div_iq_1(a, b) result(c)
       implicit none
@@ -8680,6 +17123,7 @@ contains
         c(i) = div_iq(a(i), b)
       end do
     end function div_iq_10
+
     function div_iq_2(a, b) result(c)
       implicit none
       integer, dimension(:,:), intent(in) :: a
@@ -8716,6 +17160,98 @@ contains
         end do
       end do
     end function div_iq_20
+
+    function div_iq_3(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_iq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_iq_3
+    function div_iq_03(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_iq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_iq_03
+    function div_iq_30(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_iq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_iq_30
+
+    function div_iq_4(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_iq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_iq_4
+    function div_iq_04(a, b) result(c)
+      implicit none
+      integer, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_iq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_iq_04
+    function div_iq_40(a, b) result(c)
+      implicit none
+      integer, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_iq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_iq_40
     
     function div_ad_1(a, b) result(c)
       implicit none
@@ -8747,6 +17283,7 @@ contains
         c(i) = div_ad(a(i), b)
       end do
     end function div_ad_10
+
     function div_ad_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -8783,6 +17320,98 @@ contains
         end do
       end do
     end function div_ad_20
+
+    function div_ad_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_ad(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_ad_3
+    function div_ad_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double precision, dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_ad(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_ad_03
+    function div_ad_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_ad(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_ad_30
+
+    function div_ad_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_ad(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_ad_4
+    function div_ad_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double precision, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_ad(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_ad_04
+    function div_ad_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_ad(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_ad_40
     
     function div_bd_1(a, b) result(c)
       implicit none
@@ -8814,6 +17443,7 @@ contains
         c(i) = div_bd(a(i), b)
       end do
     end function div_bd_10
+
     function div_bd_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -8850,6 +17480,98 @@ contains
         end do
       end do
     end function div_bd_20
+
+    function div_bd_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_bd(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_bd_3
+    function div_bd_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double precision, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_bd(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_bd_03
+    function div_bd_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_bd(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_bd_30
+
+    function div_bd_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_bd(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_bd_4
+    function div_bd_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double precision, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_bd(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_bd_04
+    function div_bd_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_bd(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_bd_40
     
     function div_qd_1(a, b) result(c)
       implicit none
@@ -8881,6 +17603,7 @@ contains
         c(i) = div_qd(a(i), b)
       end do
     end function div_qd_10
+
     function div_qd_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -8917,6 +17640,98 @@ contains
         end do
       end do
     end function div_qd_20
+
+    function div_qd_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_qd(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_qd_3
+    function div_qd_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double precision, dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_qd(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_qd_03
+    function div_qd_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_qd(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_qd_30
+
+    function div_qd_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_qd(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_qd_4
+    function div_qd_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double precision, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_qd(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_qd_04
+    function div_qd_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_qd(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_qd_40
     
     function div_da_1(a, b) result(c)
       implicit none
@@ -8948,6 +17763,7 @@ contains
         c(i) = div_da(a(i), b)
       end do
     end function div_da_10
+
     function div_da_2(a, b) result(c)
       implicit none
       double precision, dimension(:,:), intent(in) :: a
@@ -8984,6 +17800,98 @@ contains
         end do
       end do
     end function div_da_20
+
+    function div_da_3(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_da(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_da_3
+    function div_da_03(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_da(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_da_03
+    function div_da_30(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_da(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_da_30
+
+    function div_da_4(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_da(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_da_4
+    function div_da_04(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_da(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_da_04
+    function div_da_40(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_da(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_da_40
     
     function div_db_1(a, b) result(c)
       implicit none
@@ -9015,6 +17923,7 @@ contains
         c(i) = div_db(a(i), b)
       end do
     end function div_db_10
+
     function div_db_2(a, b) result(c)
       implicit none
       double precision, dimension(:,:), intent(in) :: a
@@ -9051,6 +17960,98 @@ contains
         end do
       end do
     end function div_db_20
+
+    function div_db_3(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_db(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_db_3
+    function div_db_03(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_db(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_db_03
+    function div_db_30(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_db(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_db_30
+
+    function div_db_4(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_db(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_db_4
+    function div_db_04(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_db(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_db_04
+    function div_db_40(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_db(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_db_40
     
     function div_dq_1(a, b) result(c)
       implicit none
@@ -9082,6 +18083,7 @@ contains
         c(i) = div_dq(a(i), b)
       end do
     end function div_dq_10
+
     function div_dq_2(a, b) result(c)
       implicit none
       double precision, dimension(:,:), intent(in) :: a
@@ -9118,6 +18120,98 @@ contains
         end do
       end do
     end function div_dq_20
+
+    function div_dq_3(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_dq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_dq_3
+    function div_dq_03(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_dq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_dq_03
+    function div_dq_30(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_dq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_dq_30
+
+    function div_dq_4(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_dq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_dq_4
+    function div_dq_04(a, b) result(c)
+      implicit none
+      double precision, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_dq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_dq_04
+    function div_dq_40(a, b) result(c)
+      implicit none
+      double precision, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_dq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_dq_40
     
     function div_az_1(a, b) result(c)
       implicit none
@@ -9149,6 +18243,7 @@ contains
         c(i) = div_az(a(i), b)
       end do
     end function div_az_10
+
     function div_az_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -9185,6 +18280,98 @@ contains
         end do
       end do
     end function div_az_20
+
+    function div_az_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_az(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_az_3
+    function div_az_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double complex, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_az(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_az_03
+    function div_az_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_az(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_az_30
+
+    function div_az_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_az(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_az_4
+    function div_az_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double complex, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_az(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_az_04
+    function div_az_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_az(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_az_40
     
     function div_bz_1(a, b) result(c)
       implicit none
@@ -9216,6 +18403,7 @@ contains
         c(i) = div_bz(a(i), b)
       end do
     end function div_bz_10
+
     function div_bz_2(a, b) result(c)
       implicit none
       type(adjac_complex), dimension(:,:), intent(in) :: a
@@ -9252,6 +18440,98 @@ contains
         end do
       end do
     end function div_bz_20
+
+    function div_bz_3(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_bz(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_bz_3
+    function div_bz_03(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double complex, dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_bz(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_bz_03
+    function div_bz_30(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_bz(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_bz_30
+
+    function div_bz_4(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_bz(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_bz_4
+    function div_bz_04(a, b) result(c)
+      implicit none
+      type(adjac_complex), intent(in) :: a
+      double complex, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_bz(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_bz_04
+    function div_bz_40(a, b) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_bz(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_bz_40
     
     function div_qz_1(a, b) result(c)
       implicit none
@@ -9283,6 +18563,7 @@ contains
         c(i) = div_qz(a(i), b)
       end do
     end function div_qz_10
+
     function div_qz_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -9319,6 +18600,98 @@ contains
         end do
       end do
     end function div_qz_20
+
+    function div_qz_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_qz(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_qz_3
+    function div_qz_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double complex, dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_qz(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_qz_03
+    function div_qz_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_qz(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_qz_30
+
+    function div_qz_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_qz(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_qz_4
+    function div_qz_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double complex, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_qz(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_qz_04
+    function div_qz_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_qz(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_qz_40
     
     function div_za_1(a, b) result(c)
       implicit none
@@ -9350,6 +18723,7 @@ contains
         c(i) = div_za(a(i), b)
       end do
     end function div_za_10
+
     function div_za_2(a, b) result(c)
       implicit none
       double complex, dimension(:,:), intent(in) :: a
@@ -9386,6 +18760,98 @@ contains
         end do
       end do
     end function div_za_20
+
+    function div_za_3(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_za(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_za_3
+    function div_za_03(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_double), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_za(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_za_03
+    function div_za_30(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_za(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_za_30
+
+    function div_za_4(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_za(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_za_4
+    function div_za_04(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_za(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_za_04
+    function div_za_40(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_za(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_za_40
     
     function div_zb_1(a, b) result(c)
       implicit none
@@ -9417,6 +18883,7 @@ contains
         c(i) = div_zb(a(i), b)
       end do
     end function div_zb_10
+
     function div_zb_2(a, b) result(c)
       implicit none
       double complex, dimension(:,:), intent(in) :: a
@@ -9453,6 +18920,98 @@ contains
         end do
       end do
     end function div_zb_20
+
+    function div_zb_3(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_zb(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_zb_3
+    function div_zb_03(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_zb(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_zb_03
+    function div_zb_30(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_zb(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_zb_30
+
+    function div_zb_4(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_zb(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_zb_4
+    function div_zb_04(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complex), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_zb(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_zb_04
+    function div_zb_40(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), intent(in) :: b
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_zb(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_zb_40
     
     function div_zq_1(a, b) result(c)
       implicit none
@@ -9484,6 +19043,7 @@ contains
         c(i) = div_zq(a(i), b)
       end do
     end function div_zq_10
+
     function div_zq_2(a, b) result(c)
       implicit none
       double complex, dimension(:,:), intent(in) :: a
@@ -9520,6 +19080,98 @@ contains
         end do
       end do
     end function div_zq_20
+
+    function div_zq_3(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_zq(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_zq_3
+    function div_zq_03(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = div_zq(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function div_zq_03
+    function div_zq_30(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = div_zq(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function div_zq_30
+
+    function div_zq_4(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_zq(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_zq_4
+    function div_zq_04(a, b) result(c)
+      implicit none
+      double complex, intent(in) :: a
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = div_zq(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function div_zq_04
+    function div_zq_40(a, b) result(c)
+      implicit none
+      double complex, dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = div_zq(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function div_zq_40
     
   
     function pow_ai_1(a, b) result(c)
@@ -9552,6 +19204,7 @@ contains
         c(i) = pow_ai(a(i), b)
       end do
     end function pow_ai_10
+
     function pow_ai_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -9588,6 +19241,98 @@ contains
         end do
       end do
     end function pow_ai_20
+
+    function pow_ai_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = pow_ai(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function pow_ai_3
+    function pow_ai_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      integer, dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = pow_ai(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function pow_ai_03
+    function pow_ai_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = pow_ai(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function pow_ai_30
+
+    function pow_ai_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = pow_ai(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function pow_ai_4
+    function pow_ai_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      integer, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = pow_ai(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function pow_ai_04
+    function pow_ai_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = pow_ai(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function pow_ai_40
     
     function pow_ad_1(a, b) result(c)
       implicit none
@@ -9619,6 +19364,7 @@ contains
         c(i) = pow_ad(a(i), b)
       end do
     end function pow_ad_10
+
     function pow_ad_2(a, b) result(c)
       implicit none
       type(adjac_double), dimension(:,:), intent(in) :: a
@@ -9655,6 +19401,98 @@ contains
         end do
       end do
     end function pow_ad_20
+
+    function pow_ad_3(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = pow_ad(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function pow_ad_3
+    function pow_ad_03(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double precision, dimension(:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = pow_ad(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function pow_ad_03
+    function pow_ad_30(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = pow_ad(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function pow_ad_30
+
+    function pow_ad_4(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = pow_ad(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function pow_ad_4
+    function pow_ad_04(a, b) result(c)
+      implicit none
+      type(adjac_double), intent(in) :: a
+      double precision, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_double), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = pow_ad(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function pow_ad_04
+    function pow_ad_40(a, b) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = pow_ad(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function pow_ad_40
     
     function pow_qi_1(a, b) result(c)
       implicit none
@@ -9686,6 +19524,7 @@ contains
         c(i) = pow_qi(a(i), b)
       end do
     end function pow_qi_10
+
     function pow_qi_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -9722,6 +19561,98 @@ contains
         end do
       end do
     end function pow_qi_20
+
+    function pow_qi_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = pow_qi(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function pow_qi_3
+    function pow_qi_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      integer, dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = pow_qi(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function pow_qi_03
+    function pow_qi_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = pow_qi(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function pow_qi_30
+
+    function pow_qi_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      integer, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = pow_qi(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function pow_qi_4
+    function pow_qi_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      integer, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = pow_qi(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function pow_qi_04
+    function pow_qi_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      integer, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = pow_qi(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function pow_qi_40
     
     function pow_qd_1(a, b) result(c)
       implicit none
@@ -9753,6 +19684,7 @@ contains
         c(i) = pow_qd(a(i), b)
       end do
     end function pow_qd_10
+
     function pow_qd_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -9789,6 +19721,98 @@ contains
         end do
       end do
     end function pow_qd_20
+
+    function pow_qd_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = pow_qd(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function pow_qd_3
+    function pow_qd_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double precision, dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = pow_qd(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function pow_qd_03
+    function pow_qd_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = pow_qd(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function pow_qd_30
+
+    function pow_qd_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double precision, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = pow_qd(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function pow_qd_4
+    function pow_qd_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double precision, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = pow_qd(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function pow_qd_04
+    function pow_qd_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double precision, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = pow_qd(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function pow_qd_40
     
     function pow_qz_1(a, b) result(c)
       implicit none
@@ -9820,6 +19844,7 @@ contains
         c(i) = pow_qz(a(i), b)
       end do
     end function pow_qz_10
+
     function pow_qz_2(a, b) result(c)
       implicit none
       type(adjac_complexan), dimension(:,:), intent(in) :: a
@@ -9856,6 +19881,98 @@ contains
         end do
       end do
     end function pow_qz_20
+
+    function pow_qz_3(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = pow_qz(a(i,j,k), b(i,j,k))
+          end do
+        end do
+      end do
+    end function pow_qz_3
+    function pow_qz_03(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double complex, dimension(:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(b,3)
+        do j = 1, size(b,2)
+          do i = 1, size(b,1)
+            c(i,j,k) = pow_qz(a, b(i,j,k))
+          end do
+        end do
+      end do
+    end function pow_qz_03
+    function pow_qz_30(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = pow_qz(a(i,j,k), b)
+          end do
+        end do
+      end do
+    end function pow_qz_30
+
+    function pow_qz_4(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double complex, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = pow_qz(a(i,j,k,l), b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function pow_qz_4
+    function pow_qz_04(a, b) result(c)
+      implicit none
+      type(adjac_complexan), intent(in) :: a
+      double complex, dimension(:,:,:,:), intent(in) :: b
+      type(adjac_complexan), dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(b,4)
+        do k = 1, size(b,3)
+          do j = 1, size(b,2)
+            do i = 1, size(b,1)
+              c(i,j,k,l) = pow_qz(a, b(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function pow_qz_04
+    function pow_qz_40(a, b) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      double complex, intent(in) :: b
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = pow_qz(a(i,j,k,l), b)
+            end do
+          end do
+        end do
+      end do
+    end function pow_qz_40
     
   
     function dble_a_1(a) result(c)
@@ -9878,6 +19995,34 @@ contains
         end do
       end do
     end function dble_a_2
+    function dble_a_3(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = dble_a(a(i,j,k))
+          end do
+        end do
+      end do
+    end function dble_a_3
+    function dble_a_4(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = dble_a(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function dble_a_4
     
     function dble_b_1(a) result(c)
       implicit none
@@ -9899,6 +20044,34 @@ contains
         end do
       end do
     end function dble_b_2
+    function dble_b_3(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = dble_b(a(i,j,k))
+          end do
+        end do
+      end do
+    end function dble_b_3
+    function dble_b_4(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = dble_b(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function dble_b_4
     
   
     function aimag_b_1(a) result(c)
@@ -9921,6 +20094,34 @@ contains
         end do
       end do
     end function aimag_b_2
+    function aimag_b_3(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = aimag_b(a(i,j,k))
+          end do
+        end do
+      end do
+    end function aimag_b_3
+    function aimag_b_4(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = aimag_b(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function aimag_b_4
     
   
     function conjg_b_1(a) result(c)
@@ -9943,6 +20144,34 @@ contains
         end do
       end do
     end function conjg_b_2
+    function conjg_b_3(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = conjg_b(a(i,j,k))
+          end do
+        end do
+      end do
+    end function conjg_b_3
+    function conjg_b_4(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = conjg_b(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function conjg_b_4
     
   
     function neg_a_1(a) result(c)
@@ -9965,6 +20194,34 @@ contains
         end do
       end do
     end function neg_a_2
+    function neg_a_3(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = neg_a(a(i,j,k))
+          end do
+        end do
+      end do
+    end function neg_a_3
+    function neg_a_4(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = neg_a(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function neg_a_4
     
     function neg_b_1(a) result(c)
       implicit none
@@ -9986,6 +20243,34 @@ contains
         end do
       end do
     end function neg_b_2
+    function neg_b_3(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = neg_b(a(i,j,k))
+          end do
+        end do
+      end do
+    end function neg_b_3
+    function neg_b_4(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = neg_b(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function neg_b_4
     
     function neg_q_1(a) result(c)
       implicit none
@@ -10007,6 +20292,34 @@ contains
         end do
       end do
     end function neg_q_2
+    function neg_q_3(a) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = neg_q(a(i,j,k))
+          end do
+        end do
+      end do
+    end function neg_q_3
+    function neg_q_4(a) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = neg_q(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function neg_q_4
     
   
     function exp_a_1(a) result(c)
@@ -10029,6 +20342,34 @@ contains
         end do
       end do
     end function exp_a_2
+    function exp_a_3(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = exp_a(a(i,j,k))
+          end do
+        end do
+      end do
+    end function exp_a_3
+    function exp_a_4(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = exp_a(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function exp_a_4
     
     function exp_b_1(a) result(c)
       implicit none
@@ -10050,6 +20391,34 @@ contains
         end do
       end do
     end function exp_b_2
+    function exp_b_3(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = exp_b(a(i,j,k))
+          end do
+        end do
+      end do
+    end function exp_b_3
+    function exp_b_4(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = exp_b(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function exp_b_4
     
     function exp_q_1(a) result(c)
       implicit none
@@ -10071,6 +20440,34 @@ contains
         end do
       end do
     end function exp_q_2
+    function exp_q_3(a) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = exp_q(a(i,j,k))
+          end do
+        end do
+      end do
+    end function exp_q_3
+    function exp_q_4(a) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = exp_q(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function exp_q_4
     
   
     function sin_a_1(a) result(c)
@@ -10093,6 +20490,34 @@ contains
         end do
       end do
     end function sin_a_2
+    function sin_a_3(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sin_a(a(i,j,k))
+          end do
+        end do
+      end do
+    end function sin_a_3
+    function sin_a_4(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sin_a(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sin_a_4
     
     function sin_b_1(a) result(c)
       implicit none
@@ -10114,6 +20539,34 @@ contains
         end do
       end do
     end function sin_b_2
+    function sin_b_3(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sin_b(a(i,j,k))
+          end do
+        end do
+      end do
+    end function sin_b_3
+    function sin_b_4(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sin_b(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sin_b_4
     
     function sin_q_1(a) result(c)
       implicit none
@@ -10135,6 +20588,34 @@ contains
         end do
       end do
     end function sin_q_2
+    function sin_q_3(a) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = sin_q(a(i,j,k))
+          end do
+        end do
+      end do
+    end function sin_q_3
+    function sin_q_4(a) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = sin_q(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function sin_q_4
     
   
     function cos_a_1(a) result(c)
@@ -10157,6 +20638,34 @@ contains
         end do
       end do
     end function cos_a_2
+    function cos_a_3(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = cos_a(a(i,j,k))
+          end do
+        end do
+      end do
+    end function cos_a_3
+    function cos_a_4(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = cos_a(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function cos_a_4
     
     function cos_b_1(a) result(c)
       implicit none
@@ -10178,6 +20687,34 @@ contains
         end do
       end do
     end function cos_b_2
+    function cos_b_3(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = cos_b(a(i,j,k))
+          end do
+        end do
+      end do
+    end function cos_b_3
+    function cos_b_4(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = cos_b(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function cos_b_4
     
     function cos_q_1(a) result(c)
       implicit none
@@ -10199,6 +20736,34 @@ contains
         end do
       end do
     end function cos_q_2
+    function cos_q_3(a) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = cos_q(a(i,j,k))
+          end do
+        end do
+      end do
+    end function cos_q_3
+    function cos_q_4(a) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = cos_q(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function cos_q_4
     
   
     function log_a_1(a) result(c)
@@ -10221,6 +20786,34 @@ contains
         end do
       end do
     end function log_a_2
+    function log_a_3(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = log_a(a(i,j,k))
+          end do
+        end do
+      end do
+    end function log_a_3
+    function log_a_4(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = log_a(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function log_a_4
     
     function log_b_1(a) result(c)
       implicit none
@@ -10242,6 +20835,34 @@ contains
         end do
       end do
     end function log_b_2
+    function log_b_3(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = log_b(a(i,j,k))
+          end do
+        end do
+      end do
+    end function log_b_3
+    function log_b_4(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = log_b(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function log_b_4
     
     function log_q_1(a) result(c)
       implicit none
@@ -10263,6 +20884,34 @@ contains
         end do
       end do
     end function log_q_2
+    function log_q_3(a) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = log_q(a(i,j,k))
+          end do
+        end do
+      end do
+    end function log_q_3
+    function log_q_4(a) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = log_q(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function log_q_4
     
 
 end module adjac
