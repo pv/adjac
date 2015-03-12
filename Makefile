@@ -27,7 +27,8 @@ test: $(TESTS)
 		b="`basename $$t .test`"; \
 		b="`basename $$b .test_pure`"; \
 		b="`basename $$b .test_tape`"; \
-		c="tests/$$b.cmp"; \
+		c="$$t.cmp"; \
+		if test ! -f "$$c"; then c="tests/$$b.cmp"; fi; \
 		log="$$t.out"; \
 		echo "--------------------------------------------" > "$$log"; \
 		echo "$$b" >> "$$log"; \
