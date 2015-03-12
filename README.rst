@@ -37,6 +37,16 @@ For more information about automatic differentiation, and other AD software
 http://autodiff.org/ Adjac performance appears to be within a factor of 2 from
 ADOLC and ADEPT.
 
+Versions
+--------
+
+There are three versions of ADJAC, ``adjac.f95``, ``adjac_pure.f95``, and
+``adjac_tape.f95`` which differ only in the internal implementation of the
+differentiation. Their performance and memory usage characteristics differ;
+``adjac.f95`` usually needs large amounts of memory, ``adjac_pure.f95`` usually
+needs the least.  ``adjac.f95`` is overall fast, ``adjac_pure.f95`` is slower,
+and ``adjac_tape.f95`` performance depends on the depth of the differentiation
+graph.
 
 Example
 -------
