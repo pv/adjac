@@ -24,13 +24,14 @@ test: $(TESTS)
 	@rm -f tests/*.out; \
 	ok=0; \
 	for t in $(TESTS); do \
-		b="`basename $$t`"; \
+		b="`basename $$t .test`"; \
+		b="`basename $$b .test_pure`"; \
 		c="tests/$$b.cmp"; \
 		log="$$t.out"; \
 		echo "--------------------------------------------" > "$$log"; \
 		echo "$$b" >> "$$log"; \
 		echo "--------------------------------------------" >> "$$log"; \
-		echo -n "$$b... "; ./$$t >> "$$log" 2>&1; \
+		echo -n "$$t... "; ./$$t >> "$$log" 2>&1; \
 		result=$$?; \
 		if test "$$result" = "0"; then \
 			if grep -q FAIL "$$log"; then result=1; else result=0; fi; \

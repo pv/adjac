@@ -678,13 +678,13 @@ contains
     implicit none
     logical, optional, intent(in) :: product_mode
 
-{{if not USE_ALLOCATABLE}}
-    free_a = 1
-    free_q = 1
-
     if (present(product_mode)) then
        jac_product_mode = product_mode
     end if
+
+{{if not USE_ALLOCATABLE}}
+    free_a = 1
+    free_q = 1
 
     if (jac_product_mode) then
        return
@@ -735,6 +735,7 @@ contains
     end if
 
 {{if USE_ALLOCATABLE}}
+    x%n = n
     allocate(x%i(n), x%v(n))
 {{else}}
     if (.not.allocated(imem_{{CHR}})) then
@@ -779,14 +780,14 @@ contains
     implicit none
     type({{TYPE}}), intent(inout) :: x
 {{if USE_ALLOCATABLE}}
-    x%n = 0
     if (x%n > 0) then
        deallocate(x%v)
        deallocate(x%i)
     end if
-{{else}}
     x%n = 0
+{{else}}
     x%j = 1
+    x%n = 0
 {{endif}}
   end subroutine free_mem_{{CHR}}
 

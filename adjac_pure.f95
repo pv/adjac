@@ -274,6 +274,10 @@ contains
   subroutine adjac_reset(product_mode)
     implicit none
     logical, optional, intent(in) :: product_mode
+
+    if (present(product_mode)) then
+       jac_product_mode = product_mode
+    end if
   end subroutine adjac_reset
 
   subroutine adjac_free()
@@ -292,6 +296,7 @@ contains
     if (jac_product_mode) then
        return
     end if
+    x%n = n
     allocate(x%i(n), x%v(n))
   end subroutine alloc_mem_a
 
@@ -309,11 +314,11 @@ contains
   pure subroutine free_mem_a(x)
     implicit none
     type(adjac_double), intent(inout) :: x
-    x%n = 0
     if (x%n > 0) then
        deallocate(x%v)
        deallocate(x%i)
     end if
+    x%n = 0
   end subroutine free_mem_a
 
   subroutine set_independent_a(x, xval, j, dx)
@@ -1536,6 +1541,7 @@ contains
     if (jac_product_mode) then
        return
     end if
+    x%n = n
     allocate(x%i(n), x%v(n))
   end subroutine alloc_mem_q
 
@@ -1553,11 +1559,11 @@ contains
   pure subroutine free_mem_q(x)
     implicit none
     type(adjac_complexan), intent(inout) :: x
-    x%n = 0
     if (x%n > 0) then
        deallocate(x%v)
        deallocate(x%i)
     end if
+    x%n = 0
   end subroutine free_mem_q
 
   subroutine set_independent_q(x, xval, j, dx)

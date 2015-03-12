@@ -1461,12 +1461,12 @@ contains
   subroutine adjac_reset(product_mode)
     implicit none
     logical, optional, intent(in) :: product_mode
-    free_a = 1
-    free_q = 1
 
     if (present(product_mode)) then
        jac_product_mode = product_mode
     end if
+    free_a = 1
+    free_q = 1
 
     if (jac_product_mode) then
        return
@@ -1538,8 +1538,8 @@ contains
    subroutine free_mem_a(x)
     implicit none
     type(adjac_double), intent(inout) :: x
-    x%n = 0
     x%j = 1
+    x%n = 0
   end subroutine free_mem_a
 
   subroutine set_independent_a(x, xval, j, dx)
@@ -1714,6 +1714,7 @@ contains
 
     if (jac_product_mode) then
        c%vmul = alphap * a%vmul + betap * b%vmul
+       c%n = 0
     else
        call sparse_vector_sum_a(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
             imem_a(a%j), imem_a(b%j), imem_a(c%j), &
@@ -2794,8 +2795,8 @@ contains
    subroutine free_mem_q(x)
     implicit none
     type(adjac_complexan), intent(inout) :: x
-    x%n = 0
     x%j = 1
+    x%n = 0
   end subroutine free_mem_q
 
   subroutine set_independent_q(x, xval, j, dx)
@@ -2970,6 +2971,7 @@ contains
 
     if (jac_product_mode) then
        c%vmul = alphap * a%vmul + betap * b%vmul
+       c%n = 0
     else
        call sparse_vector_sum_q(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
             imem_q(a%j), imem_q(b%j), imem_q(c%j), &
