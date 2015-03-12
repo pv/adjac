@@ -1714,7 +1714,6 @@ contains
 
     if (jac_product_mode) then
        c%vmul = alphap * a%vmul + betap * b%vmul
-       c%n = 0
     else
        call sparse_vector_sum_a(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
             imem_a(a%j), imem_a(b%j), imem_a(c%j), &
@@ -2971,7 +2970,6 @@ contains
 
     if (jac_product_mode) then
        c%vmul = alphap * a%vmul + betap * b%vmul
-       c%n = 0
     else
        call sparse_vector_sum_q(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
             imem_q(a%j), imem_q(b%j), imem_q(c%j), &
