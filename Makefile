@@ -5,7 +5,7 @@ CXXFLAGS=-g -O3
 FFLAGS=-g -O3
 #FFLAGS=-ggdb -Og
 
-TESTS=$(patsubst %.f95,%.test,$(wildcard tests/test_*.f95))
+TESTS=$(patsubst %.f95,%.test,$(wildcard tests/test_*.f95)) $(patsubst %.f95,%.test_pure,$(wildcard tests/test_*.f95))
 EXAMPLES=$(patsubst %.f95,%,$(wildcard examples/*.f95))
 CXXEXAMPLES=$(patsubst %.cpp,%,$(wildcard examples/*.cpp))
 
@@ -24,7 +24,7 @@ test: $(TESTS)
 	@rm -f tests/*.out; \
 	ok=0; \
 	for t in $(TESTS); do \
-		b="`basename $$t .test`"; \
+		b="`basename $$t`"; \
 		c="tests/$$b.cmp"; \
 		log="$$t.out"; \
 		echo "--------------------------------------------" > "$$log"; \
@@ -47,6 +47,9 @@ test: $(TESTS)
 adjac.f95: adjac.f95.in generate.py
 	python generate.py adjac.f95.in adjac.f95
 
+adjac_pure.f95: adjac.f95.in generate.py
+	python generate.py -DUSE_ALLOCATABLE=True adjac.f95.in adjac_pure.f95
+
 sparse_sum.c: sparse_sum.c.in generate.py
 	python generate.py sparse_sum.c.in sparse_sum.c
 
@@ -57,10 +60,16 @@ sparse_sum.c: sparse_sum.c.in generate.py
 	gcc -std=c99 $(FFLAGS) -c -o $@ $^
 
 libadjac.a: adjac.o sparse_sum.o
-	ar cru libadjac.a $^
+	ar cru $@ $^
+
+libadjac_pure.a: adjac_pure.o sparse_sum.o
+	ar cru $@ $^
 
 tests/%.test: tests/%.f95 libadjac.a
 	$(FC) $(FFLAGS) -o $@ -Itests $^ -L. -ladjac
+
+tests/%.test_pure: tests/%.f95 libadjac_pure.a
+	$(FC) $(FFLAGS) -o $@ -Itests $^ -L. -ladjac_pure
 
 examples/%: examples/%.f95 libadjac.a
 	$(FC) $(FFLAGS) -o $@ $^ -L. -ladjac

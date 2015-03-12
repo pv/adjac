@@ -37,14 +37,33 @@
 module adjac
   private
 
+{{default USE_ALLOCATABLE = False}}
+
+  ! NOTE: we would like to use derived type finalizers for memory
+  ! deallocation.  However, as of 2015-03-12, these are not fully
+  ! implemented in gfortran, and will not be called e.g. on function
+  ! returns that the code here extensively relies on.
+
   type, public :: adjac_double
      double precision :: value, vmul
-     integer :: j, n
+     integer :: n = 0
+{{if USE_ALLOCATABLE}}
+     double precision, dimension(:), allocatable :: v
+     integer, dimension(:), allocatable :: i
+{{else}}
+     integer :: j = 1
+{{endif}}
   end type adjac_double
 
   type, public :: adjac_complexan
      double complex :: value, vmul
-     integer :: j, n
+     integer :: n = 0
+{{if USE_ALLOCATABLE}}
+     double complex, dimension(:), allocatable :: v
+     integer, dimension(:), allocatable :: i
+{{else}}
+     integer :: j = 1
+{{endif}}
   end type adjac_complexan
 
   type, public :: adjac_complex
@@ -52,27 +71,36 @@ module adjac
   end type adjac_complex
 
   logical :: jac_product_mode = .false.
+
+{{if not USE_ALLOCATABLE}}
   integer :: free_a = 1, free_q = 1
   integer, dimension(:), allocatable :: imem_a, imem_q
   double precision, dimension(:), allocatable :: vmem_a
   double complex, dimension(:), allocatable :: vmem_q
+{{endif}}
 
-{{default pure = ""}}
-{{default pure_elemental = ""}}
+{{if USE_ALLOCATABLE}}
+  {{default pure = "pure"}}
+  {{default pure_elemental = "pure elemental"}}
+{{else}}
+  {{default pure = ""}}
+  {{default pure_elemental = ""}}
+{{endif}}
 
 {{py:
 
-def binops(name):
+def binops(name, use_allocatable):
     chrs = ['i', 'd', 'z']
     ops = ['aa', 'bb', 'qq', 'ab', 'ba']
     for c in chrs:
         ops += ['a'+c, 'b'+c, 'q'+c, c+'a', c+'b', c+'q']
     oldops = list(ops)
-    for suf in ['_1', '_01', '_10',
-                '_2', '_02', '_20',
-                '_3', '_03', '_30',
-                '_4', '_04', '_40']:
-        ops.extend([x + suf for x in oldops])
+    if not use_allocatable:
+        for suf in ['_1', '_01', '_10',
+                    '_2', '_02', '_20',
+                    '_3', '_03', '_30',
+                    '_4', '_04', '_40']:
+            ops.extend([x + suf for x in oldops])
     s = "\n".join("     module procedure " + name + "_" + op for op in ops)
     return s.lstrip()
 
@@ -428,6 +456,7 @@ def elemental_versions(name, rtype, ops=None):
      module procedure assign_bi, assign_bd, assign_bz, assign_ba
      module procedure assign_qi, assign_qd, assign_qz
 
+{{if not USE_ALLOCATABLE}}
      module procedure assign_ai_1, assign_ad_1
      module procedure assign_bi_1, assign_bd_1, assign_bz_1, assign_ba_1
      module procedure assign_qi_1, assign_qd_1, assign_qz_1
@@ -459,36 +488,47 @@ def elemental_versions(name, rtype, ops=None):
      module procedure assign_ai_40, assign_ad_40
      module procedure assign_bi_40, assign_bd_40, assign_bz_40, assign_ba_40
      module procedure assign_qi_40, assign_qd_40, assign_qz_40
+{{endif}}
   end interface
 
   public operator(+)
   interface operator(+)
-     {{binops("add")}}
+     {{binops("add", USE_ALLOCATABLE)}}
+     module procedure pos_a, pos_b, pos_q
+{{if not USE_ALLOCATABLE}}
+     module procedure pos_a_1, pos_b_1, pos_q_1
+     module procedure pos_a_2, pos_b_2, pos_q_2
+     module procedure pos_a_3, pos_b_3, pos_q_3
+     module procedure pos_a_4, pos_b_4, pos_q_4
+{{endif}}
   end interface
 
   public operator(-)
   interface operator(-)
-     {{binops("sub")}}
+     {{binops("sub", USE_ALLOCATABLE)}}
      module procedure neg_a, neg_b, neg_q
+{{if not USE_ALLOCATABLE}}
      module procedure neg_a_1, neg_b_1, neg_q_1
      module procedure neg_a_2, neg_b_2, neg_q_2
      module procedure neg_a_3, neg_b_3, neg_q_3
      module procedure neg_a_4, neg_b_4, neg_q_4
+{{endif}}
   end interface
 
   public operator(*)
   interface operator(*)
-     {{binops("mul")}}
+     {{binops("mul", USE_ALLOCATABLE)}}
   end interface operator(*)
 
   public operator(/)
   interface operator(/)
-     {{binops("div")}}
+     {{binops("div", USE_ALLOCATABLE)}}
   end interface operator(/)
 
   public operator(**)
   interface operator(**)
      module procedure pow_ai, pow_ad, pow_qi, pow_qd, pow_qz
+{{if not USE_ALLOCATABLE}}
      module procedure pow_ai_1, pow_ad_1, pow_qi_1, pow_qd_1, pow_qz_1
      module procedure pow_ai_2, pow_ad_2, pow_qi_2, pow_qd_2, pow_qz_2
      module procedure pow_ai_3, pow_ad_3, pow_qi_3, pow_qd_3, pow_qz_3
@@ -503,6 +543,7 @@ def elemental_versions(name, rtype, ops=None):
      module procedure pow_ai_02, pow_ad_02, pow_qi_02, pow_qd_02, pow_qz_02
      module procedure pow_ai_03, pow_ad_03, pow_qi_03, pow_qd_03, pow_qz_03
      module procedure pow_ai_04, pow_ad_04, pow_qi_04, pow_qd_04, pow_qz_04
+{{endif}}
   end interface operator(**)
 
   public matmul
@@ -515,64 +556,78 @@ def elemental_versions(name, rtype, ops=None):
   public dble
   interface dble
      module procedure dble_a, dble_b
+{{if not USE_ALLOCATABLE}}
      module procedure dble_a_1, dble_b_1
      module procedure dble_a_2, dble_b_2
      module procedure dble_a_3, dble_b_3
      module procedure dble_a_4, dble_b_4
+{{endif}}
   end interface dble
 
   public aimag
   interface aimag
      module procedure aimag_b
+{{if not USE_ALLOCATABLE}}
      module procedure aimag_b_1
      module procedure aimag_b_2
      module procedure aimag_b_3
      module procedure aimag_b_4
+{{endif}}
   end interface aimag
 
   public conjg
   interface conjg
      module procedure conjg_b
+{{if not USE_ALLOCATABLE}}
      module procedure conjg_b_1
      module procedure conjg_b_2
      module procedure conjg_b_3
      module procedure conjg_b_4
+{{endif}}
   end interface conjg
 
   public exp
   interface exp
      module procedure exp_a, exp_b, exp_q
+{{if not USE_ALLOCATABLE}}
      module procedure exp_a_1, exp_b_1, exp_q_1
      module procedure exp_a_2, exp_b_2, exp_q_2
      module procedure exp_a_3, exp_b_3, exp_q_3
      module procedure exp_a_4, exp_b_4, exp_q_4
+{{endif}}
   end interface exp
 
   public sin
   interface sin
      module procedure sin_a, sin_b, sin_q
+{{if not USE_ALLOCATABLE}}
      module procedure sin_a_1, sin_b_1, sin_q_1
      module procedure sin_a_2, sin_b_2, sin_q_2
      module procedure sin_a_3, sin_b_3, sin_q_3
      module procedure sin_a_4, sin_b_4, sin_q_4
+{{endif}}
   end interface sin
 
   public cos
   interface cos
      module procedure cos_a, cos_b, cos_q
+{{if not USE_ALLOCATABLE}}
      module procedure cos_a_1, cos_b_1, cos_q_1
      module procedure cos_a_2, cos_b_2, cos_q_2
      module procedure cos_a_3, cos_b_3, cos_q_3
      module procedure cos_a_4, cos_b_4, cos_q_4
+{{endif}}
   end interface cos
 
   public log
   interface log
      module procedure log_a, log_b, log_q
+{{if not USE_ALLOCATABLE}}
      module procedure log_a_1, log_b_1, log_q_1
      module procedure log_a_2, log_b_2, log_q_2
      module procedure log_a_3, log_b_3, log_q_3
      module procedure log_a_4, log_b_4, log_q_4
+{{endif}}
   end interface log
 
   interface adjac_set_independent
@@ -623,6 +678,7 @@ contains
     implicit none
     logical, optional, intent(in) :: product_mode
 
+{{if not USE_ALLOCATABLE}}
     free_a = 1
     free_q = 1
 
@@ -640,10 +696,12 @@ contains
     if (.not. allocated(imem_q)) then
        allocate(imem_q(100), vmem_q(100))
     end if
+{{endif}}
   end subroutine adjac_reset
 
   subroutine adjac_free()
     implicit none
+{{if not USE_ALLOCATABLE}}
     free_a = 1
     free_q = 1
     if (allocated(imem_a)) then
@@ -654,6 +712,7 @@ contains
        deallocate(imem_q)
        deallocate(vmem_q)
     end if
+{{endif}}
   end subroutine adjac_free
 
 {{for TYPE, FTYPE, CHR, CAST, FTYPES2 in [('adjac_double', 'double precision', 'a', 'dble', [('integer', 'i'),
@@ -662,20 +721,22 @@ contains
                                                                                                 ('double precision', 'd'), 
                                                                                                 ('double complex', 'z')])]}}
 
-  subroutine alloc_mem_{{CHR}}(n, j)
+  {{pure}} subroutine alloc_mem_{{CHR}}(x, n)
     implicit none
+    type({{TYPE}}), intent(inout) :: x
     integer, intent(in) :: n
-    integer, intent(out) :: j
 
     integer, dimension(:), allocatable :: itmp
     {{FTYPE}}, dimension(:), allocatable :: tmp
     integer :: sz
 
     if (jac_product_mode) then
-       j = -1
        return
     end if
 
+{{if USE_ALLOCATABLE}}
+    allocate(x%i(n), x%v(n))
+{{else}}
     if (.not.allocated(imem_{{CHR}})) then
        sz = 0
     else
@@ -692,9 +753,42 @@ contains
        call move_alloc(tmp, vmem_{{CHR}})
     end if
 
-    j = free_{{CHR}}
+    x%j = free_{{CHR}}
+    x%n = n
     free_{{CHR}} = free_{{CHR}} + n
+{{endif}}
   end subroutine alloc_mem_{{CHR}}
+
+  {{pure}} subroutine link_mem_{{CHR}}(dst, src)
+    implicit none
+    type({{TYPE}}), intent(inout) :: dst
+    type({{TYPE}}), intent(in) :: src
+{{if USE_ALLOCATABLE}}
+    dst%n = src%n
+    if (src%n > 0) then
+       dst%v = src%v
+       dst%i = src%i
+    end if
+{{else}}
+    dst%n = src%n
+    dst%j = src%j
+{{endif}}
+  end subroutine link_mem_{{CHR}}
+
+  {{pure}} subroutine free_mem_{{CHR}}(x)
+    implicit none
+    type({{TYPE}}), intent(inout) :: x
+{{if USE_ALLOCATABLE}}
+    x%n = 0
+    if (x%n > 0) then
+       deallocate(x%v)
+       deallocate(x%i)
+    end if
+{{else}}
+    x%n = 0
+    x%j = 1
+{{endif}}
+  end subroutine free_mem_{{CHR}}
 
   subroutine set_independent_{{CHR}}(x, xval, j, dx)
     implicit none
@@ -703,21 +797,22 @@ contains
     {{FTYPE}}, optional, intent(in) :: dx
     integer, intent(in) :: j
 
-    call alloc_mem_{{CHR}}(1, x%j)
-
-    x%n = 1
     x%value = xval
     if (jac_product_mode) then
        if (.not.present(dx)) then
           call fatal_error('no dx given to adjac_set_independent when jacobian product mode is active')
        end if
        x%vmul = dx
-       x%n = 0
-       x%j = -1
     else
        x%vmul = 1
+       call alloc_mem_{{CHR}}(x, 1)
+{{if USE_ALLOCATABLE}}
+       x%v(1) = 1
+       x%i(1) = j
+{{else}}
        imem_{{CHR}}(x%j) = j
        vmem_{{CHR}}(x%j) = 1
+{{endif}}
     end if
   end subroutine set_independent_{{CHR}}
 
@@ -797,8 +892,13 @@ contains
 
     do i = 1, size(y,1)
        do p = 1, y(i)%n
+{{if USE_ALLOCATABLE}}
+          jac_dense(i, y(i)%i(p)) = jac_dense(i, y(i)%i(p)) &
+               + y(i)%vmul * y(i)%v(p)
+{{else}}
           jac_dense(i, imem_{{CHR}}(y(i)%j + p - 1)) = jac_dense(i, imem_{{CHR}}(y(i)%j + p - 1)) &
                + y(i)%vmul * vmem_{{CHR}}(y(i)%j + p - 1)
+{{endif}}
        end do
     end do
   end subroutine get_dense_jacobian_{{CHR}}
@@ -819,8 +919,13 @@ contains
     do i = 1, size(y,1)
        if (y(i)%n > 0) then
           jac_i(k:k+y(i)%n-1) = i
+{{if USE_ALLOCATABLE}}
+          jac_j(k:k+y(i)%n-1) = y(i)%i(1:y(i)%n)
+          jac_val(k:k+y(i)%n-1) = y(i)%vmul * y(i)%v(1:y(i)%n)
+{{else}}
           jac_j(k:k+y(i)%n-1) = imem_{{CHR}}(y(i)%j:y(i)%j+y(i)%n-1)
           jac_val(k:k+y(i)%n-1) = y(i)%vmul * vmem_{{CHR}}(y(i)%j:y(i)%j+y(i)%n-1)
+{{endif}}
           k = k + y(i)%n
        end if
     end do
@@ -842,8 +947,13 @@ contains
     jac_indptr(1) = 1
     do i = 1, size(y,1)
        if (y(i)%n > 0) then
+{{if USE_ALLOCATABLE}}
+          jac_indices(k:k+y(i)%n-1) = y(i)%i(1:y(i)%n)
+          jac_val(k:k+y(i)%n-1) = y(i)%vmul * y(i)%v(1:y(i)%n)
+{{else}}
           jac_indices(k:k+y(i)%n-1) = imem_{{CHR}}(y(i)%j:y(i)%j+y(i)%n-1)
           jac_val(k:k+y(i)%n-1) = y(i)%vmul * vmem_{{CHR}}(y(i)%j:y(i)%j+y(i)%n-1)
+{{endif}}
           k = k + y(i)%n
        end if
        jac_indptr(i+1) = k
@@ -859,7 +969,7 @@ contains
     type({{TYPE}}), intent(inout) :: c
 
     interface
-       subroutine sparse_vector_sum_{{CHR}}(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
+       {{pure}} subroutine sparse_vector_sum_{{CHR}}(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
             bind(C,name="sparse_vector_sum_{{CHR}}")
          use iso_c_binding
          integer(kind=c_int), intent(in) :: na, nb, ia(*), ib(*)
@@ -878,9 +988,15 @@ contains
     if (jac_product_mode) then
        c%vmul = alphap * a%vmul + betap * b%vmul
     else
+{{if USE_ALLOCATABLE}}
+       call sparse_vector_sum_{{CHR}}(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
+            a%i, b%i, c%i, &
+            a%v, b%v, c%v)
+{{else}}
        call sparse_vector_sum_{{CHR}}(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
             imem_{{CHR}}(a%j), imem_{{CHR}}(b%j), imem_{{CHR}}(c%j), &
             vmem_{{CHR}}(a%j), vmem_{{CHR}}(b%j), vmem_{{CHR}}(c%j))
+{{endif}}
        c%vmul = 1
     end if
   end subroutine sum_taylor_{{CHR}}
@@ -897,11 +1013,10 @@ contains
   {{for FTYPE2, CHR2 in FTYPES2}}
   {{pure_elemental}} subroutine assign_{{CHR}}{{CHR2}}(x, y)
     implicit none
-    type({{TYPE}}), intent(out) :: x
+    type({{TYPE}}), intent(inout) :: x
     {{FTYPE2}}, intent(in) :: y
+    call free_mem_{{CHR}}(x)
     x%value = y
-    x%n = 0
-    x%j = 1
     x%vmul = 0
   end subroutine assign_{{CHR}}{{CHR2}}
   {{endfor}}
@@ -910,7 +1025,7 @@ contains
   {{for FTYPE2, CHR2 in FTYPES2}}
   {{pure_elemental}} subroutine assign_b{{CHR2}}(x, y)
     implicit none
-    type(adjac_complex), intent(out) :: x
+    type(adjac_complex), intent(inout) :: x
     {{FTYPE2}}, intent(in) :: y
     x%re = dble(y)
     x%im = 0d0
@@ -919,7 +1034,7 @@ contains
 
   {{pure_elemental}} subroutine assign_bz(x, y)
     implicit none
-    type(adjac_complex), intent(out) :: x
+    type(adjac_complex), intent(inout) :: x
     double complex, intent(in) :: y
     x%re = dble(y)
     x%im = aimag(y)
@@ -927,7 +1042,7 @@ contains
 
   {{pure_elemental}} subroutine assign_ba(x, y)
     implicit none
-    type(adjac_complex), intent(out) :: x
+    type(adjac_complex), intent(inout) :: x
     type({{TYPE}}), intent(in) :: y
     x%re = y
     x%im = 0d0
@@ -946,8 +1061,7 @@ contains
     type({{TYPE}}) :: z
 
     z%value = x%value + y%value
-    z%n = x%n + y%n
-    call alloc_mem_{{CHR}}(z%n, z%j)
+    call alloc_mem_{{CHR}}(z, x%n + y%n)
     call sum_taylor({{CAST}}(1d0), {{CAST}}(1d0), x, y, z)
   end function add_{{CHR}}{{CHR}}
 
@@ -958,9 +1072,8 @@ contains
     {{FTYPE2}}, intent(in) :: y
     type({{TYPE}}) :: z
     z%value = x%value + y
-    z%j = x%j
-    z%n = x%n
     z%vmul = x%vmul
+    call link_mem_{{CHR}}(z, x)
   end function add_{{CHR}}{{CHR2}}
 
   {{pure_elemental}} function add_{{CHR2}}{{CHR}}(x, y) result(z)
@@ -1057,6 +1170,26 @@ contains
   {{endif}}
 
   !!
+  !! operator(+), unary
+  !!
+
+  {{pure_elemental}} function pos_{{CHR}}(x) result(z)
+    implicit none
+    type({{TYPE}}), intent(in) :: x
+    type({{TYPE}}) :: z
+    z = x
+  end function pos_{{CHR}}
+
+  {{if TYPE == "adjac_double"}}
+  {{pure_elemental}} function pos_b(x) result(z)
+    implicit none
+    type(adjac_complex), intent(in) :: x
+    type(adjac_complex) :: z
+    z = x
+  end function pos_b
+  {{endif}}
+
+  !!
   !! operator(-)
   !!
 
@@ -1068,8 +1201,7 @@ contains
     type({{TYPE}}) :: z
 
     z%value = x%value - y%value
-    z%n = x%n + y%n
-    call alloc_mem_{{CHR}}(z%n, z%j)
+    call alloc_mem_{{CHR}}(z, x%n + y%n)
     call sum_taylor({{CAST}}(1d0), {{CAST}}(-1d0), x, y, z)
   end function sub_{{CHR}}{{CHR}}
 
@@ -1080,9 +1212,8 @@ contains
     {{FTYPE2}}, intent(in) :: y
     type({{TYPE}}) :: z
     z%value = x%value - y
-    z%j = x%j
-    z%n = x%n
     z%vmul = x%vmul
+    call link_mem_{{CHR}}(z, x)
   end function sub_{{CHR}}{{CHR2}}
 
   {{pure_elemental}} function sub_{{CHR2}}{{CHR}}(x, y) result(z)
@@ -1091,9 +1222,8 @@ contains
     type({{TYPE}}), intent(in) :: y
     type({{TYPE}}) :: z
     z%value = x - y%value
-    z%j = y%j
-    z%n = y%n
     z%vmul = -y%vmul
+    call link_mem_{{CHR}}(z, y)
   end function sub_{{CHR2}}{{CHR}}
   {{endfor}}
 
@@ -1212,8 +1342,7 @@ contains
     type({{TYPE}}) :: z
 
     z%value = x%value * y%value
-    z%n = x%n + y%n
-    call alloc_mem_{{CHR}}(z%n, z%j)
+    call alloc_mem_{{CHR}}(z, x%n + y%n)
     call sum_taylor(y%value, x%value, x, y, z)
   end function mul_{{CHR}}{{CHR}}
 
@@ -1225,14 +1354,11 @@ contains
     type({{TYPE}}) :: z
     if (y == 0) then
        z%value = 0
-       z%n = 0
-       z%j = 1
        z%vmul = 0
     else
        z%value = x%value * y
-       z%j = x%j
-       z%n = x%n
        z%vmul = x%vmul * y
+       call link_mem_{{CHR}}(z, x)
     end if
   end function mul_{{CHR}}{{CHR2}}
 
@@ -1339,8 +1465,7 @@ contains
     type({{TYPE}}), intent(in) :: x, y
     type({{TYPE}}) :: z
     z%value = x%value / y%value
-    z%n = x%n + y%n
-    call alloc_mem_{{CHR}}(z%n, z%j)
+    call alloc_mem_{{CHR}}(z, x%n + y%n)
     call sum_taylor(1d0/y%value, -x%value/(y%value**2), x, y, z)
   end function div_{{CHR}}{{CHR}}
 
@@ -1692,6 +1817,7 @@ contains
   {{endif}}
 {{endfor}}
 
+{{if not USE_ALLOCATABLE}}
   {{elemental_versions('assign', 'assign', ops='ai ad bi bd bz ba qi qd qz'.split())}}
   {{elemental_versions('add', 'binop')}}
   {{elemental_versions('sub', 'binop')}}
@@ -1702,9 +1828,11 @@ contains
   {{elemental_versions('aimag', 'unop', ops=['b'])}}
   {{elemental_versions('conjg', 'unop', ops=['b'])}}
   {{elemental_versions('neg', 'unop', ops=['a', 'b', 'q'])}}
+  {{elemental_versions('pos', 'unop', ops=['a', 'b', 'q'])}}
   {{elemental_versions('exp', 'unop', ops=['a', 'b', 'q'])}}
   {{elemental_versions('sin', 'unop', ops=['a', 'b', 'q'])}}
   {{elemental_versions('cos', 'unop', ops=['a', 'b', 'q'])}}
   {{elemental_versions('log', 'unop', ops=['a', 'b', 'q'])}}
+{{endif}}
 
 end module adjac

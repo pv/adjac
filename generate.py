@@ -7,20 +7,31 @@ import argparse
 import tempita
 
 
+def define_symbol(string):
+    try:
+        key, value = string.split('=', 1)
+        return key, eval(value)
+    except:
+        raise argparse.ArgumentError("%r is not of the form key=value" % (string,))
+
+
 def main():
     p = argparse.ArgumentParser(usage=__doc__.strip())
+    p.add_argument('-D', '--define', type=define_symbol, action="append", default=[],
+                   metavar="NAME=VALUE", help="define a symbol in template")
     p.add_argument('src')
     p.add_argument('dst')
     args = p.parse_args()
 
-    process(args.src, args.dst)
+    defines = dict(args.define)
+    process(args.src, args.dst, defines)
 
 
-def process(src, dst):
+def process(src, dst, defines):
     with open(src, 'rb') as f:
         text = f.read()
         tmpl = tempita.Template(text)
-        out = tmpl.substitute()
+        out = tmpl.substitute(defines)
 
     src = os.path.basename(src)
     with open(dst, 'wb') as f:

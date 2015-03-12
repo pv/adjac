@@ -38,14 +38,21 @@
 module adjac
   private
 
+  ! NOTE: we would like to use derived type finalizers for memory
+  ! deallocation.  However, as of 2015-03-12, these are not fully
+  ! implemented in gfortran, and will not be called e.g. on function
+  ! returns that the code here extensively relies on.
+
   type, public :: adjac_double
      double precision :: value, vmul
-     integer :: j, n
+     integer :: n = 0
+     integer :: j = 1
   end type adjac_double
 
   type, public :: adjac_complexan
      double complex :: value, vmul
-     integer :: j, n
+     integer :: n = 0
+     integer :: j = 1
   end type adjac_complexan
 
   type, public :: adjac_complex
@@ -63,7 +70,6 @@ module adjac
      module procedure assign_ai, assign_ad
      module procedure assign_bi, assign_bd, assign_bz, assign_ba
      module procedure assign_qi, assign_qd, assign_qz
-
      module procedure assign_ai_1, assign_ad_1
      module procedure assign_bi_1, assign_bd_1, assign_bz_1, assign_ba_1
      module procedure assign_qi_1, assign_qd_1, assign_qz_1
@@ -398,6 +404,11 @@ module adjac
      module procedure add_za_40
      module procedure add_zb_40
      module procedure add_zq_40
+     module procedure pos_a, pos_b, pos_q
+     module procedure pos_a_1, pos_b_1, pos_q_1
+     module procedure pos_a_2, pos_b_2, pos_q_2
+     module procedure pos_a_3, pos_b_3, pos_q_3
+     module procedure pos_a_4, pos_b_4, pos_q_4
   end interface
 
   public operator(-)
@@ -1450,7 +1461,6 @@ contains
   subroutine adjac_reset(product_mode)
     implicit none
     logical, optional, intent(in) :: product_mode
-
     free_a = 1
     free_q = 1
 
@@ -1484,20 +1494,18 @@ contains
     end if
   end subroutine adjac_free
 
-  subroutine alloc_mem_a(n, j)
+   subroutine alloc_mem_a(x, n)
     implicit none
+    type(adjac_double), intent(inout) :: x
     integer, intent(in) :: n
-    integer, intent(out) :: j
 
     integer, dimension(:), allocatable :: itmp
     double precision, dimension(:), allocatable :: tmp
     integer :: sz
 
     if (jac_product_mode) then
-       j = -1
        return
     end if
-
     if (.not.allocated(imem_a)) then
        sz = 0
     else
@@ -1514,9 +1522,25 @@ contains
        call move_alloc(tmp, vmem_a)
     end if
 
-    j = free_a
+    x%j = free_a
+    x%n = n
     free_a = free_a + n
   end subroutine alloc_mem_a
+
+   subroutine link_mem_a(dst, src)
+    implicit none
+    type(adjac_double), intent(inout) :: dst
+    type(adjac_double), intent(in) :: src
+    dst%n = src%n
+    dst%j = src%j
+  end subroutine link_mem_a
+
+   subroutine free_mem_a(x)
+    implicit none
+    type(adjac_double), intent(inout) :: x
+    x%n = 0
+    x%j = 1
+  end subroutine free_mem_a
 
   subroutine set_independent_a(x, xval, j, dx)
     implicit none
@@ -1525,19 +1549,15 @@ contains
     double precision, optional, intent(in) :: dx
     integer, intent(in) :: j
 
-    call alloc_mem_a(1, x%j)
-
-    x%n = 1
     x%value = xval
     if (jac_product_mode) then
        if (.not.present(dx)) then
           call fatal_error('no dx given to adjac_set_independent when jacobian product mode is active')
        end if
        x%vmul = dx
-       x%n = 0
-       x%j = -1
     else
        x%vmul = 1
+       call alloc_mem_a(x, 1)
        imem_a(x%j) = j
        vmem_a(x%j) = 1
     end if
@@ -1681,7 +1701,7 @@ contains
     type(adjac_double), intent(inout) :: c
 
     interface
-       subroutine sparse_vector_sum_a(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
+        subroutine sparse_vector_sum_a(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
             bind(C,name="sparse_vector_sum_a")
          use iso_c_binding
          integer(kind=c_int), intent(in) :: na, nb, ia(*), ib(*)
@@ -1713,32 +1733,30 @@ contains
 
    subroutine assign_ai(x, y)
     implicit none
-    type(adjac_double), intent(out) :: x
+    type(adjac_double), intent(inout) :: x
     integer, intent(in) :: y
+    call free_mem_a(x)
     x%value = y
-    x%n = 0
-    x%j = 1
     x%vmul = 0
   end subroutine assign_ai
    subroutine assign_ad(x, y)
     implicit none
-    type(adjac_double), intent(out) :: x
+    type(adjac_double), intent(inout) :: x
     double precision, intent(in) :: y
+    call free_mem_a(x)
     x%value = y
-    x%n = 0
-    x%j = 1
     x%vmul = 0
   end subroutine assign_ad
    subroutine assign_bi(x, y)
     implicit none
-    type(adjac_complex), intent(out) :: x
+    type(adjac_complex), intent(inout) :: x
     integer, intent(in) :: y
     x%re = dble(y)
     x%im = 0d0
   end subroutine assign_bi
    subroutine assign_bd(x, y)
     implicit none
-    type(adjac_complex), intent(out) :: x
+    type(adjac_complex), intent(inout) :: x
     double precision, intent(in) :: y
     x%re = dble(y)
     x%im = 0d0
@@ -1746,7 +1764,7 @@ contains
 
    subroutine assign_bz(x, y)
     implicit none
-    type(adjac_complex), intent(out) :: x
+    type(adjac_complex), intent(inout) :: x
     double complex, intent(in) :: y
     x%re = dble(y)
     x%im = aimag(y)
@@ -1754,7 +1772,7 @@ contains
 
    subroutine assign_ba(x, y)
     implicit none
-    type(adjac_complex), intent(out) :: x
+    type(adjac_complex), intent(inout) :: x
     type(adjac_double), intent(in) :: y
     x%re = y
     x%im = 0d0
@@ -1772,8 +1790,7 @@ contains
     type(adjac_double) :: z
 
     z%value = x%value + y%value
-    z%n = x%n + y%n
-    call alloc_mem_a(z%n, z%j)
+    call alloc_mem_a(z, x%n + y%n)
     call sum_taylor(dble(1d0), dble(1d0), x, y, z)
   end function add_aa
 
@@ -1783,9 +1800,8 @@ contains
     integer, intent(in) :: y
     type(adjac_double) :: z
     z%value = x%value + y
-    z%j = x%j
-    z%n = x%n
     z%vmul = x%vmul
+    call link_mem_a(z, x)
   end function add_ai
 
    function add_ia(x, y) result(z)
@@ -1801,9 +1817,8 @@ contains
     double precision, intent(in) :: y
     type(adjac_double) :: z
     z%value = x%value + y
-    z%j = x%j
-    z%n = x%n
     z%vmul = x%vmul
+    call link_mem_a(z, x)
   end function add_ad
 
    function add_da(x, y) result(z)
@@ -1908,6 +1923,24 @@ contains
   end function add_db
 
   !!
+  !! operator(+), unary
+  !!
+
+   function pos_a(x) result(z)
+    implicit none
+    type(adjac_double), intent(in) :: x
+    type(adjac_double) :: z
+    z = x
+  end function pos_a
+
+   function pos_b(x) result(z)
+    implicit none
+    type(adjac_complex), intent(in) :: x
+    type(adjac_complex) :: z
+    z = x
+  end function pos_b
+
+  !!
   !! operator(-)
   !!
 
@@ -1919,8 +1952,7 @@ contains
     type(adjac_double) :: z
 
     z%value = x%value - y%value
-    z%n = x%n + y%n
-    call alloc_mem_a(z%n, z%j)
+    call alloc_mem_a(z, x%n + y%n)
     call sum_taylor(dble(1d0), dble(-1d0), x, y, z)
   end function sub_aa
 
@@ -1930,9 +1962,8 @@ contains
     integer, intent(in) :: y
     type(adjac_double) :: z
     z%value = x%value - y
-    z%j = x%j
-    z%n = x%n
     z%vmul = x%vmul
+    call link_mem_a(z, x)
   end function sub_ai
 
    function sub_ia(x, y) result(z)
@@ -1941,9 +1972,8 @@ contains
     type(adjac_double), intent(in) :: y
     type(adjac_double) :: z
     z%value = x - y%value
-    z%j = y%j
-    z%n = y%n
     z%vmul = -y%vmul
+    call link_mem_a(z, y)
   end function sub_ia
    function sub_ad(x, y) result(z)
     implicit none
@@ -1951,9 +1981,8 @@ contains
     double precision, intent(in) :: y
     type(adjac_double) :: z
     z%value = x%value - y
-    z%j = x%j
-    z%n = x%n
     z%vmul = x%vmul
+    call link_mem_a(z, x)
   end function sub_ad
 
    function sub_da(x, y) result(z)
@@ -1962,9 +1991,8 @@ contains
     type(adjac_double), intent(in) :: y
     type(adjac_double) :: z
     z%value = x - y%value
-    z%j = y%j
-    z%n = y%n
     z%vmul = -y%vmul
+    call link_mem_a(z, y)
   end function sub_da
    function sub_az(x, y) result(z)
     implicit none
@@ -2090,8 +2118,7 @@ contains
     type(adjac_double) :: z
 
     z%value = x%value * y%value
-    z%n = x%n + y%n
-    call alloc_mem_a(z%n, z%j)
+    call alloc_mem_a(z, x%n + y%n)
     call sum_taylor(y%value, x%value, x, y, z)
   end function mul_aa
 
@@ -2102,14 +2129,11 @@ contains
     type(adjac_double) :: z
     if (y == 0) then
        z%value = 0
-       z%n = 0
-       z%j = 1
        z%vmul = 0
     else
        z%value = x%value * y
-       z%j = x%j
-       z%n = x%n
        z%vmul = x%vmul * y
+       call link_mem_a(z, x)
     end if
   end function mul_ai
 
@@ -2127,14 +2151,11 @@ contains
     type(adjac_double) :: z
     if (y == 0) then
        z%value = 0
-       z%n = 0
-       z%j = 1
        z%vmul = 0
     else
        z%value = x%value * y
-       z%j = x%j
-       z%n = x%n
        z%vmul = x%vmul * y
+       call link_mem_a(z, x)
     end if
   end function mul_ad
 
@@ -2250,8 +2271,7 @@ contains
     type(adjac_double), intent(in) :: x, y
     type(adjac_double) :: z
     z%value = x%value / y%value
-    z%n = x%n + y%n
-    call alloc_mem_a(z%n, z%j)
+    call alloc_mem_a(z, x%n + y%n)
     call sum_taylor(1d0/y%value, -x%value/(y%value**2), x, y, z)
   end function div_aa
 
@@ -2730,20 +2750,18 @@ contains
     z%im%value = aimag(v)
   end function log_b
 
-  subroutine alloc_mem_q(n, j)
+   subroutine alloc_mem_q(x, n)
     implicit none
+    type(adjac_complexan), intent(inout) :: x
     integer, intent(in) :: n
-    integer, intent(out) :: j
 
     integer, dimension(:), allocatable :: itmp
     double complex, dimension(:), allocatable :: tmp
     integer :: sz
 
     if (jac_product_mode) then
-       j = -1
        return
     end if
-
     if (.not.allocated(imem_q)) then
        sz = 0
     else
@@ -2760,9 +2778,25 @@ contains
        call move_alloc(tmp, vmem_q)
     end if
 
-    j = free_q
+    x%j = free_q
+    x%n = n
     free_q = free_q + n
   end subroutine alloc_mem_q
+
+   subroutine link_mem_q(dst, src)
+    implicit none
+    type(adjac_complexan), intent(inout) :: dst
+    type(adjac_complexan), intent(in) :: src
+    dst%n = src%n
+    dst%j = src%j
+  end subroutine link_mem_q
+
+   subroutine free_mem_q(x)
+    implicit none
+    type(adjac_complexan), intent(inout) :: x
+    x%n = 0
+    x%j = 1
+  end subroutine free_mem_q
 
   subroutine set_independent_q(x, xval, j, dx)
     implicit none
@@ -2771,19 +2805,15 @@ contains
     double complex, optional, intent(in) :: dx
     integer, intent(in) :: j
 
-    call alloc_mem_q(1, x%j)
-
-    x%n = 1
     x%value = xval
     if (jac_product_mode) then
        if (.not.present(dx)) then
           call fatal_error('no dx given to adjac_set_independent when jacobian product mode is active')
        end if
        x%vmul = dx
-       x%n = 0
-       x%j = -1
     else
        x%vmul = 1
+       call alloc_mem_q(x, 1)
        imem_q(x%j) = j
        vmem_q(x%j) = 1
     end if
@@ -2927,7 +2957,7 @@ contains
     type(adjac_complexan), intent(inout) :: c
 
     interface
-       subroutine sparse_vector_sum_q(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
+        subroutine sparse_vector_sum_q(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
             bind(C,name="sparse_vector_sum_q")
          use iso_c_binding
          integer(kind=c_int), intent(in) :: na, nb, ia(*), ib(*)
@@ -2959,29 +2989,26 @@ contains
 
    subroutine assign_qi(x, y)
     implicit none
-    type(adjac_complexan), intent(out) :: x
+    type(adjac_complexan), intent(inout) :: x
     integer, intent(in) :: y
+    call free_mem_q(x)
     x%value = y
-    x%n = 0
-    x%j = 1
     x%vmul = 0
   end subroutine assign_qi
    subroutine assign_qd(x, y)
     implicit none
-    type(adjac_complexan), intent(out) :: x
+    type(adjac_complexan), intent(inout) :: x
     double precision, intent(in) :: y
+    call free_mem_q(x)
     x%value = y
-    x%n = 0
-    x%j = 1
     x%vmul = 0
   end subroutine assign_qd
    subroutine assign_qz(x, y)
     implicit none
-    type(adjac_complexan), intent(out) :: x
+    type(adjac_complexan), intent(inout) :: x
     double complex, intent(in) :: y
+    call free_mem_q(x)
     x%value = y
-    x%n = 0
-    x%j = 1
     x%vmul = 0
   end subroutine assign_qz
 
@@ -2997,8 +3024,7 @@ contains
     type(adjac_complexan) :: z
 
     z%value = x%value + y%value
-    z%n = x%n + y%n
-    call alloc_mem_q(z%n, z%j)
+    call alloc_mem_q(z, x%n + y%n)
     call sum_taylor(dcmplx(1d0), dcmplx(1d0), x, y, z)
   end function add_qq
 
@@ -3008,9 +3034,8 @@ contains
     integer, intent(in) :: y
     type(adjac_complexan) :: z
     z%value = x%value + y
-    z%j = x%j
-    z%n = x%n
     z%vmul = x%vmul
+    call link_mem_q(z, x)
   end function add_qi
 
    function add_iq(x, y) result(z)
@@ -3026,9 +3051,8 @@ contains
     double precision, intent(in) :: y
     type(adjac_complexan) :: z
     z%value = x%value + y
-    z%j = x%j
-    z%n = x%n
     z%vmul = x%vmul
+    call link_mem_q(z, x)
   end function add_qd
 
    function add_dq(x, y) result(z)
@@ -3044,9 +3068,8 @@ contains
     double complex, intent(in) :: y
     type(adjac_complexan) :: z
     z%value = x%value + y
-    z%j = x%j
-    z%n = x%n
     z%vmul = x%vmul
+    call link_mem_q(z, x)
   end function add_qz
 
    function add_zq(x, y) result(z)
@@ -3056,6 +3079,18 @@ contains
     type(adjac_complexan) :: z
     z = y + x
   end function add_zq
+
+  !!
+  !! operator(+), unary
+  !!
+
+   function pos_q(x) result(z)
+    implicit none
+    type(adjac_complexan), intent(in) :: x
+    type(adjac_complexan) :: z
+    z = x
+  end function pos_q
+
 
   !!
   !! operator(-)
@@ -3069,8 +3104,7 @@ contains
     type(adjac_complexan) :: z
 
     z%value = x%value - y%value
-    z%n = x%n + y%n
-    call alloc_mem_q(z%n, z%j)
+    call alloc_mem_q(z, x%n + y%n)
     call sum_taylor(dcmplx(1d0), dcmplx(-1d0), x, y, z)
   end function sub_qq
 
@@ -3080,9 +3114,8 @@ contains
     integer, intent(in) :: y
     type(adjac_complexan) :: z
     z%value = x%value - y
-    z%j = x%j
-    z%n = x%n
     z%vmul = x%vmul
+    call link_mem_q(z, x)
   end function sub_qi
 
    function sub_iq(x, y) result(z)
@@ -3091,9 +3124,8 @@ contains
     type(adjac_complexan), intent(in) :: y
     type(adjac_complexan) :: z
     z%value = x - y%value
-    z%j = y%j
-    z%n = y%n
     z%vmul = -y%vmul
+    call link_mem_q(z, y)
   end function sub_iq
    function sub_qd(x, y) result(z)
     implicit none
@@ -3101,9 +3133,8 @@ contains
     double precision, intent(in) :: y
     type(adjac_complexan) :: z
     z%value = x%value - y
-    z%j = x%j
-    z%n = x%n
     z%vmul = x%vmul
+    call link_mem_q(z, x)
   end function sub_qd
 
    function sub_dq(x, y) result(z)
@@ -3112,9 +3143,8 @@ contains
     type(adjac_complexan), intent(in) :: y
     type(adjac_complexan) :: z
     z%value = x - y%value
-    z%j = y%j
-    z%n = y%n
     z%vmul = -y%vmul
+    call link_mem_q(z, y)
   end function sub_dq
    function sub_qz(x, y) result(z)
     implicit none
@@ -3122,9 +3152,8 @@ contains
     double complex, intent(in) :: y
     type(adjac_complexan) :: z
     z%value = x%value - y
-    z%j = x%j
-    z%n = x%n
     z%vmul = x%vmul
+    call link_mem_q(z, x)
   end function sub_qz
 
    function sub_zq(x, y) result(z)
@@ -3133,9 +3162,8 @@ contains
     type(adjac_complexan), intent(in) :: y
     type(adjac_complexan) :: z
     z%value = x - y%value
-    z%j = y%j
-    z%n = y%n
     z%vmul = -y%vmul
+    call link_mem_q(z, y)
   end function sub_zq
 
   !!
@@ -3162,8 +3190,7 @@ contains
     type(adjac_complexan) :: z
 
     z%value = x%value * y%value
-    z%n = x%n + y%n
-    call alloc_mem_q(z%n, z%j)
+    call alloc_mem_q(z, x%n + y%n)
     call sum_taylor(y%value, x%value, x, y, z)
   end function mul_qq
 
@@ -3174,14 +3201,11 @@ contains
     type(adjac_complexan) :: z
     if (y == 0) then
        z%value = 0
-       z%n = 0
-       z%j = 1
        z%vmul = 0
     else
        z%value = x%value * y
-       z%j = x%j
-       z%n = x%n
        z%vmul = x%vmul * y
+       call link_mem_q(z, x)
     end if
   end function mul_qi
 
@@ -3199,14 +3223,11 @@ contains
     type(adjac_complexan) :: z
     if (y == 0) then
        z%value = 0
-       z%n = 0
-       z%j = 1
        z%vmul = 0
     else
        z%value = x%value * y
-       z%j = x%j
-       z%n = x%n
        z%vmul = x%vmul * y
+       call link_mem_q(z, x)
     end if
   end function mul_qd
 
@@ -3224,14 +3245,11 @@ contains
     type(adjac_complexan) :: z
     if (y == 0) then
        z%value = 0
-       z%n = 0
-       z%j = 1
        z%vmul = 0
     else
        z%value = x%value * y
-       z%j = x%j
-       z%n = x%n
        z%vmul = x%vmul * y
+       call link_mem_q(z, x)
     end if
   end function mul_qz
 
@@ -3254,8 +3272,7 @@ contains
     type(adjac_complexan), intent(in) :: x, y
     type(adjac_complexan) :: z
     z%value = x%value / y%value
-    z%n = x%n + y%n
-    call alloc_mem_q(z%n, z%j)
+    call alloc_mem_q(z, x%n + y%n)
     call sum_taylor(1d0/y%value, -x%value/(y%value**2), x, y, z)
   end function div_qq
 
@@ -3573,7 +3590,6 @@ contains
     z = dv*x
     z%value = v
   end function log_q
-
 
   
     subroutine assign_ai_1(c, a)
@@ -20320,6 +20336,154 @@ contains
         end do
       end do
     end function neg_q_4
+    
+  
+    function pos_a_1(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:), intent(in) :: a
+      type(adjac_double), dimension(size(a)) :: c
+      integer :: i
+      do i = 1, size(a)
+        c(i) = pos_a(a(i))
+      end do
+    end function pos_a_1
+    function pos_a_2(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2)) :: c
+      integer :: i, j
+      do j = 1, size(a,2)
+        do i = 1, size(a,1)
+          c(i,j) = pos_a(a(i,j))
+        end do
+      end do
+    end function pos_a_2
+    function pos_a_3(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = pos_a(a(i,j,k))
+          end do
+        end do
+      end do
+    end function pos_a_3
+    function pos_a_4(a) result(c)
+      implicit none
+      type(adjac_double), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_double), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = pos_a(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function pos_a_4
+    
+    function pos_b_1(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:), intent(in) :: a
+      type(adjac_complex), dimension(size(a)) :: c
+      integer :: i
+      do i = 1, size(a)
+        c(i) = pos_b(a(i))
+      end do
+    end function pos_b_1
+    function pos_b_2(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2)) :: c
+      integer :: i, j
+      do j = 1, size(a,2)
+        do i = 1, size(a,1)
+          c(i,j) = pos_b(a(i,j))
+        end do
+      end do
+    end function pos_b_2
+    function pos_b_3(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = pos_b(a(i,j,k))
+          end do
+        end do
+      end do
+    end function pos_b_3
+    function pos_b_4(a) result(c)
+      implicit none
+      type(adjac_complex), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complex), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = pos_b(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function pos_b_4
+    
+    function pos_q_1(a) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a)) :: c
+      integer :: i
+      do i = 1, size(a)
+        c(i) = pos_q(a(i))
+      end do
+    end function pos_q_1
+    function pos_q_2(a) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2)) :: c
+      integer :: i, j
+      do j = 1, size(a,2)
+        do i = 1, size(a,1)
+          c(i,j) = pos_q(a(i,j))
+        end do
+      end do
+    end function pos_q_2
+    function pos_q_3(a) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3)) :: c
+      integer :: i, j, k
+      do k = 1, size(a,3)
+        do j = 1, size(a,2)
+          do i = 1, size(a,1)
+            c(i,j,k) = pos_q(a(i,j,k))
+          end do
+        end do
+      end do
+    end function pos_q_3
+    function pos_q_4(a) result(c)
+      implicit none
+      type(adjac_complexan), dimension(:,:,:,:), intent(in) :: a
+      type(adjac_complexan), dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
+      integer :: i, j, k, l
+      do l = 1, size(a,4)
+        do k = 1, size(a,3)
+          do j = 1, size(a,2)
+            do i = 1, size(a,1)
+              c(i,j,k,l) = pos_q(a(i,j,k,l))
+            end do
+          end do
+        end do
+      end do
+    end function pos_q_4
     
   
     function exp_a_1(a) result(c)
