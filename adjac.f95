@@ -1493,7 +1493,6 @@ contains
        deallocate(vmem_q)
     end if
   end subroutine adjac_free
-
    subroutine alloc_mem_a(x, n)
     implicit none
     type(adjac_double), intent(inout) :: x
@@ -1615,9 +1614,12 @@ contains
     end if
   end subroutine get_value_many_a
 
+
   function get_nnz_a(y) result(nnz)
+    implicit none
     type(adjac_double), dimension(:), intent(in) :: y
     integer :: nnz
+    integer :: i
     nnz = 0
     do i = 1, size(y,1)
        nnz = nnz + y(i)%n
@@ -1628,7 +1630,6 @@ contains
     implicit none
     type(adjac_double), dimension(:), intent(inout) :: y
     double precision, dimension(:,:), intent(out) :: jac_dense
-
     integer :: i, p
 
     if (jac_product_mode) then
@@ -1650,7 +1651,6 @@ contains
     type(adjac_double), dimension(:), intent(inout) :: y
     double precision, dimension(:), intent(out) :: jac_val
     integer, dimension(:), intent(out) :: jac_i, jac_j
-
     integer :: i, k
 
     if (jac_product_mode) then
@@ -1671,9 +1671,8 @@ contains
   subroutine get_csr_jacobian_a(y, jac_val, jac_indices, jac_indptr)
     implicit none
     type(adjac_double), dimension(:), intent(inout) :: y
-    double precision, dimension(:), intent(out) :: jac_val
-    integer, dimension(:), intent(out) :: jac_indices, jac_indptr
-
+    double precision, dimension(*), intent(out) :: jac_val
+    integer, dimension(*), intent(out) :: jac_indices, jac_indptr
     integer :: i, k
 
     if (jac_product_mode) then
@@ -2749,7 +2748,6 @@ contains
     z%re%value = dble(v)
     z%im%value = aimag(v)
   end function log_b
-
    subroutine alloc_mem_q(x, n)
     implicit none
     type(adjac_complexan), intent(inout) :: x
@@ -2871,9 +2869,12 @@ contains
     end if
   end subroutine get_value_many_q
 
+
   function get_nnz_q(y) result(nnz)
+    implicit none
     type(adjac_complexan), dimension(:), intent(in) :: y
     integer :: nnz
+    integer :: i
     nnz = 0
     do i = 1, size(y,1)
        nnz = nnz + y(i)%n
@@ -2884,7 +2885,6 @@ contains
     implicit none
     type(adjac_complexan), dimension(:), intent(inout) :: y
     double complex, dimension(:,:), intent(out) :: jac_dense
-
     integer :: i, p
 
     if (jac_product_mode) then
@@ -2906,7 +2906,6 @@ contains
     type(adjac_complexan), dimension(:), intent(inout) :: y
     double complex, dimension(:), intent(out) :: jac_val
     integer, dimension(:), intent(out) :: jac_i, jac_j
-
     integer :: i, k
 
     if (jac_product_mode) then
@@ -2927,9 +2926,8 @@ contains
   subroutine get_csr_jacobian_q(y, jac_val, jac_indices, jac_indptr)
     implicit none
     type(adjac_complexan), dimension(:), intent(inout) :: y
-    double complex, dimension(:), intent(out) :: jac_val
-    integer, dimension(:), intent(out) :: jac_indices, jac_indptr
-
+    double complex, dimension(*), intent(out) :: jac_val
+    integer, dimension(*), intent(out) :: jac_indices, jac_indptr
     integer :: i, k
 
     if (jac_product_mode) then
