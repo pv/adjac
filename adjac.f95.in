@@ -977,6 +977,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
 }}
 
   function get_nnz_{{CHR}}(y) result(nnz)
+    implicit none
     type({{TYPE}}), dimension(:), intent(in) :: y
     integer :: nnz
 {{if USE_TAPE}}
@@ -993,6 +994,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
                    "", "")}}
     end do
 {{else}}
+    integer :: i
     nnz = 0
     do i = 1, size(y,1)
        nnz = nnz + y(i)%n
@@ -1239,6 +1241,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
        call sparse_vector_sum_{{CHR}}(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
             a%i, b%i, c%i, &
             a%v, b%v, c%v)
+       c%vmul = 1
 {{elif USE_TAPE}}
        if (a%vmul == 0 .or. a%i == 0) then
           c%vmul = betap * b%vmul
@@ -1261,8 +1264,8 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
        call sparse_vector_sum_{{CHR}}(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
             imem_{{CHR}}(a%j), imem_{{CHR}}(b%j), imem_{{CHR}}(c%j), &
             vmem_{{CHR}}(a%j), vmem_{{CHR}}(b%j), vmem_{{CHR}}(c%j))
-{{endif}}
        c%vmul = 1
+{{endif}}
     end if
   end subroutine sum_taylor_{{CHR}}
 

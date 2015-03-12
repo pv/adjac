@@ -138,6 +138,6 @@ compare_numdiff: examples/bench_simple examples/bench_simple_numdiff
 
 
 clean:
-	rm -f $(EXAMPLES) $(TESTS) tests/*.out *.o adjac.f95 *.mod $(CXXEXAMPLES)
+	rm -f $(EXAMPLES) $(TESTS) tests/*.out *.o adjac.f95 adjac_pure.f95 adjac_tape.f95 *.mod $(CXXEXAMPLES)
 
 .PHONY: all test examples compare_adolc compare_adept
