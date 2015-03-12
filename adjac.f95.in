@@ -38,6 +38,7 @@ module adjac
   private
 
 {{default USE_ALLOCATABLE = False}}
+{{default USE_TAPE = False}}
 
   ! NOTE: we would like to use derived type finalizers for memory
   ! deallocation.  However, as of 2015-03-12, these are not fully
@@ -46,22 +47,28 @@ module adjac
 
   type, public :: adjac_double
      double precision :: value, vmul
-     integer :: n = 0
 {{if USE_ALLOCATABLE}}
+     integer :: n = 0
      double precision, dimension(:), allocatable :: v
      integer, dimension(:), allocatable :: i
+{{elif USE_TAPE}}
+     integer :: i = 0
 {{else}}
+     integer :: n = 0
      integer :: j = 1
 {{endif}}
   end type adjac_double
 
   type, public :: adjac_complexan
      double complex :: value, vmul
-     integer :: n = 0
 {{if USE_ALLOCATABLE}}
+     integer :: n = 0
      double complex, dimension(:), allocatable :: v
      integer, dimension(:), allocatable :: i
+{{elif USE_TAPE}}
+     integer :: i = 0
 {{else}}
+     integer :: n = 0
      integer :: j = 1
 {{endif}}
   end type adjac_complexan
@@ -72,7 +79,21 @@ module adjac
 
   logical :: jac_product_mode = .false.
 
-{{if not USE_ALLOCATABLE}}
+{{if USE_ALLOCATABLE}}
+{{elif USE_TAPE}}
+  ! Differential binary tree
+  !
+  ! if (sum_map(1 + 2*(i-1)) .ne. 0) then
+  !     D[i] = sum_mul(1+2*(i-1)) * D[sum_map(1+2*(i-1))] + sum_mul(2+2*(i-1)) * D[sum_map(2+2*(i-1))]
+  ! else
+  !     D[i] = D[i]
+  !
+  integer, parameter :: block_size = 4
+  integer :: free_a = 1, free_q = 1
+  integer, dimension(:), allocatable :: sum_map_a, sum_map_q
+  double precision, dimension(:), allocatable :: sum_mul_a
+  double complex, dimension(:), allocatable :: sum_mul_q
+{{else}}
   integer :: free_a = 1, free_q = 1
   integer, dimension(:), allocatable :: imem_a, imem_q
   double precision, dimension(:), allocatable :: vmem_a
@@ -682,7 +703,11 @@ contains
        jac_product_mode = product_mode
     end if
 
-{{if not USE_ALLOCATABLE}}
+{{if USE_ALLOCATABLE}}
+{{elif USE_TAPE}}
+    free_a = 1
+    free_q = 1
+{{else}}
     free_a = 1
     free_q = 1
 
@@ -701,7 +726,19 @@ contains
 
   subroutine adjac_free()
     implicit none
-{{if not USE_ALLOCATABLE}}
+{{if USE_ALLOCATABLE}}
+{{elif USE_TAPE}}
+    free_a = 1
+    free_q = 1
+    if (allocated(sum_map_a)) then
+       deallocate(sum_map_a)
+       deallocate(sum_mul_a)
+    end if
+    if (allocated(sum_map_q)) then
+       deallocate(sum_map_q)
+       deallocate(sum_mul_q)
+    end if
+{{else}}
     free_a = 1
     free_q = 1
     if (allocated(imem_a)) then
@@ -721,10 +758,16 @@ contains
                                                                                                 ('double precision', 'd'), 
                                                                                                 ('double complex', 'z')])]}}
 
+{{if not USE_TAPE}}
   {{pure}} subroutine alloc_mem_{{CHR}}(x, n)
+{{else}}
+  {{pure}} subroutine alloc_mem_{{CHR}}(x)
+{{endif}}
     implicit none
     type({{TYPE}}), intent(inout) :: x
+{{if not USE_TAPE}}
     integer, intent(in) :: n
+{{endif}}
 
     integer, dimension(:), allocatable :: itmp
     {{FTYPE}}, dimension(:), allocatable :: tmp
@@ -737,6 +780,30 @@ contains
 {{if USE_ALLOCATABLE}}
     x%n = n
     allocate(x%i(n), x%v(n))
+{{elif USE_TAPE}}
+
+    if (.not.allocated(sum_map_{{CHR}})) then
+       sz = 0
+    else
+       sz = size(sum_map_{{CHR}})
+    end if
+
+    if (sz < 2*free_{{CHR}} + 1) then
+       ! Enlarge work space
+       if (allocated(sum_map_{{CHR}})) then
+          sz = sz + 2*free_{{CHR}} + 1
+          allocate(itmp(sz), tmp(sz))
+          itmp(1:size(sum_map_{{CHR}})) = sum_map_{{CHR}}(:)
+          tmp(1:size(sum_mul_{{CHR}})) = sum_mul_{{CHR}}(:)
+          call move_alloc(itmp, sum_map_{{CHR}})
+          call move_alloc(tmp, sum_mul_{{CHR}})
+       else
+          allocate(sum_map_{{CHR}}(100), sum_mul_{{CHR}}(100))
+       end if
+    end if
+
+    x%i = free_{{CHR}}
+    free_{{CHR}} = free_{{CHR}} + 1
 {{else}}
     if (.not.allocated(imem_{{CHR}})) then
        sz = 0
@@ -770,6 +837,8 @@ contains
        dst%v = src%v
        dst%i = src%i
     end if
+{{elif USE_TAPE}}
+    dst%i = src%i
 {{else}}
     dst%n = src%n
     dst%j = src%j
@@ -785,6 +854,8 @@ contains
        deallocate(x%i)
     end if
     x%n = 0
+{{elif USE_TAPE}}
+    x%i = 0
 {{else}}
     x%j = 1
     x%n = 0
@@ -806,11 +877,16 @@ contains
        x%vmul = dx
     else
        x%vmul = 1
-       call alloc_mem_{{CHR}}(x, 1)
 {{if USE_ALLOCATABLE}}
+       call alloc_mem_{{CHR}}(x, 1)
        x%v(1) = 1
        x%i(1) = j
+{{elif USE_TAPE}}
+       call alloc_mem_{{CHR}}(x)
+       sum_map_{{CHR}}(1 + 2*(x%i-1)) = 0
+       sum_map_{{CHR}}(2 + 2*(x%i-1)) = j
 {{else}}
+       call alloc_mem_{{CHR}}(x, 1)
        imem_{{CHR}}(x%j) = j
        vmem_{{CHR}}(x%j) = 1
 {{endif}}
@@ -869,20 +945,118 @@ contains
     end if
   end subroutine get_value_many_{{CHR}}
 
+
+{{py:
+def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
+    if accumulate is None:
+        accumulate = """
+        work(:,ia) = work(:,ia) + sum_mul_{chr}(1+2*(j-1)) * work(:,j)
+        work(:,ib) = work(:,ib) + sum_mul_{chr}(2+2*(j-1)) * work(:,j)
+        """.format(chr=chr)
+    if clear is None:
+        clear = "work(:,j) = 0"
+    return """
+    ! Traverse the tape
+    do j = i, 1, -1
+       if (iwork(j) .ne. 0) then
+          ia = sum_map_{chr}(1+2*(j-1))
+          ib = sum_map_{chr}(2+2*(j-1))
+
+          if (ia == 0) then
+             {assign}
+          else
+             {accumulate}
+             iwork(ia) = 1
+             iwork(ib) = 1
+          end if
+          iwork(j) = 0
+          {clear}
+       end if
+    end do
+""".format(ftype=ftype, chr=chr, assign=assign, accumulate=accumulate, clear=clear)
+}}
+
   function get_nnz_{{CHR}}(y) result(nnz)
     type({{TYPE}}), dimension(:), intent(in) :: y
     integer :: nnz
+{{if USE_TAPE}}
+    integer, dimension(free_{{CHR}}) :: iwork
+    integer :: i, k, j, ia, ib
+
+    nnz = 0
+    iwork = 0
+    do k = 1, size(y,1)
+       i = y(k)%i
+       iwork(i) = 1
+       {{walk_tape(FTYPE, CHR, 
+                   "nnz = nnz + 1", 
+                   "", "")}}
+    end do
+{{else}}
     nnz = 0
     do i = 1, size(y,1)
        nnz = nnz + y(i)%n
     end do
+{{endif}}
   end function get_nnz_{{CHR}}
+
+{{if USE_TAPE}}
+  subroutine get_row_nnz_{{CHR}}(y, nnz)
+    implicit none
+    type({{TYPE}}), dimension(:), intent(in) :: y
+    integer, dimension(*), intent(out) :: nnz
+
+    integer, dimension(free_{{CHR}}) :: iwork
+    integer :: i, k, j, ia, ib
+
+    nnz(1:size(y,1)) = 0
+    iwork = 0
+    do k = 1, size(y,1)
+       i = y(k)%i
+       iwork(i) = 1
+       {{walk_tape(FTYPE, CHR, 
+                   "nnz(k) = nnz(k) + 1", 
+                   "", "")}}
+    end do
+  end subroutine get_row_nnz_{{CHR}}
+{{endif}}
 
   subroutine get_dense_jacobian_{{CHR}}(y, jac_dense)
     implicit none
     type({{TYPE}}), dimension(:), intent(inout) :: y
     {{FTYPE}}, dimension(:,:), intent(out) :: jac_dense
 
+{{if USE_TAPE}}
+    {{FTYPE}}, dimension(block_size,free_{{CHR}}) :: work
+    integer, dimension(free_{{CHR}}) :: iwork
+    integer :: i, k, j, ia, ib, kmin, kmax
+    {{FTYPE}} :: v
+
+    if (jac_product_mode) then
+       call fatal_error('call to adjac_get_dense_jacobian when jacobian product mode is active')
+    end if
+
+    jac_dense = 0
+
+    work = 0
+    iwork = 0
+
+    do kmin = 1, size(y,1), block_size
+       kmax = min(kmin + block_size - 1, size(y,1))
+
+       i = y(kmin)%i
+       do k = kmin, kmax
+          i = max(i, y(k)%i)
+       end do
+
+       do k = kmin, kmax
+          work(k-kmin+1, y(k)%i) = y(k)%vmul
+          iwork(y(k)%i) = 1
+       end do
+
+       {{walk_tape(FTYPE, CHR, "jac_dense(kmin:kmax,ib) = work(1:(kmax-kmin+1),j)")}}
+    end do
+{{else}}
     integer :: i, p
 
     if (jac_product_mode) then
@@ -902,6 +1076,7 @@ contains
 {{endif}}
        end do
     end do
+{{endif}}
   end subroutine get_dense_jacobian_{{CHR}}
 
   subroutine get_coo_jacobian_{{CHR}}(y, jac_val, jac_i, jac_j)
@@ -910,6 +1085,42 @@ contains
     {{FTYPE}}, dimension(:), intent(out) :: jac_val
     integer, dimension(:), intent(out) :: jac_i, jac_j
 
+{{if USE_TAPE}}
+    {{FTYPE}}, dimension(block_size,free_{{CHR}}) :: work
+    integer, dimension(free_{{CHR}}) :: iwork
+    integer :: i, kmin, kmax, k, j, ia, ib, pos
+    {{FTYPE}} :: v
+
+    if (jac_product_mode) then
+       call fatal_error('call to adjac_get_csr_jacobian when jacobian product mode is active')
+    end if
+
+    pos = 1
+    work = 0
+    iwork = 0
+
+    do kmin = 1, size(y,1), block_size
+       kmax = min(kmin + block_size - 1, size(y,1))
+
+       i = y(kmin)%i
+       do k = kmin, kmax
+          i = max(i, y(k)%i)
+          work(k-kmin+1, y(k)%i) = y(k)%vmul
+          iwork(y(k)%i) = 1
+       end do
+
+       {{walk_tape(FTYPE, CHR, """
+            do k = kmin, kmax
+               if (work(k-kmin+1,j).ne.0) then
+                   jac_i(pos) = k
+                   jac_j(pos) = ib
+                   jac_val(pos) = work(k-kmin+1,j)
+                   pos = pos + 1
+                end if
+            end do
+        """)}}
+    end do
+{{else}}
     integer :: i, k
 
     if (jac_product_mode) then
@@ -930,14 +1141,48 @@ contains
           k = k + y(i)%n
        end if
     end do
+{{endif}}
   end subroutine get_coo_jacobian_{{CHR}}
 
   subroutine get_csr_jacobian_{{CHR}}(y, jac_val, jac_indices, jac_indptr)
     implicit none
     type({{TYPE}}), dimension(:), intent(inout) :: y
-    {{FTYPE}}, dimension(:), intent(out) :: jac_val
-    integer, dimension(:), intent(out) :: jac_indices, jac_indptr
+    {{FTYPE}}, dimension(*), intent(out) :: jac_val
+    integer, dimension(*), intent(out) :: jac_indices, jac_indptr
 
+{{if USE_TAPE}}
+    {{FTYPE}}, dimension(1,free_{{CHR}}) :: work
+    integer, dimension(free_{{CHR}}) :: iwork
+    integer :: pos
+    integer :: i, j, k, ia, ib
+    {{FTYPE}} :: v
+
+    if (jac_product_mode) then
+       call fatal_error('call to adjac_get_csr_jacobian when jacobian product mode is active')
+    end if
+
+    jac_indptr(1) = 1
+    call get_row_nnz_{{CHR}}(y, jac_indptr(2))
+    do k = 2, size(y,1)+1
+       jac_indptr(k) = jac_indptr(k) + jac_indptr(k-1)
+    end do
+
+    work = 0
+    iwork = 0
+
+    do k = 1, size(y,1)
+       i = y(k)%i
+       work(1, i) = y(k)%vmul
+       iwork(i) = 1
+       pos = 1
+
+       {{walk_tape(FTYPE, CHR, """
+            jac_indices(jac_indptr(k+1) - pos) = ib
+            jac_val(jac_indptr(k+1) - pos) = work(1,j)
+            pos = pos + 1
+        """)}}
+    end do
+{{else}}
     integer :: i, k
 
     if (jac_product_mode) then
@@ -959,6 +1204,7 @@ contains
        end if
        jac_indptr(i+1) = k
     end do
+{{endif}}
   end subroutine get_csr_jacobian_{{CHR}}
 
   {{pure}} subroutine sum_taylor_{{CHR}}(alphap, betap, a, b, c)
@@ -993,6 +1239,24 @@ contains
        call sparse_vector_sum_{{CHR}}(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
             a%i, b%i, c%i, &
             a%v, b%v, c%v)
+{{elif USE_TAPE}}
+       if (a%vmul == 0 .or. a%i == 0) then
+          c%vmul = betap * b%vmul
+          c%i = b%i
+       else if (b%vmul == 0 .or. b%i == 0) then
+          c%vmul = alphap * a%vmul
+          c%i = a%i
+       else if (a%i == b%i) then
+          c%vmul = alphap * a%vmul + betap * b%vmul
+          c%i = a%i
+       else
+          call alloc_mem_{{CHR}}(c)
+          c%vmul = 1
+          sum_map_{{CHR}}(1 + 2*(c%i-1)) = a%i
+          sum_map_{{CHR}}(2 + 2*(c%i-1)) = b%i
+          sum_mul_{{CHR}}(1 + 2*(c%i-1)) = alphap * a%vmul
+          sum_mul_{{CHR}}(2 + 2*(c%i-1)) = betap * b%vmul
+       end if
 {{else}}
        call sparse_vector_sum_{{CHR}}(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
             imem_{{CHR}}(a%j), imem_{{CHR}}(b%j), imem_{{CHR}}(c%j), &
@@ -1062,7 +1326,9 @@ contains
     type({{TYPE}}) :: z
 
     z%value = x%value + y%value
+{{if not USE_TAPE}}
     call alloc_mem_{{CHR}}(z, x%n + y%n)
+{{endif}}
     call sum_taylor({{CAST}}(1d0), {{CAST}}(1d0), x, y, z)
   end function add_{{CHR}}{{CHR}}
 
@@ -1202,7 +1468,9 @@ contains
     type({{TYPE}}) :: z
 
     z%value = x%value - y%value
+{{if not USE_TAPE}}
     call alloc_mem_{{CHR}}(z, x%n + y%n)
+{{endif}}
     call sum_taylor({{CAST}}(1d0), {{CAST}}(-1d0), x, y, z)
   end function sub_{{CHR}}{{CHR}}
 
@@ -1343,7 +1611,9 @@ contains
     type({{TYPE}}) :: z
 
     z%value = x%value * y%value
+{{if not USE_TAPE}}
     call alloc_mem_{{CHR}}(z, x%n + y%n)
+{{endif}}
     call sum_taylor(y%value, x%value, x, y, z)
   end function mul_{{CHR}}{{CHR}}
 
@@ -1466,7 +1736,9 @@ contains
     type({{TYPE}}), intent(in) :: x, y
     type({{TYPE}}) :: z
     z%value = x%value / y%value
+{{if not USE_TAPE}}
     call alloc_mem_{{CHR}}(z, x%n + y%n)
+{{endif}}
     call sum_taylor(1d0/y%value, -x%value/(y%value**2), x, y, z)
   end function div_{{CHR}}{{CHR}}
 
