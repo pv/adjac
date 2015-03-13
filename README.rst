@@ -17,8 +17,6 @@ and the support routines:
 - adjac_free: free storage space
 - adjac_set_independent: initialize independent variable (dy_i/dx_j = delta_ij)
 - adjac_get_value: get values from a dependent variables
-- adjac_get_nnz: get number of nonzero entries in the Jacobian
-- adjac_get_csr_jacobian: get Jacobian in Compressed Sparse Row format
 - adjac_get_coo_jacobian: get Jacobian in sparse coordinate format
 - adjac_get_dense_jacobian: get Jacobian as a full matrix
 

@@ -5,7 +5,7 @@ program main
 
   double precision :: xval(n), yval(n)
   double precision, allocatable, dimension(:) :: jac_val
-  integer, allocatable, dimension(:) :: jac_indices, jac_indptr
+  integer, allocatable, dimension(:) :: jac_i, jac_j
   integer :: rep, i
 
   do i = 1, n
@@ -14,35 +14,32 @@ program main
 
   do rep = 1, 5
      if (rep > 1) then
-        deallocate(jac_val, jac_indices, jac_indptr)
+        deallocate(jac_val, jac_i, jac_j)
      end if
-     call doit(xval, yval, jac_val, jac_indices, jac_indptr)
+     call doit(xval, yval, jac_val, jac_i, jac_j)
   end do
 
   write(*,*) 'nnz =', size(jac_val)
   write(*,*) 'sparsity =', (size(jac_val)*1d0)/(1d0*n)/(1d0*n)
-  write(*,*) jac_val(:5)
-  write(*,*) jac_indices(:5)
-  write(*,*) jac_indptr(:5)
+  write(*,*) jac_val(1:5)
+  write(*,*) jac_i(1:5)
+  write(*,*) jac_j(1:5)
 
 contains
-  subroutine doit(xval, yval, jac_val, jac_indices, jac_indptr)
+  subroutine doit(xval, yval, jac_val, jac_i, jac_j)
     implicit none
     double precision, intent(in) :: xval(n)
     double precision, intent(out) :: yval(n)
     type(adjac_double) :: x(n), y(n)
-    integer :: i, nnz
-    double precision, allocatable, dimension(:) :: jac_val
-    integer, allocatable, dimension(:) :: jac_indices, jac_indptr
+    double precision, allocatable, dimension(:), intent(inout) :: jac_val
+    integer, allocatable, dimension(:), intent(inout) :: jac_i, jac_j
 
     call adjac_reset()
     call adjac_set_independent(x, xval)
     call oper(x, y)
 
     call adjac_get_value(y, yval)
-    nnz = adjac_get_nnz(y)
-    allocate(jac_val(nnz), jac_indices(nnz), jac_indptr(n+1))
-    call adjac_get_csr_jacobian(y, jac_val, jac_indices, jac_indptr)
+    call adjac_get_coo_jacobian(y, jac_val, jac_i, jac_j)
   end subroutine doit
 
   subroutine oper(x, y)
