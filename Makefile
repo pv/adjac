@@ -16,7 +16,7 @@ ADEPT_LIBS=-Ladept-1.0/lib -ladept
 CPPAD_CFLAGS=$(shell pkg-config --cflags cppad)
 CPPAD_LIBS=$(shell pkg-config --libs cppad)
 
-all: examples test libadjac.a
+all: examples test libadjac.a libadjac_pure.a libadjac_tape.a
 
 examples: $(EXAMPLES)
 
@@ -60,7 +60,16 @@ sparse_sum.c: sparse_sum.c.in generate.py
 	python generate.py sparse_sum.c.in sparse_sum.c
 
 %.o: %.f95
-	$(FC) $(FFLAGS) -c -o $@ $^
+	@install -d build/base
+	$(FC) $(FFLAGS) -Jbuild/base -c -o $@ $^
+
+adjac_pure.o: adjac_pure.f95
+	@install -d build/pure
+	$(FC) $(FFLAGS) -Jbuild/pure -c -o $@ $^
+
+adjac_tape.o: adjac_tape.f95
+	@install -d build/tape
+	$(FC) $(FFLAGS) -Jbuild/tape -c -o $@ $^
 
 %.o: %.c
 	gcc -std=c99 $(FFLAGS) -c -o $@ $^
@@ -75,16 +84,22 @@ libadjac_tape.a: adjac_tape.o sparse_sum.o
 	ar cru $@ $^
 
 tests/%.test: tests/%.f95 libadjac.a
-	$(FC) $(FFLAGS) -o $@ -Itests $^ -L. -ladjac
+	$(FC) $(FFLAGS) -Jbuild/base -o $@ -Itests $^ -L. -ladjac
 
 tests/%.test_pure: tests/%.f95 libadjac_pure.a
-	$(FC) $(FFLAGS) -o $@ -Itests $^ -L. -ladjac_pure
+	$(FC) $(FFLAGS) -Jbuild/pure -o $@ -Itests $^ -L. -ladjac_pure
 
 tests/%.test_tape: tests/%.f95 libadjac_tape.a
-	$(FC) $(FFLAGS) -o $@ -Itests $^ -L. -ladjac_tape
+	$(FC) $(FFLAGS) -Jbuild/tape -o $@ -Itests $^ -L. -ladjac_tape
 
 examples/%: examples/%.f95 libadjac.a
-	$(FC) $(FFLAGS) -o $@ $^ -L. -ladjac
+	$(FC) $(FFLAGS) -Jbuild/base -o $@ $^ -L. -ladjac
+
+examples/%_tape: examples/%.f95 libadjac_tape.a
+	$(FC) $(FFLAGS) -Jbuild/tape -o $@ $^ -L. -ladjac_tape
+
+examples/%_pure: examples/%.f95 libadjac_pure.a
+	$(FC) $(FFLAGS) -Jbuild/pure -o $@ $^ -L. -ladjac_pure
 
 examples/%_adolc: examples/%_adolc.cpp
 	$(CXX) $(CXXFLAGS) $(ADOLC_CFLAGS) -o $@ $^ $(ADOLC_LIBS)
@@ -102,7 +117,10 @@ examples/%_adept: examples/%_adept.cpp
 examples/%_cppad: examples/%_cppad.cpp
 	$(CXX) $(CXXFLAGS) $(CPPAD_CFLAGS) -o $@ $^ $(CPPAD_LIBS)
 
-compare_adolc: examples/bench_simple examples/bench_simple_adolc examples/bench_simple_tapeless_adolc
+compare_adolc: examples/bench_simple examples/bench_simple_pure examples/bench_simple_tape \
+		examples/bench_sparse examples/bench_sparse_pure examples/bench_sparse_tape \
+		examples/bench_simple_adolc examples/bench_simple_tapeless_adolc examples/bench_sparse_adolc
+	@echo ""
 	@echo "-- bench_simple ----------------------------------------"
 	@echo "* ADOLC (tape+eval)"
 	time ./examples/bench_simple_adolc
@@ -110,20 +128,47 @@ compare_adolc: examples/bench_simple examples/bench_simple_adolc examples/bench_
 	time ./examples/bench_simple_tapeless_adolc
 	@echo "* ADJAC"
 	time ./examples/bench_simple
+	@echo "* ADJAC (pure)"
+	time ./examples/bench_simple_pure
+	@echo "* ADJAC (tape)"
+	time ./examples/bench_simple_tape
+	@echo ""
+	@echo "-- bench_sparse ----------------------------------------"
+	@echo "* ADOLC (tape+eval)"
+	time ./examples/bench_sparse_adolc
+	@echo "* ADJAC"
+	time ./examples/bench_sparse
+	@echo "* ADJAC (pure)"
+	time ./examples/bench_sparse_pure
+	@echo "* ADJAC (tape)"
+	time ./examples/bench_sparse_tape
 
-compare_adept: examples/bench_simple examples/bench_simple_adept examples/bench_advection examples/bench_advection_adept
+compare_adept: examples/bench_simple examples/bench_simple_pure examples/bench_simple_tape \
+	       examples/bench_advection examples/bench_advection_pure examples/bench_advection_tape \
+	       examples/bench_simple_adept examples/bench_advection_adept
+	@echo ""
 	@echo "-- bench_simple ----------------------------------------"
 	@echo "* ADEPT"
 	time ./examples/bench_simple_adept
 	@echo "* ADJAC"
 	time ./examples/bench_simple
+	@echo "* ADJAC (pure)"
+	time ./examples/bench_simple_pure
+	@echo "* ADJAC (tape)"
+	time ./examples/bench_simple_tape
+	@echo ""
 	@echo "-- bench_advection ----------------------------------------"
 	@echo "* ADEPT"
 	time ./examples/bench_advection_adept
 	@echo "* ADJAC"
 	time ./examples/bench_advection
+	@echo "* ADJAC (pure)"
+	time ./examples/bench_advection_pure
+	@echo "* ADJAC (tape)"
+	time ./examples/bench_advection_tape
 
 compare_cppad: examples/bench_simple examples/bench_simple_cppad
+	@echo ""
 	@echo "-- bench_simple ----------------------------------------"
 	@echo "* ADEPT"
 	time ./examples/bench_simple_cppad
@@ -131,6 +176,7 @@ compare_cppad: examples/bench_simple examples/bench_simple_cppad
 	time ./examples/bench_simple
 
 compare_numdiff: examples/bench_simple examples/bench_simple_numdiff
+	@echo ""
 	@echo "-- bench_simple ----------------------------------------"
 	@echo "* Numerical differentiation"
 	time ./examples/bench_simple_numdiff
@@ -139,6 +185,7 @@ compare_numdiff: examples/bench_simple examples/bench_simple_numdiff
 
 
 clean:
-	rm -f $(EXAMPLES) $(TESTS) tests/*.out *.o adjac.f95 adjac_pure.f95 adjac_tape.f95 *.mod $(CXXEXAMPLES)
+	rm -f $(EXAMPLES) $(TESTS) build tests/*.out *.o \
+		adjac.f95 adjac_pure.f95 adjac_tape.f95 *.mod $(CXXEXAMPLES)
 
 .PHONY: all test examples compare_adolc compare_adept
