@@ -38,13 +38,12 @@ ADOLC and ADEPT.
 Versions
 --------
 
-There are three versions of ADJAC, ``adjac.f95``, ``adjac_pure.f95``, and
-``adjac_tape.f95`` which differ only in the internal implementation of the
-differentiation. Their performance and memory usage characteristics differ;
-``adjac.f95`` usually needs large amounts of memory, ``adjac_pure.f95`` usually
-needs the least.  ``adjac.f95`` is overall fast, ``adjac_pure.f95`` is slower,
-and ``adjac_tape.f95`` performance depends on the depth of the differentiation
-graph.
+There are two versions of ADJAC, ``adjac.f95`` and
+``adjac_tapeless.f95`` which differ only in the internal
+implementation of the differentiation. Their performance and memory
+usage characteristics differ; ``adjac.f95`` usually needs more memory
+and can be faster, depending on the problem, whereas
+``adjac_pure.f95`` needs less and may be slower.
 
 Example
 -------
