@@ -160,7 +160,6 @@ compare_numdiff: $(EXAMPLES) examples/bench_simple_numdiff
 	time ./examples/bench_simple_tapeless
 
 clean:
-	rm -rf $(EXAMPLES) $(TESTS) build tests/*.out *.o \
-		adjac.f95 adjac_tapeless.f95 *.mod $(CXXEXAMPLES)
+	rm -rf $(EXAMPLES) $(TESTS) build tests/*.out *.o *.a *.mod $(CXXEXAMPLES)
 
 .PHONY: all test examples compare_adolc compare_adept
