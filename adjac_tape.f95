@@ -1488,6 +1488,106 @@ contains
        deallocate(sum_mul_q)
     end if
   end subroutine adjac_free
+  subroutine heap_siftup(heap, nheap, initpos)
+    implicit none
+    integer, intent(in) :: nheap
+    integer, dimension(*), intent(inout) :: heap
+    integer, intent(in) :: initpos
+
+    integer :: pos, item, pos2, pos3
+
+    pos = initpos
+    pos2 = 2*pos
+
+    item = heap(pos)
+    do while (pos2 <= nheap)
+       pos3 = pos2 + 1
+       if (pos3 <= nheap .and. heap(pos3) >= heap(pos2)) then
+          pos2 = pos3
+       end if
+       heap(pos) = heap(pos2)
+       pos = pos2
+       pos2 = 2*pos
+    end do
+    heap(pos) = item
+    call heap_siftdown(heap, nheap, initpos, pos)
+  end subroutine heap_siftup
+
+  subroutine heap_siftdown(heap, nheap, initpos, pos0)
+    implicit none
+    integer, intent(in) :: nheap
+    integer, dimension(*), intent(inout) :: heap
+    integer, intent(in) :: initpos, pos0
+
+    integer :: item, pos, pos2
+
+    pos = pos0
+    item = heap(pos)
+    do while (pos > initpos)
+       pos2 = pos/2
+       if (heap(pos2) < item) then
+          heap(pos) = heap(pos2)
+       else
+          exit
+       end if
+       pos = pos2
+    end do
+    heap(pos) = item
+  end subroutine heap_siftdown
+
+  subroutine heap_push(heap, nheap, item)
+    implicit none
+    integer, intent(inout) :: nheap
+    integer, dimension(*), intent(inout) :: heap
+    integer, intent(in) :: item
+
+    integer :: parent, pos, tmp
+
+    nheap = nheap + 1
+    heap(nheap) = item
+    call heap_siftdown(heap, nheap, 1, nheap)
+  end subroutine heap_push
+
+  subroutine heap_pop(heap, nheap, item)
+    implicit none
+    integer, intent(inout) :: nheap
+    integer, dimension(*), intent(inout) :: heap
+    integer, intent(out) :: item
+
+    integer :: pos, pos2, pos3, toswap, newitem, parent
+
+    if (nheap <= 0) then
+       call fatal_error('empty heap')
+    end if
+
+    item = heap(1)
+    heap(1) = heap(nheap)
+    nheap = nheap - 1
+
+    if (nheap.gt.1) then
+       call heap_siftup(heap, nheap, 1)
+    end if
+  end subroutine heap_pop
+
+  subroutine heap_pushpop(heap, nheap, item, item_out)
+    implicit none
+    integer, intent(inout) :: nheap
+    integer, dimension(*), intent(inout) :: heap
+    integer, intent(in) :: item
+    integer, intent(out) :: item_out
+
+    integer :: parent, pos, tmp
+
+    if (nheap > 0 .and. item < heap(1)) then
+       item_out = heap(1)
+       heap(1) = item
+       if (nheap.gt.1) then
+          call heap_siftup(heap, nheap, 1)
+       end if
+    else
+       item_out = item
+    end if
+  end subroutine heap_pushpop
    subroutine alloc_mem_a(x)
     implicit none
     type(adjac_double), intent(inout) :: x
@@ -1610,36 +1710,77 @@ contains
     end if
   end subroutine get_value_many_a
 
-
   function get_nnz_a(y) result(nnz)
     implicit none
     type(adjac_double), dimension(:), intent(in) :: y
     integer :: nnz
-    integer, dimension(free_a) :: iwork
-    integer :: i, k, j, ia, ib
+    integer, dimension(free_a) :: iwork, imask
+    integer :: k, j, ia, ib, nwork, j_next
 
     nnz = 0
-    iwork = 0
+    imask = 0
     do k = 1, size(y,1)
-       i = y(k)%i
-       iwork(i) = 1
+       iwork(1) = y(k)%i
+       imask(y(k)%i) = 1
+       nwork = 1
        
     ! Traverse the tape
-    do j = i, 1, -1
-       if (iwork(j) .ne. 0) then
-          ia = sum_map_a(1+2*(j-1))
-          ib = sum_map_a(2+2*(j-1))
+    j_next = 0
+    if (nwork > 0) then
+       call heap_pop(iwork, nwork, j_next)
+    end if
+    do while (j_next > 0)
+       j = j_next
+       j_next = 0
 
-          if (ia == 0) then
-             nnz = nnz + 1
-          else
-             
-             iwork(ia) = 1
-             iwork(ib) = 1
-          end if
-          iwork(j) = 0
-          
+       if (256*nwork > j) then
+          ! Heap is too big, probably contains nearly all j values,
+          ! and we are better off just looping through them
+          nwork = j
+          exit
        end if
+
+       ia = sum_map_a(1+2*(j-1))
+       ib = sum_map_a(2+2*(j-1))
+
+       if (ia == 0) then
+          nnz = nnz + 1
+       else
+          
+          if (imask(ia) == 0 .and. imask(ib) == 0) then
+             call heap_push(iwork, nwork, ia)
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ia) = 1
+             imask(ib) = 1
+          else if (imask(ia) == 0) then
+             call heap_pushpop(iwork, nwork, ia, j_next)
+             imask(ia) = 1
+          else if (imask(ib) == 0) then
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ib) = 1
+          end if
+       end if
+       
+       imask(j) = 0
+
+       if (nwork > 0 .and. j_next == 0) then
+         call heap_pop(iwork, nwork, j_next)
+       end if
+    end do
+    do j = nwork, 1, -1
+      if (imask(j).ne.0) then
+        ia = sum_map_a(1+2*(j-1))
+        ib = sum_map_a(2+2*(j-1))
+        if (ia == 0) then
+          nnz = nnz + 1
+        else
+          
+          imask(ia) = 1
+          imask(ib) = 1
+        end if
+        
+        imask(j) = 0
+      end if
     end do
 
     end do
@@ -1649,31 +1790,73 @@ contains
     type(adjac_double), dimension(:), intent(in) :: y
     integer, dimension(*), intent(out) :: nnz
 
-    integer, dimension(free_a) :: iwork
-    integer :: i, k, j, ia, ib
+    integer, dimension(free_a) :: iwork, imask
+    integer :: k, j, ia, ib, nwork, j_next
 
     nnz(1:size(y,1)) = 0
-    iwork = 0
+    imask = 0
     do k = 1, size(y,1)
-       i = y(k)%i
-       iwork(i) = 1
+       iwork(1) = y(k)%i
+       imask(y(k)%i) = 1
+       nwork = 1
        
     ! Traverse the tape
-    do j = i, 1, -1
-       if (iwork(j) .ne. 0) then
-          ia = sum_map_a(1+2*(j-1))
-          ib = sum_map_a(2+2*(j-1))
+    j_next = 0
+    if (nwork > 0) then
+       call heap_pop(iwork, nwork, j_next)
+    end if
+    do while (j_next > 0)
+       j = j_next
+       j_next = 0
 
-          if (ia == 0) then
-             nnz(k) = nnz(k) + 1
-          else
-             
-             iwork(ia) = 1
-             iwork(ib) = 1
-          end if
-          iwork(j) = 0
-          
+       if (256*nwork > j) then
+          ! Heap is too big, probably contains nearly all j values,
+          ! and we are better off just looping through them
+          nwork = j
+          exit
        end if
+
+       ia = sum_map_a(1+2*(j-1))
+       ib = sum_map_a(2+2*(j-1))
+
+       if (ia == 0) then
+          nnz(k) = nnz(k) + 1
+       else
+          
+          if (imask(ia) == 0 .and. imask(ib) == 0) then
+             call heap_push(iwork, nwork, ia)
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ia) = 1
+             imask(ib) = 1
+          else if (imask(ia) == 0) then
+             call heap_pushpop(iwork, nwork, ia, j_next)
+             imask(ia) = 1
+          else if (imask(ib) == 0) then
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ib) = 1
+          end if
+       end if
+       
+       imask(j) = 0
+
+       if (nwork > 0 .and. j_next == 0) then
+         call heap_pop(iwork, nwork, j_next)
+       end if
+    end do
+    do j = nwork, 1, -1
+      if (imask(j).ne.0) then
+        ia = sum_map_a(1+2*(j-1))
+        ib = sum_map_a(2+2*(j-1))
+        if (ia == 0) then
+          nnz(k) = nnz(k) + 1
+        else
+          
+          imask(ia) = 1
+          imask(ib) = 1
+        end if
+        
+        imask(j) = 0
+      end if
     end do
 
     end do
@@ -1684,8 +1867,8 @@ contains
     type(adjac_double), dimension(:), intent(inout) :: y
     double precision, dimension(:,:), intent(out) :: jac_dense
     double precision, dimension(block_size,free_a) :: work
-    integer, dimension(free_a) :: iwork
-    integer :: i, k, j, ia, ib, kmin, kmax
+    integer, dimension(free_a) :: iwork, imask
+    integer :: k, j, ia, ib, kmin, kmax, nwork, j_next
     double precision :: v
 
     if (jac_product_mode) then
@@ -1695,41 +1878,82 @@ contains
     jac_dense = 0
 
     work = 0
-    iwork = 0
+    imask = 0
 
     do kmin = 1, size(y,1), block_size
        kmax = min(kmin + block_size - 1, size(y,1))
 
-       i = y(kmin)%i
-       do k = kmin, kmax
-          i = max(i, y(k)%i)
-       end do
-
+       nwork = 0
        do k = kmin, kmax
           work(k-kmin+1, y(k)%i) = y(k)%vmul
-          iwork(y(k)%i) = 1
+          call heap_push(iwork, nwork, y(k)%i)
+          imask(y(k)%i) = 1
        end do
 
        
     ! Traverse the tape
-    do j = i, 1, -1
-       if (iwork(j) .ne. 0) then
-          ia = sum_map_a(1+2*(j-1))
-          ib = sum_map_a(2+2*(j-1))
+    j_next = 0
+    if (nwork > 0) then
+       call heap_pop(iwork, nwork, j_next)
+    end if
+    do while (j_next > 0)
+       j = j_next
+       j_next = 0
 
-          if (ia == 0) then
-             jac_dense(kmin:kmax,ib) = work(1:(kmax-kmin+1),j)
-          else
-             
+       if (256*nwork > j) then
+          ! Heap is too big, probably contains nearly all j values,
+          ! and we are better off just looping through them
+          nwork = j
+          exit
+       end if
+
+       ia = sum_map_a(1+2*(j-1))
+       ib = sum_map_a(2+2*(j-1))
+
+       if (ia == 0) then
+          jac_dense(kmin:kmax,ib) = work(1:(kmax-kmin+1),j)
+       else
+          
         work(:,ia) = work(:,ia) + sum_mul_a(1+2*(j-1)) * work(:,j)
         work(:,ib) = work(:,ib) + sum_mul_a(2+2*(j-1)) * work(:,j)
         
-             iwork(ia) = 1
-             iwork(ib) = 1
+          if (imask(ia) == 0 .and. imask(ib) == 0) then
+             call heap_push(iwork, nwork, ia)
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ia) = 1
+             imask(ib) = 1
+          else if (imask(ia) == 0) then
+             call heap_pushpop(iwork, nwork, ia, j_next)
+             imask(ia) = 1
+          else if (imask(ib) == 0) then
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ib) = 1
           end if
-          iwork(j) = 0
-          work(:,j) = 0
        end if
+       work(:,j) = 0
+       imask(j) = 0
+
+       if (nwork > 0 .and. j_next == 0) then
+         call heap_pop(iwork, nwork, j_next)
+       end if
+    end do
+    do j = nwork, 1, -1
+      if (imask(j).ne.0) then
+        ia = sum_map_a(1+2*(j-1))
+        ib = sum_map_a(2+2*(j-1))
+        if (ia == 0) then
+          jac_dense(kmin:kmax,ib) = work(1:(kmax-kmin+1),j)
+        else
+          
+        work(:,ia) = work(:,ia) + sum_mul_a(1+2*(j-1)) * work(:,j)
+        work(:,ib) = work(:,ib) + sum_mul_a(2+2*(j-1)) * work(:,j)
+        
+          imask(ia) = 1
+          imask(ib) = 1
+        end if
+        work(:,j) = 0
+        imask(j) = 0
+      end if
     end do
 
     end do
@@ -1741,8 +1965,8 @@ contains
     double precision, dimension(:), intent(out) :: jac_val
     integer, dimension(:), intent(out) :: jac_i, jac_j
     double precision, dimension(block_size,free_a) :: work
-    integer, dimension(free_a) :: iwork
-    integer :: i, kmin, kmax, k, j, ia, ib, pos
+    integer, dimension(free_a) :: iwork, imask
+    integer :: kmin, kmax, k, j, ia, ib, pos, nwork, j_next
     double precision :: v
 
     if (jac_product_mode) then
@@ -1751,27 +1975,40 @@ contains
 
     pos = 1
     work = 0
-    iwork = 0
+    imask = 0
 
     do kmin = 1, size(y,1), block_size
        kmax = min(kmin + block_size - 1, size(y,1))
 
-       i = y(kmin)%i
+       nwork = 0
        do k = kmin, kmax
-          i = max(i, y(k)%i)
           work(k-kmin+1, y(k)%i) = y(k)%vmul
-          iwork(y(k)%i) = 1
+          call heap_push(iwork, nwork, y(k)%i)
+          imask(y(k)%i) = 1
        end do
 
        
     ! Traverse the tape
-    do j = i, 1, -1
-       if (iwork(j) .ne. 0) then
-          ia = sum_map_a(1+2*(j-1))
-          ib = sum_map_a(2+2*(j-1))
+    j_next = 0
+    if (nwork > 0) then
+       call heap_pop(iwork, nwork, j_next)
+    end if
+    do while (j_next > 0)
+       j = j_next
+       j_next = 0
 
-          if (ia == 0) then
-             
+       if (256*nwork > j) then
+          ! Heap is too big, probably contains nearly all j values,
+          ! and we are better off just looping through them
+          nwork = j
+          exit
+       end if
+
+       ia = sum_map_a(1+2*(j-1))
+       ib = sum_map_a(2+2*(j-1))
+
+       if (ia == 0) then
+          
             do k = kmin, kmax
                if (work(k-kmin+1,j).ne.0) then
                    jac_i(pos) = k
@@ -1781,17 +2018,57 @@ contains
                 end if
             end do
         
-          else
-             
+       else
+          
         work(:,ia) = work(:,ia) + sum_mul_a(1+2*(j-1)) * work(:,j)
         work(:,ib) = work(:,ib) + sum_mul_a(2+2*(j-1)) * work(:,j)
         
-             iwork(ia) = 1
-             iwork(ib) = 1
+          if (imask(ia) == 0 .and. imask(ib) == 0) then
+             call heap_push(iwork, nwork, ia)
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ia) = 1
+             imask(ib) = 1
+          else if (imask(ia) == 0) then
+             call heap_pushpop(iwork, nwork, ia, j_next)
+             imask(ia) = 1
+          else if (imask(ib) == 0) then
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ib) = 1
           end if
-          iwork(j) = 0
-          work(:,j) = 0
        end if
+       work(:,j) = 0
+       imask(j) = 0
+
+       if (nwork > 0 .and. j_next == 0) then
+         call heap_pop(iwork, nwork, j_next)
+       end if
+    end do
+    do j = nwork, 1, -1
+      if (imask(j).ne.0) then
+        ia = sum_map_a(1+2*(j-1))
+        ib = sum_map_a(2+2*(j-1))
+        if (ia == 0) then
+          
+            do k = kmin, kmax
+               if (work(k-kmin+1,j).ne.0) then
+                   jac_i(pos) = k
+                   jac_j(pos) = ib
+                   jac_val(pos) = work(k-kmin+1,j)
+                   pos = pos + 1
+                end if
+            end do
+        
+        else
+          
+        work(:,ia) = work(:,ia) + sum_mul_a(1+2*(j-1)) * work(:,j)
+        work(:,ib) = work(:,ib) + sum_mul_a(2+2*(j-1)) * work(:,j)
+        
+          imask(ia) = 1
+          imask(ib) = 1
+        end if
+        work(:,j) = 0
+        imask(j) = 0
+      end if
     end do
 
     end do
@@ -1803,9 +2080,9 @@ contains
     double precision, dimension(*), intent(out) :: jac_val
     integer, dimension(*), intent(out) :: jac_indices, jac_indptr
     double precision, dimension(1,free_a) :: work
-    integer, dimension(free_a) :: iwork
+    integer, dimension(free_a) :: iwork, imask
     integer :: pos
-    integer :: i, j, k, ia, ib
+    integer :: j, k, ia, ib, nwork, j_next
     double precision :: v
 
     if (jac_product_mode) then
@@ -1819,38 +2096,87 @@ contains
     end do
 
     work = 0
-    iwork = 0
+    imask = 0
 
     do k = 1, size(y,1)
-       i = y(k)%i
-       work(1, i) = y(k)%vmul
-       iwork(i) = 1
+       work(1, y(k)%i) = y(k)%vmul
+       nwork = 1
+       iwork(1) = y(k)%i
+       imask(y(k)%i) = 1
        pos = 1
 
        
     ! Traverse the tape
-    do j = i, 1, -1
-       if (iwork(j) .ne. 0) then
-          ia = sum_map_a(1+2*(j-1))
-          ib = sum_map_a(2+2*(j-1))
+    j_next = 0
+    if (nwork > 0) then
+       call heap_pop(iwork, nwork, j_next)
+    end if
+    do while (j_next > 0)
+       j = j_next
+       j_next = 0
 
-          if (ia == 0) then
-             
+       if (256*nwork > j) then
+          ! Heap is too big, probably contains nearly all j values,
+          ! and we are better off just looping through them
+          nwork = j
+          exit
+       end if
+
+       ia = sum_map_a(1+2*(j-1))
+       ib = sum_map_a(2+2*(j-1))
+
+       if (ia == 0) then
+          
             jac_indices(jac_indptr(k+1) - pos) = ib
             jac_val(jac_indptr(k+1) - pos) = work(1,j)
             pos = pos + 1
         
-          else
-             
+       else
+          
         work(:,ia) = work(:,ia) + sum_mul_a(1+2*(j-1)) * work(:,j)
         work(:,ib) = work(:,ib) + sum_mul_a(2+2*(j-1)) * work(:,j)
         
-             iwork(ia) = 1
-             iwork(ib) = 1
+          if (imask(ia) == 0 .and. imask(ib) == 0) then
+             call heap_push(iwork, nwork, ia)
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ia) = 1
+             imask(ib) = 1
+          else if (imask(ia) == 0) then
+             call heap_pushpop(iwork, nwork, ia, j_next)
+             imask(ia) = 1
+          else if (imask(ib) == 0) then
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ib) = 1
           end if
-          iwork(j) = 0
-          work(:,j) = 0
        end if
+       work(:,j) = 0
+       imask(j) = 0
+
+       if (nwork > 0 .and. j_next == 0) then
+         call heap_pop(iwork, nwork, j_next)
+       end if
+    end do
+    do j = nwork, 1, -1
+      if (imask(j).ne.0) then
+        ia = sum_map_a(1+2*(j-1))
+        ib = sum_map_a(2+2*(j-1))
+        if (ia == 0) then
+          
+            jac_indices(jac_indptr(k+1) - pos) = ib
+            jac_val(jac_indptr(k+1) - pos) = work(1,j)
+            pos = pos + 1
+        
+        else
+          
+        work(:,ia) = work(:,ia) + sum_mul_a(1+2*(j-1)) * work(:,j)
+        work(:,ib) = work(:,ib) + sum_mul_a(2+2*(j-1)) * work(:,j)
+        
+          imask(ia) = 1
+          imask(ib) = 1
+        end if
+        work(:,j) = 0
+        imask(j) = 0
+      end if
     end do
 
     end do
@@ -3044,36 +3370,77 @@ contains
     end if
   end subroutine get_value_many_q
 
-
   function get_nnz_q(y) result(nnz)
     implicit none
     type(adjac_complexan), dimension(:), intent(in) :: y
     integer :: nnz
-    integer, dimension(free_q) :: iwork
-    integer :: i, k, j, ia, ib
+    integer, dimension(free_q) :: iwork, imask
+    integer :: k, j, ia, ib, nwork, j_next
 
     nnz = 0
-    iwork = 0
+    imask = 0
     do k = 1, size(y,1)
-       i = y(k)%i
-       iwork(i) = 1
+       iwork(1) = y(k)%i
+       imask(y(k)%i) = 1
+       nwork = 1
        
     ! Traverse the tape
-    do j = i, 1, -1
-       if (iwork(j) .ne. 0) then
-          ia = sum_map_q(1+2*(j-1))
-          ib = sum_map_q(2+2*(j-1))
+    j_next = 0
+    if (nwork > 0) then
+       call heap_pop(iwork, nwork, j_next)
+    end if
+    do while (j_next > 0)
+       j = j_next
+       j_next = 0
 
-          if (ia == 0) then
-             nnz = nnz + 1
-          else
-             
-             iwork(ia) = 1
-             iwork(ib) = 1
-          end if
-          iwork(j) = 0
-          
+       if (256*nwork > j) then
+          ! Heap is too big, probably contains nearly all j values,
+          ! and we are better off just looping through them
+          nwork = j
+          exit
        end if
+
+       ia = sum_map_q(1+2*(j-1))
+       ib = sum_map_q(2+2*(j-1))
+
+       if (ia == 0) then
+          nnz = nnz + 1
+       else
+          
+          if (imask(ia) == 0 .and. imask(ib) == 0) then
+             call heap_push(iwork, nwork, ia)
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ia) = 1
+             imask(ib) = 1
+          else if (imask(ia) == 0) then
+             call heap_pushpop(iwork, nwork, ia, j_next)
+             imask(ia) = 1
+          else if (imask(ib) == 0) then
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ib) = 1
+          end if
+       end if
+       
+       imask(j) = 0
+
+       if (nwork > 0 .and. j_next == 0) then
+         call heap_pop(iwork, nwork, j_next)
+       end if
+    end do
+    do j = nwork, 1, -1
+      if (imask(j).ne.0) then
+        ia = sum_map_q(1+2*(j-1))
+        ib = sum_map_q(2+2*(j-1))
+        if (ia == 0) then
+          nnz = nnz + 1
+        else
+          
+          imask(ia) = 1
+          imask(ib) = 1
+        end if
+        
+        imask(j) = 0
+      end if
     end do
 
     end do
@@ -3083,31 +3450,73 @@ contains
     type(adjac_complexan), dimension(:), intent(in) :: y
     integer, dimension(*), intent(out) :: nnz
 
-    integer, dimension(free_q) :: iwork
-    integer :: i, k, j, ia, ib
+    integer, dimension(free_q) :: iwork, imask
+    integer :: k, j, ia, ib, nwork, j_next
 
     nnz(1:size(y,1)) = 0
-    iwork = 0
+    imask = 0
     do k = 1, size(y,1)
-       i = y(k)%i
-       iwork(i) = 1
+       iwork(1) = y(k)%i
+       imask(y(k)%i) = 1
+       nwork = 1
        
     ! Traverse the tape
-    do j = i, 1, -1
-       if (iwork(j) .ne. 0) then
-          ia = sum_map_q(1+2*(j-1))
-          ib = sum_map_q(2+2*(j-1))
+    j_next = 0
+    if (nwork > 0) then
+       call heap_pop(iwork, nwork, j_next)
+    end if
+    do while (j_next > 0)
+       j = j_next
+       j_next = 0
 
-          if (ia == 0) then
-             nnz(k) = nnz(k) + 1
-          else
-             
-             iwork(ia) = 1
-             iwork(ib) = 1
-          end if
-          iwork(j) = 0
-          
+       if (256*nwork > j) then
+          ! Heap is too big, probably contains nearly all j values,
+          ! and we are better off just looping through them
+          nwork = j
+          exit
        end if
+
+       ia = sum_map_q(1+2*(j-1))
+       ib = sum_map_q(2+2*(j-1))
+
+       if (ia == 0) then
+          nnz(k) = nnz(k) + 1
+       else
+          
+          if (imask(ia) == 0 .and. imask(ib) == 0) then
+             call heap_push(iwork, nwork, ia)
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ia) = 1
+             imask(ib) = 1
+          else if (imask(ia) == 0) then
+             call heap_pushpop(iwork, nwork, ia, j_next)
+             imask(ia) = 1
+          else if (imask(ib) == 0) then
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ib) = 1
+          end if
+       end if
+       
+       imask(j) = 0
+
+       if (nwork > 0 .and. j_next == 0) then
+         call heap_pop(iwork, nwork, j_next)
+       end if
+    end do
+    do j = nwork, 1, -1
+      if (imask(j).ne.0) then
+        ia = sum_map_q(1+2*(j-1))
+        ib = sum_map_q(2+2*(j-1))
+        if (ia == 0) then
+          nnz(k) = nnz(k) + 1
+        else
+          
+          imask(ia) = 1
+          imask(ib) = 1
+        end if
+        
+        imask(j) = 0
+      end if
     end do
 
     end do
@@ -3118,8 +3527,8 @@ contains
     type(adjac_complexan), dimension(:), intent(inout) :: y
     double complex, dimension(:,:), intent(out) :: jac_dense
     double complex, dimension(block_size,free_q) :: work
-    integer, dimension(free_q) :: iwork
-    integer :: i, k, j, ia, ib, kmin, kmax
+    integer, dimension(free_q) :: iwork, imask
+    integer :: k, j, ia, ib, kmin, kmax, nwork, j_next
     double complex :: v
 
     if (jac_product_mode) then
@@ -3129,41 +3538,82 @@ contains
     jac_dense = 0
 
     work = 0
-    iwork = 0
+    imask = 0
 
     do kmin = 1, size(y,1), block_size
        kmax = min(kmin + block_size - 1, size(y,1))
 
-       i = y(kmin)%i
-       do k = kmin, kmax
-          i = max(i, y(k)%i)
-       end do
-
+       nwork = 0
        do k = kmin, kmax
           work(k-kmin+1, y(k)%i) = y(k)%vmul
-          iwork(y(k)%i) = 1
+          call heap_push(iwork, nwork, y(k)%i)
+          imask(y(k)%i) = 1
        end do
 
        
     ! Traverse the tape
-    do j = i, 1, -1
-       if (iwork(j) .ne. 0) then
-          ia = sum_map_q(1+2*(j-1))
-          ib = sum_map_q(2+2*(j-1))
+    j_next = 0
+    if (nwork > 0) then
+       call heap_pop(iwork, nwork, j_next)
+    end if
+    do while (j_next > 0)
+       j = j_next
+       j_next = 0
 
-          if (ia == 0) then
-             jac_dense(kmin:kmax,ib) = work(1:(kmax-kmin+1),j)
-          else
-             
+       if (256*nwork > j) then
+          ! Heap is too big, probably contains nearly all j values,
+          ! and we are better off just looping through them
+          nwork = j
+          exit
+       end if
+
+       ia = sum_map_q(1+2*(j-1))
+       ib = sum_map_q(2+2*(j-1))
+
+       if (ia == 0) then
+          jac_dense(kmin:kmax,ib) = work(1:(kmax-kmin+1),j)
+       else
+          
         work(:,ia) = work(:,ia) + sum_mul_q(1+2*(j-1)) * work(:,j)
         work(:,ib) = work(:,ib) + sum_mul_q(2+2*(j-1)) * work(:,j)
         
-             iwork(ia) = 1
-             iwork(ib) = 1
+          if (imask(ia) == 0 .and. imask(ib) == 0) then
+             call heap_push(iwork, nwork, ia)
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ia) = 1
+             imask(ib) = 1
+          else if (imask(ia) == 0) then
+             call heap_pushpop(iwork, nwork, ia, j_next)
+             imask(ia) = 1
+          else if (imask(ib) == 0) then
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ib) = 1
           end if
-          iwork(j) = 0
-          work(:,j) = 0
        end if
+       work(:,j) = 0
+       imask(j) = 0
+
+       if (nwork > 0 .and. j_next == 0) then
+         call heap_pop(iwork, nwork, j_next)
+       end if
+    end do
+    do j = nwork, 1, -1
+      if (imask(j).ne.0) then
+        ia = sum_map_q(1+2*(j-1))
+        ib = sum_map_q(2+2*(j-1))
+        if (ia == 0) then
+          jac_dense(kmin:kmax,ib) = work(1:(kmax-kmin+1),j)
+        else
+          
+        work(:,ia) = work(:,ia) + sum_mul_q(1+2*(j-1)) * work(:,j)
+        work(:,ib) = work(:,ib) + sum_mul_q(2+2*(j-1)) * work(:,j)
+        
+          imask(ia) = 1
+          imask(ib) = 1
+        end if
+        work(:,j) = 0
+        imask(j) = 0
+      end if
     end do
 
     end do
@@ -3175,8 +3625,8 @@ contains
     double complex, dimension(:), intent(out) :: jac_val
     integer, dimension(:), intent(out) :: jac_i, jac_j
     double complex, dimension(block_size,free_q) :: work
-    integer, dimension(free_q) :: iwork
-    integer :: i, kmin, kmax, k, j, ia, ib, pos
+    integer, dimension(free_q) :: iwork, imask
+    integer :: kmin, kmax, k, j, ia, ib, pos, nwork, j_next
     double complex :: v
 
     if (jac_product_mode) then
@@ -3185,27 +3635,40 @@ contains
 
     pos = 1
     work = 0
-    iwork = 0
+    imask = 0
 
     do kmin = 1, size(y,1), block_size
        kmax = min(kmin + block_size - 1, size(y,1))
 
-       i = y(kmin)%i
+       nwork = 0
        do k = kmin, kmax
-          i = max(i, y(k)%i)
           work(k-kmin+1, y(k)%i) = y(k)%vmul
-          iwork(y(k)%i) = 1
+          call heap_push(iwork, nwork, y(k)%i)
+          imask(y(k)%i) = 1
        end do
 
        
     ! Traverse the tape
-    do j = i, 1, -1
-       if (iwork(j) .ne. 0) then
-          ia = sum_map_q(1+2*(j-1))
-          ib = sum_map_q(2+2*(j-1))
+    j_next = 0
+    if (nwork > 0) then
+       call heap_pop(iwork, nwork, j_next)
+    end if
+    do while (j_next > 0)
+       j = j_next
+       j_next = 0
 
-          if (ia == 0) then
-             
+       if (256*nwork > j) then
+          ! Heap is too big, probably contains nearly all j values,
+          ! and we are better off just looping through them
+          nwork = j
+          exit
+       end if
+
+       ia = sum_map_q(1+2*(j-1))
+       ib = sum_map_q(2+2*(j-1))
+
+       if (ia == 0) then
+          
             do k = kmin, kmax
                if (work(k-kmin+1,j).ne.0) then
                    jac_i(pos) = k
@@ -3215,17 +3678,57 @@ contains
                 end if
             end do
         
-          else
-             
+       else
+          
         work(:,ia) = work(:,ia) + sum_mul_q(1+2*(j-1)) * work(:,j)
         work(:,ib) = work(:,ib) + sum_mul_q(2+2*(j-1)) * work(:,j)
         
-             iwork(ia) = 1
-             iwork(ib) = 1
+          if (imask(ia) == 0 .and. imask(ib) == 0) then
+             call heap_push(iwork, nwork, ia)
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ia) = 1
+             imask(ib) = 1
+          else if (imask(ia) == 0) then
+             call heap_pushpop(iwork, nwork, ia, j_next)
+             imask(ia) = 1
+          else if (imask(ib) == 0) then
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ib) = 1
           end if
-          iwork(j) = 0
-          work(:,j) = 0
        end if
+       work(:,j) = 0
+       imask(j) = 0
+
+       if (nwork > 0 .and. j_next == 0) then
+         call heap_pop(iwork, nwork, j_next)
+       end if
+    end do
+    do j = nwork, 1, -1
+      if (imask(j).ne.0) then
+        ia = sum_map_q(1+2*(j-1))
+        ib = sum_map_q(2+2*(j-1))
+        if (ia == 0) then
+          
+            do k = kmin, kmax
+               if (work(k-kmin+1,j).ne.0) then
+                   jac_i(pos) = k
+                   jac_j(pos) = ib
+                   jac_val(pos) = work(k-kmin+1,j)
+                   pos = pos + 1
+                end if
+            end do
+        
+        else
+          
+        work(:,ia) = work(:,ia) + sum_mul_q(1+2*(j-1)) * work(:,j)
+        work(:,ib) = work(:,ib) + sum_mul_q(2+2*(j-1)) * work(:,j)
+        
+          imask(ia) = 1
+          imask(ib) = 1
+        end if
+        work(:,j) = 0
+        imask(j) = 0
+      end if
     end do
 
     end do
@@ -3237,9 +3740,9 @@ contains
     double complex, dimension(*), intent(out) :: jac_val
     integer, dimension(*), intent(out) :: jac_indices, jac_indptr
     double complex, dimension(1,free_q) :: work
-    integer, dimension(free_q) :: iwork
+    integer, dimension(free_q) :: iwork, imask
     integer :: pos
-    integer :: i, j, k, ia, ib
+    integer :: j, k, ia, ib, nwork, j_next
     double complex :: v
 
     if (jac_product_mode) then
@@ -3253,38 +3756,87 @@ contains
     end do
 
     work = 0
-    iwork = 0
+    imask = 0
 
     do k = 1, size(y,1)
-       i = y(k)%i
-       work(1, i) = y(k)%vmul
-       iwork(i) = 1
+       work(1, y(k)%i) = y(k)%vmul
+       nwork = 1
+       iwork(1) = y(k)%i
+       imask(y(k)%i) = 1
        pos = 1
 
        
     ! Traverse the tape
-    do j = i, 1, -1
-       if (iwork(j) .ne. 0) then
-          ia = sum_map_q(1+2*(j-1))
-          ib = sum_map_q(2+2*(j-1))
+    j_next = 0
+    if (nwork > 0) then
+       call heap_pop(iwork, nwork, j_next)
+    end if
+    do while (j_next > 0)
+       j = j_next
+       j_next = 0
 
-          if (ia == 0) then
-             
+       if (256*nwork > j) then
+          ! Heap is too big, probably contains nearly all j values,
+          ! and we are better off just looping through them
+          nwork = j
+          exit
+       end if
+
+       ia = sum_map_q(1+2*(j-1))
+       ib = sum_map_q(2+2*(j-1))
+
+       if (ia == 0) then
+          
             jac_indices(jac_indptr(k+1) - pos) = ib
             jac_val(jac_indptr(k+1) - pos) = work(1,j)
             pos = pos + 1
         
-          else
-             
+       else
+          
         work(:,ia) = work(:,ia) + sum_mul_q(1+2*(j-1)) * work(:,j)
         work(:,ib) = work(:,ib) + sum_mul_q(2+2*(j-1)) * work(:,j)
         
-             iwork(ia) = 1
-             iwork(ib) = 1
+          if (imask(ia) == 0 .and. imask(ib) == 0) then
+             call heap_push(iwork, nwork, ia)
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ia) = 1
+             imask(ib) = 1
+          else if (imask(ia) == 0) then
+             call heap_pushpop(iwork, nwork, ia, j_next)
+             imask(ia) = 1
+          else if (imask(ib) == 0) then
+             call heap_pushpop(iwork, nwork, ib, j_next)
+             imask(ib) = 1
           end if
-          iwork(j) = 0
-          work(:,j) = 0
        end if
+       work(:,j) = 0
+       imask(j) = 0
+
+       if (nwork > 0 .and. j_next == 0) then
+         call heap_pop(iwork, nwork, j_next)
+       end if
+    end do
+    do j = nwork, 1, -1
+      if (imask(j).ne.0) then
+        ia = sum_map_q(1+2*(j-1))
+        ib = sum_map_q(2+2*(j-1))
+        if (ia == 0) then
+          
+            jac_indices(jac_indptr(k+1) - pos) = ib
+            jac_val(jac_indptr(k+1) - pos) = work(1,j)
+            pos = pos + 1
+        
+        else
+          
+        work(:,ia) = work(:,ia) + sum_mul_q(1+2*(j-1)) * work(:,j)
+        work(:,ib) = work(:,ib) + sum_mul_q(2+2*(j-1)) * work(:,j)
+        
+          imask(ia) = 1
+          imask(ib) = 1
+        end if
+        work(:,j) = 0
+        imask(j) = 0
+      end if
     end do
 
     end do

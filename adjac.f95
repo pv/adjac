@@ -1614,7 +1614,6 @@ contains
     end if
   end subroutine get_value_many_a
 
-
   function get_nnz_a(y) result(nnz)
     implicit none
     type(adjac_double), dimension(:), intent(in) :: y
@@ -2868,7 +2867,6 @@ contains
        end do
     end if
   end subroutine get_value_many_q
-
 
   function get_nnz_q(y) result(nnz)
     implicit none
