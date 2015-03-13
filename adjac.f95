@@ -1432,21 +1432,12 @@ module adjac
      module procedure get_dense_jacobian_a, get_dense_jacobian_q
   end interface adjac_get_dense_jacobian
 
-  interface adjac_get_csr_jacobian
-     module procedure get_csr_jacobian_a, get_csr_jacobian_q
-  end interface adjac_get_csr_jacobian
-
   interface adjac_get_coo_jacobian
      module procedure get_coo_jacobian_a, get_coo_jacobian_q
   end interface adjac_get_coo_jacobian
 
-  interface adjac_get_nnz
-     module procedure get_nnz_a, get_nnz_q
-  end interface adjac_get_nnz
-
   public adjac_set_independent, adjac_get_value, &
-       adjac_get_dense_jacobian, adjac_get_csr_jacobian, &
-       adjac_get_coo_jacobian, adjac_get_nnz, &
+       adjac_get_dense_jacobian, adjac_get_coo_jacobian, &
        adjac_reset, adjac_free
 
 contains
@@ -1614,17 +1605,6 @@ contains
     end if
   end subroutine get_value_many_a
 
-  function get_nnz_a(y) result(nnz)
-    implicit none
-    type(adjac_double), dimension(:), intent(in) :: y
-    integer :: nnz
-    integer :: i
-    nnz = 0
-    do i = 1, size(y,1)
-       nnz = nnz + y(i)%n
-    end do
-  end function get_nnz_a
-
   subroutine get_dense_jacobian_a(y, jac_dense)
     implicit none
     type(adjac_double), dimension(:), intent(inout) :: y
@@ -1648,13 +1628,21 @@ contains
   subroutine get_coo_jacobian_a(y, jac_val, jac_i, jac_j)
     implicit none
     type(adjac_double), dimension(:), intent(inout) :: y
-    double precision, dimension(:), intent(out) :: jac_val
-    integer, dimension(:), intent(out) :: jac_i, jac_j
-    integer :: i, k
+    double precision, dimension(:), allocatable, intent(inout) :: jac_val
+    integer, dimension(:), allocatable, intent(inout) :: jac_i, jac_j
+    integer :: i, k, nnz
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
     end if
+
+    if (allocated(jac_val)) deallocate(jac_val)
+    if (allocated(jac_i)) deallocate(jac_i)
+    if (allocated(jac_j)) deallocate(jac_j)
+
+    nnz = sum(y%n)
+
+    allocate(jac_val(nnz), jac_i(nnz), jac_j(nnz))
 
     k = 1
     do i = 1, size(y,1)
@@ -1666,29 +1654,6 @@ contains
        end if
     end do
   end subroutine get_coo_jacobian_a
-
-  subroutine get_csr_jacobian_a(y, jac_val, jac_indices, jac_indptr)
-    implicit none
-    type(adjac_double), dimension(:), intent(inout) :: y
-    double precision, dimension(*), intent(out) :: jac_val
-    integer, dimension(*), intent(out) :: jac_indices, jac_indptr
-    integer :: i, k
-
-    if (jac_product_mode) then
-       call fatal_error('call to adjac_get_csr_jacobian when jacobian product mode is active')
-    end if
-
-    k = 1
-    jac_indptr(1) = 1
-    do i = 1, size(y,1)
-       if (y(i)%n > 0) then
-          jac_indices(k:k+y(i)%n-1) = imem_a(y(i)%j:y(i)%j+y(i)%n-1)
-          jac_val(k:k+y(i)%n-1) = y(i)%vmul * vmem_a(y(i)%j:y(i)%j+y(i)%n-1)
-          k = k + y(i)%n
-       end if
-       jac_indptr(i+1) = k
-    end do
-  end subroutine get_csr_jacobian_a
 
    subroutine sum_taylor_a(alphap, betap, a, b, c)
     ! c := alpha*a + beta*b
@@ -2868,17 +2833,6 @@ contains
     end if
   end subroutine get_value_many_q
 
-  function get_nnz_q(y) result(nnz)
-    implicit none
-    type(adjac_complexan), dimension(:), intent(in) :: y
-    integer :: nnz
-    integer :: i
-    nnz = 0
-    do i = 1, size(y,1)
-       nnz = nnz + y(i)%n
-    end do
-  end function get_nnz_q
-
   subroutine get_dense_jacobian_q(y, jac_dense)
     implicit none
     type(adjac_complexan), dimension(:), intent(inout) :: y
@@ -2902,13 +2856,21 @@ contains
   subroutine get_coo_jacobian_q(y, jac_val, jac_i, jac_j)
     implicit none
     type(adjac_complexan), dimension(:), intent(inout) :: y
-    double complex, dimension(:), intent(out) :: jac_val
-    integer, dimension(:), intent(out) :: jac_i, jac_j
-    integer :: i, k
+    double complex, dimension(:), allocatable, intent(inout) :: jac_val
+    integer, dimension(:), allocatable, intent(inout) :: jac_i, jac_j
+    integer :: i, k, nnz
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
     end if
+
+    if (allocated(jac_val)) deallocate(jac_val)
+    if (allocated(jac_i)) deallocate(jac_i)
+    if (allocated(jac_j)) deallocate(jac_j)
+
+    nnz = sum(y%n)
+
+    allocate(jac_val(nnz), jac_i(nnz), jac_j(nnz))
 
     k = 1
     do i = 1, size(y,1)
@@ -2920,29 +2882,6 @@ contains
        end if
     end do
   end subroutine get_coo_jacobian_q
-
-  subroutine get_csr_jacobian_q(y, jac_val, jac_indices, jac_indptr)
-    implicit none
-    type(adjac_complexan), dimension(:), intent(inout) :: y
-    double complex, dimension(*), intent(out) :: jac_val
-    integer, dimension(*), intent(out) :: jac_indices, jac_indptr
-    integer :: i, k
-
-    if (jac_product_mode) then
-       call fatal_error('call to adjac_get_csr_jacobian when jacobian product mode is active')
-    end if
-
-    k = 1
-    jac_indptr(1) = 1
-    do i = 1, size(y,1)
-       if (y(i)%n > 0) then
-          jac_indices(k:k+y(i)%n-1) = imem_q(y(i)%j:y(i)%j+y(i)%n-1)
-          jac_val(k:k+y(i)%n-1) = y(i)%vmul * vmem_q(y(i)%j:y(i)%j+y(i)%n-1)
-          k = k + y(i)%n
-       end if
-       jac_indptr(i+1) = k
-    end do
-  end subroutine get_csr_jacobian_q
 
    subroutine sum_taylor_q(alphap, betap, a, b, c)
     ! c := alpha*a + beta*b

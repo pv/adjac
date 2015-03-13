@@ -1438,21 +1438,12 @@ module adjac
      module procedure get_dense_jacobian_a, get_dense_jacobian_q
   end interface adjac_get_dense_jacobian
 
-  interface adjac_get_csr_jacobian
-     module procedure get_csr_jacobian_a, get_csr_jacobian_q
-  end interface adjac_get_csr_jacobian
-
   interface adjac_get_coo_jacobian
      module procedure get_coo_jacobian_a, get_coo_jacobian_q
   end interface adjac_get_coo_jacobian
 
-  interface adjac_get_nnz
-     module procedure get_nnz_a, get_nnz_q
-  end interface adjac_get_nnz
-
   public adjac_set_independent, adjac_get_value, &
-       adjac_get_dense_jacobian, adjac_get_csr_jacobian, &
-       adjac_get_coo_jacobian, adjac_get_nnz, &
+       adjac_get_dense_jacobian, adjac_get_coo_jacobian, &
        adjac_reset, adjac_free
 
 contains
@@ -1710,158 +1701,6 @@ contains
     end if
   end subroutine get_value_many_a
 
-  function get_nnz_a(y) result(nnz)
-    implicit none
-    type(adjac_double), dimension(:), intent(in) :: y
-    integer :: nnz
-    integer, dimension(free_a) :: iwork, imask
-    integer :: k, j, ia, ib, nwork, j_next
-
-    nnz = 0
-    imask = 0
-    do k = 1, size(y,1)
-       iwork(1) = y(k)%i
-       imask(y(k)%i) = 1
-       nwork = 1
-       
-    ! Traverse the tape
-    j_next = 0
-    if (nwork > 0) then
-       call heap_pop(iwork, nwork, j_next)
-    end if
-    do while (j_next > 0)
-       j = j_next
-       j_next = 0
-
-       if (256*nwork > j) then
-          ! Heap is too big, probably contains nearly all j values,
-          ! and we are better off just looping through them
-          nwork = j
-          exit
-       end if
-
-       ia = sum_map_a(1+2*(j-1))
-       ib = sum_map_a(2+2*(j-1))
-
-       if (ia == 0) then
-          nnz = nnz + 1
-       else
-          
-          if (imask(ia) == 0 .and. imask(ib) == 0) then
-             call heap_push(iwork, nwork, ia)
-             call heap_pushpop(iwork, nwork, ib, j_next)
-             imask(ia) = 1
-             imask(ib) = 1
-          else if (imask(ia) == 0) then
-             call heap_pushpop(iwork, nwork, ia, j_next)
-             imask(ia) = 1
-          else if (imask(ib) == 0) then
-             call heap_pushpop(iwork, nwork, ib, j_next)
-             imask(ib) = 1
-          end if
-       end if
-       
-       imask(j) = 0
-
-       if (nwork > 0 .and. j_next == 0) then
-         call heap_pop(iwork, nwork, j_next)
-       end if
-    end do
-    do j = nwork, 1, -1
-      if (imask(j).ne.0) then
-        ia = sum_map_a(1+2*(j-1))
-        ib = sum_map_a(2+2*(j-1))
-        if (ia == 0) then
-          nnz = nnz + 1
-        else
-          
-          imask(ia) = 1
-          imask(ib) = 1
-        end if
-        
-        imask(j) = 0
-      end if
-    end do
-
-    end do
-  end function get_nnz_a
-  subroutine get_row_nnz_a(y, nnz)
-    implicit none
-    type(adjac_double), dimension(:), intent(in) :: y
-    integer, dimension(*), intent(out) :: nnz
-
-    integer, dimension(free_a) :: iwork, imask
-    integer :: k, j, ia, ib, nwork, j_next
-
-    nnz(1:size(y,1)) = 0
-    imask = 0
-    do k = 1, size(y,1)
-       iwork(1) = y(k)%i
-       imask(y(k)%i) = 1
-       nwork = 1
-       
-    ! Traverse the tape
-    j_next = 0
-    if (nwork > 0) then
-       call heap_pop(iwork, nwork, j_next)
-    end if
-    do while (j_next > 0)
-       j = j_next
-       j_next = 0
-
-       if (256*nwork > j) then
-          ! Heap is too big, probably contains nearly all j values,
-          ! and we are better off just looping through them
-          nwork = j
-          exit
-       end if
-
-       ia = sum_map_a(1+2*(j-1))
-       ib = sum_map_a(2+2*(j-1))
-
-       if (ia == 0) then
-          nnz(k) = nnz(k) + 1
-       else
-          
-          if (imask(ia) == 0 .and. imask(ib) == 0) then
-             call heap_push(iwork, nwork, ia)
-             call heap_pushpop(iwork, nwork, ib, j_next)
-             imask(ia) = 1
-             imask(ib) = 1
-          else if (imask(ia) == 0) then
-             call heap_pushpop(iwork, nwork, ia, j_next)
-             imask(ia) = 1
-          else if (imask(ib) == 0) then
-             call heap_pushpop(iwork, nwork, ib, j_next)
-             imask(ib) = 1
-          end if
-       end if
-       
-       imask(j) = 0
-
-       if (nwork > 0 .and. j_next == 0) then
-         call heap_pop(iwork, nwork, j_next)
-       end if
-    end do
-    do j = nwork, 1, -1
-      if (imask(j).ne.0) then
-        ia = sum_map_a(1+2*(j-1))
-        ib = sum_map_a(2+2*(j-1))
-        if (ia == 0) then
-          nnz(k) = nnz(k) + 1
-        else
-          
-          imask(ia) = 1
-          imask(ib) = 1
-        end if
-        
-        imask(j) = 0
-      end if
-    end do
-
-    end do
-  end subroutine get_row_nnz_a
-
   subroutine get_dense_jacobian_a(y, jac_dense)
     implicit none
     type(adjac_double), dimension(:), intent(inout) :: y
@@ -1962,18 +1801,27 @@ contains
   subroutine get_coo_jacobian_a(y, jac_val, jac_i, jac_j)
     implicit none
     type(adjac_double), dimension(:), intent(inout) :: y
-    double precision, dimension(:), intent(out) :: jac_val
-    integer, dimension(:), intent(out) :: jac_i, jac_j
+    double precision, dimension(:), allocatable, intent(inout) :: jac_val
+    integer, dimension(:), allocatable, intent(inout) :: jac_i, jac_j
     double precision, dimension(block_size,free_a) :: work
     integer, dimension(free_a) :: iwork, imask
-    integer :: kmin, kmax, k, j, ia, ib, pos, nwork, j_next
+    integer, dimension(:), allocatable :: itmp
+    double precision, dimension(:), allocatable :: vtmp
+    integer :: kmin, kmax, k, j, ia, ib, nnz, nwork, j_next, sz
     double precision :: v
 
     if (jac_product_mode) then
-       call fatal_error('call to adjac_get_csr_jacobian when jacobian product mode is active')
+       call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
     end if
 
-    pos = 1
+    if (allocated(jac_val)) deallocate(jac_val)
+    if (allocated(jac_i)) deallocate(jac_i)
+    if (allocated(jac_j)) deallocate(jac_j)
+
+    sz = free_a + 10
+    allocate(jac_val(sz), jac_i(sz), jac_j(sz))
+
+    nnz = 0
     work = 0
     imask = 0
 
@@ -2011,10 +1859,26 @@ contains
           
             do k = kmin, kmax
                if (work(k-kmin+1,j).ne.0) then
-                   jac_i(pos) = k
-                   jac_j(pos) = ib
-                   jac_val(pos) = work(k-kmin+1,j)
-                   pos = pos + 1
+                   if (nnz >= sz) then
+                      ! Exponential overallocation
+                      sz = 2*sz + 1
+
+                      allocate(itmp(sz))
+                      itmp(1:nnz) = jac_i(1:nnz)
+                      call move_alloc(itmp, jac_i)
+
+                      allocate(itmp(sz))
+                      itmp(1:nnz) = jac_j(1:nnz)
+                      call move_alloc(itmp, jac_j)
+
+                      allocate(vtmp(sz))
+                      vtmp(1:nnz) = jac_val(1:nnz)
+                      call move_alloc(vtmp, jac_val)
+                   end if
+                   nnz = nnz + 1
+                   jac_i(nnz) = k
+                   jac_j(nnz) = ib
+                   jac_val(nnz) = work(k-kmin+1,j)
                 end if
             end do
         
@@ -2051,10 +1915,26 @@ contains
           
             do k = kmin, kmax
                if (work(k-kmin+1,j).ne.0) then
-                   jac_i(pos) = k
-                   jac_j(pos) = ib
-                   jac_val(pos) = work(k-kmin+1,j)
-                   pos = pos + 1
+                   if (nnz >= sz) then
+                      ! Exponential overallocation
+                      sz = 2*sz + 1
+
+                      allocate(itmp(sz))
+                      itmp(1:nnz) = jac_i(1:nnz)
+                      call move_alloc(itmp, jac_i)
+
+                      allocate(itmp(sz))
+                      itmp(1:nnz) = jac_j(1:nnz)
+                      call move_alloc(itmp, jac_j)
+
+                      allocate(vtmp(sz))
+                      vtmp(1:nnz) = jac_val(1:nnz)
+                      call move_alloc(vtmp, jac_val)
+                   end if
+                   nnz = nnz + 1
+                   jac_i(nnz) = k
+                   jac_j(nnz) = ib
+                   jac_val(nnz) = work(k-kmin+1,j)
                 end if
             end do
         
@@ -2072,115 +1952,20 @@ contains
     end do
 
     end do
+
+    if (nnz < sz) then
+       ! Shrink to size
+       allocate(itmp(nnz))
+       itmp(1:nnz) = jac_i(1:nnz)
+       call move_alloc(itmp, jac_i)
+       allocate(itmp(nnz))
+       itmp(1:nnz) = jac_j(1:nnz)
+       call move_alloc(itmp, jac_j)
+       allocate(vtmp(nnz))
+       vtmp(1:nnz) = jac_val(1:nnz)
+       call move_alloc(vtmp, jac_val)
+    end if
   end subroutine get_coo_jacobian_a
-
-  subroutine get_csr_jacobian_a(y, jac_val, jac_indices, jac_indptr)
-    implicit none
-    type(adjac_double), dimension(:), intent(inout) :: y
-    double precision, dimension(*), intent(out) :: jac_val
-    integer, dimension(*), intent(out) :: jac_indices, jac_indptr
-    double precision, dimension(1,free_a) :: work
-    integer, dimension(free_a) :: iwork, imask
-    integer :: pos
-    integer :: j, k, ia, ib, nwork, j_next
-    double precision :: v
-
-    if (jac_product_mode) then
-       call fatal_error('call to adjac_get_csr_jacobian when jacobian product mode is active')
-    end if
-
-    jac_indptr(1) = 1
-    call get_row_nnz_a(y, jac_indptr(2))
-    do k = 2, size(y,1)+1
-       jac_indptr(k) = jac_indptr(k) + jac_indptr(k-1)
-    end do
-
-    work = 0
-    imask = 0
-
-    do k = 1, size(y,1)
-       work(1, y(k)%i) = y(k)%vmul
-       nwork = 1
-       iwork(1) = y(k)%i
-       imask(y(k)%i) = 1
-       pos = 1
-
-       
-    ! Traverse the tape
-    j_next = 0
-    if (nwork > 0) then
-       call heap_pop(iwork, nwork, j_next)
-    end if
-    do while (j_next > 0)
-       j = j_next
-       j_next = 0
-
-       if (256*nwork > j) then
-          ! Heap is too big, probably contains nearly all j values,
-          ! and we are better off just looping through them
-          nwork = j
-          exit
-       end if
-
-       ia = sum_map_a(1+2*(j-1))
-       ib = sum_map_a(2+2*(j-1))
-
-       if (ia == 0) then
-          
-            jac_indices(jac_indptr(k+1) - pos) = ib
-            jac_val(jac_indptr(k+1) - pos) = work(1,j)
-            pos = pos + 1
-        
-       else
-          
-        work(:,ia) = work(:,ia) + sum_mul_a(1+2*(j-1)) * work(:,j)
-        work(:,ib) = work(:,ib) + sum_mul_a(2+2*(j-1)) * work(:,j)
-        
-          if (imask(ia) == 0 .and. imask(ib) == 0) then
-             call heap_push(iwork, nwork, ia)
-             call heap_pushpop(iwork, nwork, ib, j_next)
-             imask(ia) = 1
-             imask(ib) = 1
-          else if (imask(ia) == 0) then
-             call heap_pushpop(iwork, nwork, ia, j_next)
-             imask(ia) = 1
-          else if (imask(ib) == 0) then
-             call heap_pushpop(iwork, nwork, ib, j_next)
-             imask(ib) = 1
-          end if
-       end if
-       work(:,j) = 0
-       imask(j) = 0
-
-       if (nwork > 0 .and. j_next == 0) then
-         call heap_pop(iwork, nwork, j_next)
-       end if
-    end do
-    do j = nwork, 1, -1
-      if (imask(j).ne.0) then
-        ia = sum_map_a(1+2*(j-1))
-        ib = sum_map_a(2+2*(j-1))
-        if (ia == 0) then
-          
-            jac_indices(jac_indptr(k+1) - pos) = ib
-            jac_val(jac_indptr(k+1) - pos) = work(1,j)
-            pos = pos + 1
-        
-        else
-          
-        work(:,ia) = work(:,ia) + sum_mul_a(1+2*(j-1)) * work(:,j)
-        work(:,ib) = work(:,ib) + sum_mul_a(2+2*(j-1)) * work(:,j)
-        
-          imask(ia) = 1
-          imask(ib) = 1
-        end if
-        work(:,j) = 0
-        imask(j) = 0
-      end if
-    end do
-
-    end do
-  end subroutine get_csr_jacobian_a
 
    subroutine sum_taylor_a(alphap, betap, a, b, c)
     ! c := alpha*a + beta*b
@@ -3370,158 +3155,6 @@ contains
     end if
   end subroutine get_value_many_q
 
-  function get_nnz_q(y) result(nnz)
-    implicit none
-    type(adjac_complexan), dimension(:), intent(in) :: y
-    integer :: nnz
-    integer, dimension(free_q) :: iwork, imask
-    integer :: k, j, ia, ib, nwork, j_next
-
-    nnz = 0
-    imask = 0
-    do k = 1, size(y,1)
-       iwork(1) = y(k)%i
-       imask(y(k)%i) = 1
-       nwork = 1
-       
-    ! Traverse the tape
-    j_next = 0
-    if (nwork > 0) then
-       call heap_pop(iwork, nwork, j_next)
-    end if
-    do while (j_next > 0)
-       j = j_next
-       j_next = 0
-
-       if (256*nwork > j) then
-          ! Heap is too big, probably contains nearly all j values,
-          ! and we are better off just looping through them
-          nwork = j
-          exit
-       end if
-
-       ia = sum_map_q(1+2*(j-1))
-       ib = sum_map_q(2+2*(j-1))
-
-       if (ia == 0) then
-          nnz = nnz + 1
-       else
-          
-          if (imask(ia) == 0 .and. imask(ib) == 0) then
-             call heap_push(iwork, nwork, ia)
-             call heap_pushpop(iwork, nwork, ib, j_next)
-             imask(ia) = 1
-             imask(ib) = 1
-          else if (imask(ia) == 0) then
-             call heap_pushpop(iwork, nwork, ia, j_next)
-             imask(ia) = 1
-          else if (imask(ib) == 0) then
-             call heap_pushpop(iwork, nwork, ib, j_next)
-             imask(ib) = 1
-          end if
-       end if
-       
-       imask(j) = 0
-
-       if (nwork > 0 .and. j_next == 0) then
-         call heap_pop(iwork, nwork, j_next)
-       end if
-    end do
-    do j = nwork, 1, -1
-      if (imask(j).ne.0) then
-        ia = sum_map_q(1+2*(j-1))
-        ib = sum_map_q(2+2*(j-1))
-        if (ia == 0) then
-          nnz = nnz + 1
-        else
-          
-          imask(ia) = 1
-          imask(ib) = 1
-        end if
-        
-        imask(j) = 0
-      end if
-    end do
-
-    end do
-  end function get_nnz_q
-  subroutine get_row_nnz_q(y, nnz)
-    implicit none
-    type(adjac_complexan), dimension(:), intent(in) :: y
-    integer, dimension(*), intent(out) :: nnz
-
-    integer, dimension(free_q) :: iwork, imask
-    integer :: k, j, ia, ib, nwork, j_next
-
-    nnz(1:size(y,1)) = 0
-    imask = 0
-    do k = 1, size(y,1)
-       iwork(1) = y(k)%i
-       imask(y(k)%i) = 1
-       nwork = 1
-       
-    ! Traverse the tape
-    j_next = 0
-    if (nwork > 0) then
-       call heap_pop(iwork, nwork, j_next)
-    end if
-    do while (j_next > 0)
-       j = j_next
-       j_next = 0
-
-       if (256*nwork > j) then
-          ! Heap is too big, probably contains nearly all j values,
-          ! and we are better off just looping through them
-          nwork = j
-          exit
-       end if
-
-       ia = sum_map_q(1+2*(j-1))
-       ib = sum_map_q(2+2*(j-1))
-
-       if (ia == 0) then
-          nnz(k) = nnz(k) + 1
-       else
-          
-          if (imask(ia) == 0 .and. imask(ib) == 0) then
-             call heap_push(iwork, nwork, ia)
-             call heap_pushpop(iwork, nwork, ib, j_next)
-             imask(ia) = 1
-             imask(ib) = 1
-          else if (imask(ia) == 0) then
-             call heap_pushpop(iwork, nwork, ia, j_next)
-             imask(ia) = 1
-          else if (imask(ib) == 0) then
-             call heap_pushpop(iwork, nwork, ib, j_next)
-             imask(ib) = 1
-          end if
-       end if
-       
-       imask(j) = 0
-
-       if (nwork > 0 .and. j_next == 0) then
-         call heap_pop(iwork, nwork, j_next)
-       end if
-    end do
-    do j = nwork, 1, -1
-      if (imask(j).ne.0) then
-        ia = sum_map_q(1+2*(j-1))
-        ib = sum_map_q(2+2*(j-1))
-        if (ia == 0) then
-          nnz(k) = nnz(k) + 1
-        else
-          
-          imask(ia) = 1
-          imask(ib) = 1
-        end if
-        
-        imask(j) = 0
-      end if
-    end do
-
-    end do
-  end subroutine get_row_nnz_q
-
   subroutine get_dense_jacobian_q(y, jac_dense)
     implicit none
     type(adjac_complexan), dimension(:), intent(inout) :: y
@@ -3622,18 +3255,27 @@ contains
   subroutine get_coo_jacobian_q(y, jac_val, jac_i, jac_j)
     implicit none
     type(adjac_complexan), dimension(:), intent(inout) :: y
-    double complex, dimension(:), intent(out) :: jac_val
-    integer, dimension(:), intent(out) :: jac_i, jac_j
+    double complex, dimension(:), allocatable, intent(inout) :: jac_val
+    integer, dimension(:), allocatable, intent(inout) :: jac_i, jac_j
     double complex, dimension(block_size,free_q) :: work
     integer, dimension(free_q) :: iwork, imask
-    integer :: kmin, kmax, k, j, ia, ib, pos, nwork, j_next
+    integer, dimension(:), allocatable :: itmp
+    double complex, dimension(:), allocatable :: vtmp
+    integer :: kmin, kmax, k, j, ia, ib, nnz, nwork, j_next, sz
     double complex :: v
 
     if (jac_product_mode) then
-       call fatal_error('call to adjac_get_csr_jacobian when jacobian product mode is active')
+       call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
     end if
 
-    pos = 1
+    if (allocated(jac_val)) deallocate(jac_val)
+    if (allocated(jac_i)) deallocate(jac_i)
+    if (allocated(jac_j)) deallocate(jac_j)
+
+    sz = free_q + 10
+    allocate(jac_val(sz), jac_i(sz), jac_j(sz))
+
+    nnz = 0
     work = 0
     imask = 0
 
@@ -3671,10 +3313,26 @@ contains
           
             do k = kmin, kmax
                if (work(k-kmin+1,j).ne.0) then
-                   jac_i(pos) = k
-                   jac_j(pos) = ib
-                   jac_val(pos) = work(k-kmin+1,j)
-                   pos = pos + 1
+                   if (nnz >= sz) then
+                      ! Exponential overallocation
+                      sz = 2*sz + 1
+
+                      allocate(itmp(sz))
+                      itmp(1:nnz) = jac_i(1:nnz)
+                      call move_alloc(itmp, jac_i)
+
+                      allocate(itmp(sz))
+                      itmp(1:nnz) = jac_j(1:nnz)
+                      call move_alloc(itmp, jac_j)
+
+                      allocate(vtmp(sz))
+                      vtmp(1:nnz) = jac_val(1:nnz)
+                      call move_alloc(vtmp, jac_val)
+                   end if
+                   nnz = nnz + 1
+                   jac_i(nnz) = k
+                   jac_j(nnz) = ib
+                   jac_val(nnz) = work(k-kmin+1,j)
                 end if
             end do
         
@@ -3711,10 +3369,26 @@ contains
           
             do k = kmin, kmax
                if (work(k-kmin+1,j).ne.0) then
-                   jac_i(pos) = k
-                   jac_j(pos) = ib
-                   jac_val(pos) = work(k-kmin+1,j)
-                   pos = pos + 1
+                   if (nnz >= sz) then
+                      ! Exponential overallocation
+                      sz = 2*sz + 1
+
+                      allocate(itmp(sz))
+                      itmp(1:nnz) = jac_i(1:nnz)
+                      call move_alloc(itmp, jac_i)
+
+                      allocate(itmp(sz))
+                      itmp(1:nnz) = jac_j(1:nnz)
+                      call move_alloc(itmp, jac_j)
+
+                      allocate(vtmp(sz))
+                      vtmp(1:nnz) = jac_val(1:nnz)
+                      call move_alloc(vtmp, jac_val)
+                   end if
+                   nnz = nnz + 1
+                   jac_i(nnz) = k
+                   jac_j(nnz) = ib
+                   jac_val(nnz) = work(k-kmin+1,j)
                 end if
             end do
         
@@ -3732,115 +3406,20 @@ contains
     end do
 
     end do
+
+    if (nnz < sz) then
+       ! Shrink to size
+       allocate(itmp(nnz))
+       itmp(1:nnz) = jac_i(1:nnz)
+       call move_alloc(itmp, jac_i)
+       allocate(itmp(nnz))
+       itmp(1:nnz) = jac_j(1:nnz)
+       call move_alloc(itmp, jac_j)
+       allocate(vtmp(nnz))
+       vtmp(1:nnz) = jac_val(1:nnz)
+       call move_alloc(vtmp, jac_val)
+    end if
   end subroutine get_coo_jacobian_q
-
-  subroutine get_csr_jacobian_q(y, jac_val, jac_indices, jac_indptr)
-    implicit none
-    type(adjac_complexan), dimension(:), intent(inout) :: y
-    double complex, dimension(*), intent(out) :: jac_val
-    integer, dimension(*), intent(out) :: jac_indices, jac_indptr
-    double complex, dimension(1,free_q) :: work
-    integer, dimension(free_q) :: iwork, imask
-    integer :: pos
-    integer :: j, k, ia, ib, nwork, j_next
-    double complex :: v
-
-    if (jac_product_mode) then
-       call fatal_error('call to adjac_get_csr_jacobian when jacobian product mode is active')
-    end if
-
-    jac_indptr(1) = 1
-    call get_row_nnz_q(y, jac_indptr(2))
-    do k = 2, size(y,1)+1
-       jac_indptr(k) = jac_indptr(k) + jac_indptr(k-1)
-    end do
-
-    work = 0
-    imask = 0
-
-    do k = 1, size(y,1)
-       work(1, y(k)%i) = y(k)%vmul
-       nwork = 1
-       iwork(1) = y(k)%i
-       imask(y(k)%i) = 1
-       pos = 1
-
-       
-    ! Traverse the tape
-    j_next = 0
-    if (nwork > 0) then
-       call heap_pop(iwork, nwork, j_next)
-    end if
-    do while (j_next > 0)
-       j = j_next
-       j_next = 0
-
-       if (256*nwork > j) then
-          ! Heap is too big, probably contains nearly all j values,
-          ! and we are better off just looping through them
-          nwork = j
-          exit
-       end if
-
-       ia = sum_map_q(1+2*(j-1))
-       ib = sum_map_q(2+2*(j-1))
-
-       if (ia == 0) then
-          
-            jac_indices(jac_indptr(k+1) - pos) = ib
-            jac_val(jac_indptr(k+1) - pos) = work(1,j)
-            pos = pos + 1
-        
-       else
-          
-        work(:,ia) = work(:,ia) + sum_mul_q(1+2*(j-1)) * work(:,j)
-        work(:,ib) = work(:,ib) + sum_mul_q(2+2*(j-1)) * work(:,j)
-        
-          if (imask(ia) == 0 .and. imask(ib) == 0) then
-             call heap_push(iwork, nwork, ia)
-             call heap_pushpop(iwork, nwork, ib, j_next)
-             imask(ia) = 1
-             imask(ib) = 1
-          else if (imask(ia) == 0) then
-             call heap_pushpop(iwork, nwork, ia, j_next)
-             imask(ia) = 1
-          else if (imask(ib) == 0) then
-             call heap_pushpop(iwork, nwork, ib, j_next)
-             imask(ib) = 1
-          end if
-       end if
-       work(:,j) = 0
-       imask(j) = 0
-
-       if (nwork > 0 .and. j_next == 0) then
-         call heap_pop(iwork, nwork, j_next)
-       end if
-    end do
-    do j = nwork, 1, -1
-      if (imask(j).ne.0) then
-        ia = sum_map_q(1+2*(j-1))
-        ib = sum_map_q(2+2*(j-1))
-        if (ia == 0) then
-          
-            jac_indices(jac_indptr(k+1) - pos) = ib
-            jac_val(jac_indptr(k+1) - pos) = work(1,j)
-            pos = pos + 1
-        
-        else
-          
-        work(:,ia) = work(:,ia) + sum_mul_q(1+2*(j-1)) * work(:,j)
-        work(:,ib) = work(:,ib) + sum_mul_q(2+2*(j-1)) * work(:,j)
-        
-          imask(ia) = 1
-          imask(ib) = 1
-        end if
-        work(:,j) = 0
-        imask(j) = 0
-      end if
-    end do
-
-    end do
-  end subroutine get_csr_jacobian_q
 
    subroutine sum_taylor_q(alphap, betap, a, b, c)
     ! c := alpha*a + beta*b
