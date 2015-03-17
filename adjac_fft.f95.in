@@ -2,11 +2,15 @@ module adjac_fft
   use adjac
 
   private
-  public fft
+  public fft, ifft
 
   interface fft
      module procedure fft_a, fft_d, fft_b, fft_z
   end interface fft
+
+  interface ifft
+     module procedure ifft_a, ifft_d, ifft_b, ifft_z
+  end interface ifft
 
   type(adjac_double), dimension(:), allocatable :: ch_a
   double precision, dimension(:), allocatable :: wa, ch_d
@@ -37,5 +41,31 @@ contains
     end if
     call zfftf1{{SUF2}}(n, q, ch_{{SUF2}}, wa, ifac)
   end subroutine fft_{{SUF}}
+
+  subroutine ifft_{{SUF}}(n, q)
+    use adjac
+    implicit none
+    external :: zffti1, zfftf1
+    integer, intent(in) :: n
+    {{TYPE}}, dimension({{SIZE}}), intent(inout) :: q
+    integer :: i, j
+
+    if (n.le.1) return
+
+    if (.not.allocated(wa) .or. size(wa) .ne. 2*n) then
+       if (allocated(wa)) deallocate(wa)
+       allocate(wa(2*n))
+       call zffti1(n, wa, ifac)
+    end if
+    if (.not.allocated(ch_{{SUF2}}) .or. size(ch_{{SUF2}}) .ne. 2*n) then
+       if (allocated(ch_{{SUF2}})) deallocate(ch_{{SUF2}})
+       allocate(ch_{{SUF2}}(2*n))
+    end if
+    call zfftb1{{SUF2}}(n, q, ch_{{SUF2}}, wa, ifac)
+
+    do i = 1, {{SIZE}}
+       q(i) = q(i) / n
+    end do
+  end subroutine ifft_{{SUF}}
   {{endfor}}
 end module adjac_fft
