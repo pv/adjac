@@ -30,6 +30,11 @@ equivalent, but adjac_complexan is more efficient computationally.
 The data types support operations =,*,+,-,matmul,exp,sin,cos,log,dble,aimag,conjg.
 However, adjac_complexan does not support operations that break complex analyticity.
 
+The supplied ``adjac_fft`` module provides also discrete Fourier transforms:
+
+- ``fft(n, z)`` compute DFT in-place
+- ``ifft(n, z)`` compute inverse DFT in-place
+
 For more information about automatic differentiation, and other AD software
 (there are many and adjac does not do anything unusual), see
 http://autodiff.org/ Adjac performance appears to be roughly similar to ADOLC,
