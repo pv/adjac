@@ -773,10 +773,10 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
             a%v, b%v, c%v)
        c%vmul = 1
 {{else}}
-       if (a%vmul == 0 .or. a%i == 0) then
+       if (a%vmul == 0 .or. a%i == 0 .or. alphap == 0) then
           c%vmul = betap * b%vmul
           c%i = b%i
-       else if (b%vmul == 0 .or. b%i == 0) then
+       else if (b%vmul == 0 .or. b%i == 0 .or. betap == 0) then
           c%vmul = alphap * a%vmul
           c%i = a%i
        else if (a%i == b%i) then

@@ -58,12 +58,14 @@ module adjac
   end type adjac_complex
 
   logical :: jac_product_mode = .false.
-  ! Differential binary tree
+  ! DAG of differentials
   !
   ! if (sum_map(1 + 2*(i-1)) .ne. 0) then
-  !     D[i] = sum_mul(1+2*(i-1)) * D[sum_map(1+2*(i-1))] + sum_mul(2+2*(i-1)) * D[sum_map(2+2*(i-1))]
+  !     ! dependent variable
+  !     d_{i} = sum_mul(1+2*(i-1)) * d_{sum_map(1+2*(i-1))} + sum_mul(2+2*(i-1)) * d_{sum_map(2+2*(i-1))}
   ! else
-  !     D[i] = D[i]
+  !     ! independent variable
+  !     d_{i} = D_{i}
   !
   integer, parameter :: block_size = 16
   integer :: free_a = 1, free_q = 1
@@ -810,10 +812,10 @@ contains
     if (jac_product_mode) then
        c%vmul = alphap * a%vmul + betap * b%vmul
     else
-       if (a%vmul == 0 .or. a%i == 0) then
+       if (a%vmul == 0 .or. a%i == 0 .or. alphap == 0) then
           c%vmul = betap * b%vmul
           c%i = b%i
-       else if (b%vmul == 0 .or. b%i == 0) then
+       else if (b%vmul == 0 .or. b%i == 0 .or. betap == 0) then
           c%vmul = alphap * a%vmul
           c%i = a%i
        else if (a%i == b%i) then
@@ -2283,10 +2285,10 @@ contains
     if (jac_product_mode) then
        c%vmul = alphap * a%vmul + betap * b%vmul
     else
-       if (a%vmul == 0 .or. a%i == 0) then
+       if (a%vmul == 0 .or. a%i == 0 .or. alphap == 0) then
           c%vmul = betap * b%vmul
           c%i = b%i
-       else if (b%vmul == 0 .or. b%i == 0) then
+       else if (b%vmul == 0 .or. b%i == 0 .or. betap == 0) then
           c%vmul = alphap * a%vmul
           c%i = a%i
        else if (a%i == b%i) then
