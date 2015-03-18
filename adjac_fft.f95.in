@@ -16,17 +16,18 @@ module adjac_fft
   double precision, dimension(:), allocatable :: wa, ch_d
   integer, dimension(15) :: ifac
 contains
-  {{for TYPE, SUF, SIZE, SUF2 in [('type(adjac_double)', 'a', '2*n', 'a'),
-                                  ('double precision', 'd', '2*n', 'd'),
-                                  ('type(adjac_complex)', 'b', 'n', 'a'),
-                                  ('double complex', 'z', 'n', 'd')]}}
-  subroutine fft_{{SUF}}(n, q)
+  {{for TYPE, SUF, SIZE, SUF2 in [('type(adjac_double)', 'a', 'size(q)/2', 'a'),
+                                  ('double precision', 'd', 'size(q)/2', 'd'),
+                                  ('type(adjac_complex)', 'b', 'size(q)', 'a'),
+                                  ('double complex', 'z', 'size(q)', 'd')]}}
+  subroutine fft_{{SUF}}(q)
     use adjac
     implicit none
     external :: zffti1, zfftf1
-    integer, intent(in) :: n
-    {{TYPE}}, dimension({{SIZE}}), intent(inout) :: q
+    {{TYPE}}, dimension(:), contiguous, intent(inout) :: q
+    integer :: n
 
+    n = {{SIZE}}
     if (n.le.1) return
 
     if (.not.allocated(wa) .or. size(wa) .ne. 2*n) then
@@ -41,14 +42,14 @@ contains
     call zfftf1{{SUF2}}(n, q, ch_{{SUF2}}, wa, ifac)
   end subroutine fft_{{SUF}}
 
-  subroutine ifft_{{SUF}}(n, q)
+  subroutine ifft_{{SUF}}(q)
     use adjac
     implicit none
     external :: zffti1, zfftf1
-    integer, intent(in) :: n
-    {{TYPE}}, dimension({{SIZE}}), intent(inout) :: q
-    integer :: i
+    {{TYPE}}, dimension(:), contiguous, intent(inout) :: q
+    integer :: i, n
 
+    n = {{SIZE}}
     if (n.le.1) return
 
     if (.not.allocated(wa) .or. size(wa) .ne. 2*n) then
@@ -62,7 +63,7 @@ contains
     end if
     call zfftb1{{SUF2}}(n, q, ch_{{SUF2}}, wa, ifac)
 
-    do i = 1, {{SIZE}}
+    do i = 1, size(q)
        q(i) = q(i) / n
     end do
   end subroutine ifft_{{SUF}}

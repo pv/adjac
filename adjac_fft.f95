@@ -17,13 +17,14 @@ module adjac_fft
   double precision, dimension(:), allocatable :: wa, ch_d
   integer, dimension(15) :: ifac
 contains
-  subroutine fft_a(n, q)
+  subroutine fft_a(q)
     use adjac
     implicit none
     external :: zffti1, zfftf1
-    integer, intent(in) :: n
-    type(adjac_double), dimension(2*n), intent(inout) :: q
+    type(adjac_double), dimension(:), contiguous, intent(inout) :: q
+    integer :: n
 
+    n = size(q)/2
     if (n.le.1) return
 
     if (.not.allocated(wa) .or. size(wa) .ne. 2*n) then
@@ -38,14 +39,14 @@ contains
     call zfftf1a(n, q, ch_a, wa, ifac)
   end subroutine fft_a
 
-  subroutine ifft_a(n, q)
+  subroutine ifft_a(q)
     use adjac
     implicit none
     external :: zffti1, zfftf1
-    integer, intent(in) :: n
-    type(adjac_double), dimension(2*n), intent(inout) :: q
-    integer :: i
+    type(adjac_double), dimension(:), contiguous, intent(inout) :: q
+    integer :: i, n
 
+    n = size(q)/2
     if (n.le.1) return
 
     if (.not.allocated(wa) .or. size(wa) .ne. 2*n) then
@@ -59,17 +60,18 @@ contains
     end if
     call zfftb1a(n, q, ch_a, wa, ifac)
 
-    do i = 1, 2*n
+    do i = 1, size(q)
        q(i) = q(i) / n
     end do
   end subroutine ifft_a
-  subroutine fft_d(n, q)
+  subroutine fft_d(q)
     use adjac
     implicit none
     external :: zffti1, zfftf1
-    integer, intent(in) :: n
-    double precision, dimension(2*n), intent(inout) :: q
+    double precision, dimension(:), contiguous, intent(inout) :: q
+    integer :: n
 
+    n = size(q)/2
     if (n.le.1) return
 
     if (.not.allocated(wa) .or. size(wa) .ne. 2*n) then
@@ -84,14 +86,14 @@ contains
     call zfftf1d(n, q, ch_d, wa, ifac)
   end subroutine fft_d
 
-  subroutine ifft_d(n, q)
+  subroutine ifft_d(q)
     use adjac
     implicit none
     external :: zffti1, zfftf1
-    integer, intent(in) :: n
-    double precision, dimension(2*n), intent(inout) :: q
-    integer :: i
+    double precision, dimension(:), contiguous, intent(inout) :: q
+    integer :: i, n
 
+    n = size(q)/2
     if (n.le.1) return
 
     if (.not.allocated(wa) .or. size(wa) .ne. 2*n) then
@@ -105,17 +107,18 @@ contains
     end if
     call zfftb1d(n, q, ch_d, wa, ifac)
 
-    do i = 1, 2*n
+    do i = 1, size(q)
        q(i) = q(i) / n
     end do
   end subroutine ifft_d
-  subroutine fft_b(n, q)
+  subroutine fft_b(q)
     use adjac
     implicit none
     external :: zffti1, zfftf1
-    integer, intent(in) :: n
-    type(adjac_complex), dimension(n), intent(inout) :: q
+    type(adjac_complex), dimension(:), contiguous, intent(inout) :: q
+    integer :: n
 
+    n = size(q)
     if (n.le.1) return
 
     if (.not.allocated(wa) .or. size(wa) .ne. 2*n) then
@@ -130,14 +133,14 @@ contains
     call zfftf1a(n, q, ch_a, wa, ifac)
   end subroutine fft_b
 
-  subroutine ifft_b(n, q)
+  subroutine ifft_b(q)
     use adjac
     implicit none
     external :: zffti1, zfftf1
-    integer, intent(in) :: n
-    type(adjac_complex), dimension(n), intent(inout) :: q
-    integer :: i
+    type(adjac_complex), dimension(:), contiguous, intent(inout) :: q
+    integer :: i, n
 
+    n = size(q)
     if (n.le.1) return
 
     if (.not.allocated(wa) .or. size(wa) .ne. 2*n) then
@@ -151,17 +154,18 @@ contains
     end if
     call zfftb1a(n, q, ch_a, wa, ifac)
 
-    do i = 1, n
+    do i = 1, size(q)
        q(i) = q(i) / n
     end do
   end subroutine ifft_b
-  subroutine fft_z(n, q)
+  subroutine fft_z(q)
     use adjac
     implicit none
     external :: zffti1, zfftf1
-    integer, intent(in) :: n
-    double complex, dimension(n), intent(inout) :: q
+    double complex, dimension(:), contiguous, intent(inout) :: q
+    integer :: n
 
+    n = size(q)
     if (n.le.1) return
 
     if (.not.allocated(wa) .or. size(wa) .ne. 2*n) then
@@ -176,14 +180,14 @@ contains
     call zfftf1d(n, q, ch_d, wa, ifac)
   end subroutine fft_z
 
-  subroutine ifft_z(n, q)
+  subroutine ifft_z(q)
     use adjac
     implicit none
     external :: zffti1, zfftf1
-    integer, intent(in) :: n
-    double complex, dimension(n), intent(inout) :: q
-    integer :: i
+    double complex, dimension(:), contiguous, intent(inout) :: q
+    integer :: i, n
 
+    n = size(q)
     if (n.le.1) return
 
     if (.not.allocated(wa) .or. size(wa) .ne. 2*n) then
@@ -197,7 +201,7 @@ contains
     end if
     call zfftb1d(n, q, ch_d, wa, ifac)
 
-    do i = 1, n
+    do i = 1, size(q)
        q(i) = q(i) / n
     end do
   end subroutine ifft_z
