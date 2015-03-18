@@ -74,12 +74,14 @@ module adjac
 
 {{if TAPELESS}}
 {{else}}
-  ! Differential binary tree
+  ! DAG of differentials
   !
   ! if (sum_map(1 + 2*(i-1)) .ne. 0) then
-  !     D[i] = sum_mul(1+2*(i-1)) * D[sum_map(1+2*(i-1))] + sum_mul(2+2*(i-1)) * D[sum_map(2+2*(i-1))]
+  !     ! dependent variable
+  !     d_{i} = sum_mul(1+2*(i-1)) * d_{sum_map(1+2*(i-1))} + sum_mul(2+2*(i-1)) * d_{sum_map(2+2*(i-1))}
   ! else
-  !     D[i] = D[i]
+  !     ! independent variable
+  !     d_{i} = D_{i}
   !
   integer, parameter :: block_size = 16
   integer :: free_a = 1, free_q = 1
