@@ -81,7 +81,7 @@ module adjac
   ! else
   !     D[i] = D[i]
   !
-  integer, parameter :: block_size = 4
+  integer, parameter :: block_size = 16
   integer :: free_a = 1, free_q = 1
   integer, dimension(:), allocatable :: sum_map_a, sum_map_q
   double precision, dimension(:), allocatable :: sum_mul_a
@@ -506,11 +506,19 @@ contains
 def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     if accumulate is None:
         accumulate = """
-        work(:,ia) = work(:,ia) + sum_mul_{chr}(1+2*(j-1)) * work(:,j)
-        work(:,ib) = work(:,ib) + sum_mul_{chr}(2+2*(j-1)) * work(:,j)
+        do concurrent (k=1:block_size)
+          work(k,ia) = work(k,ia) + sum_mul_{chr}(1+2*(j-1)) * work(k,j)
+        end do
+        do concurrent (k=1:block_size)
+          work(k,ib) = work(k,ib) + sum_mul_{chr}(2+2*(j-1)) * work(k,j)
+        end do
         """.format(chr=chr)
     if clear is None:
-        clear = "work(:,j) = 0"
+        clear = """
+        do concurrent (k=1:block_size)
+          work(k,j) = 0
+        end do
+        """
     return """
     ! Traverse the tape
     j_next = 0
@@ -613,7 +621,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
 
     jac_dense = 0
 
-    do i = 1, size(y,1)
+    do concurrent (i=1:size(y,1))
        do p = 1, y(i)%n
           jac_dense(i, y(i)%i(p)) = jac_dense(i, y(i)%i(p)) &
                + y(i)%vmul * y(i)%v(p)
@@ -661,24 +669,24 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
        end do
 
        {{walk_tape(FTYPE, CHR, """
+            if (nnz + (kmax-kmin) + 1 >= sz) then
+               ! Exponential overallocation
+               sz = 2*sz + (kmax-kmin) + 1
+
+               allocate(itmp(sz))
+               itmp(1:nnz) = jac_i(1:nnz)
+               call move_alloc(itmp, jac_i)
+
+               allocate(itmp(sz))
+               itmp(1:nnz) = jac_j(1:nnz)
+               call move_alloc(itmp, jac_j)
+
+               allocate(vtmp(sz))
+               vtmp(1:nnz) = jac_val(1:nnz)
+               call move_alloc(vtmp, jac_val)
+            end if
             do k = kmin, kmax
                if (work(k-kmin+1,j).ne.0) then
-                   if (nnz >= sz) then
-                      ! Exponential overallocation
-                      sz = 2*sz + 1
-
-                      allocate(itmp(sz))
-                      itmp(1:nnz) = jac_i(1:nnz)
-                      call move_alloc(itmp, jac_i)
-
-                      allocate(itmp(sz))
-                      itmp(1:nnz) = jac_j(1:nnz)
-                      call move_alloc(itmp, jac_j)
-
-                      allocate(vtmp(sz))
-                      vtmp(1:nnz) = jac_val(1:nnz)
-                      call move_alloc(vtmp, jac_val)
-                   end if
                    nnz = nnz + 1
                    jac_i(nnz) = k
                    jac_j(nnz) = ib

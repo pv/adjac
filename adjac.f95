@@ -65,7 +65,7 @@ module adjac
   ! else
   !     D[i] = D[i]
   !
-  integer, parameter :: block_size = 4
+  integer, parameter :: block_size = 16
   integer :: free_a = 1, free_q = 1
   integer, dimension(:), allocatable :: sum_map_a, sum_map_q
   double precision, dimension(:), allocatable :: sum_mul_a
@@ -554,8 +554,12 @@ contains
           jac_dense(kmin:kmax,ib) = work(1:(kmax-kmin+1),j)
        else
           
-        work(:,ia) = work(:,ia) + sum_mul_a(1+2*(j-1)) * work(:,j)
-        work(:,ib) = work(:,ib) + sum_mul_a(2+2*(j-1)) * work(:,j)
+        do concurrent (k=1:block_size)
+          work(k,ia) = work(k,ia) + sum_mul_a(1+2*(j-1)) * work(k,j)
+        end do
+        do concurrent (k=1:block_size)
+          work(k,ib) = work(k,ib) + sum_mul_a(2+2*(j-1)) * work(k,j)
+        end do
         
           if (imask(ia) == 0 .and. imask(ib) == 0) then
              call heap_push(iwork, nwork, ia)
@@ -570,7 +574,11 @@ contains
              imask(ib) = 1
           end if
        end if
-       work(:,j) = 0
+       
+        do concurrent (k=1:block_size)
+          work(k,j) = 0
+        end do
+        
        imask(j) = 0
 
        if (nwork > 0 .and. j_next == 0) then
@@ -585,13 +593,21 @@ contains
           jac_dense(kmin:kmax,ib) = work(1:(kmax-kmin+1),j)
         else
           
-        work(:,ia) = work(:,ia) + sum_mul_a(1+2*(j-1)) * work(:,j)
-        work(:,ib) = work(:,ib) + sum_mul_a(2+2*(j-1)) * work(:,j)
+        do concurrent (k=1:block_size)
+          work(k,ia) = work(k,ia) + sum_mul_a(1+2*(j-1)) * work(k,j)
+        end do
+        do concurrent (k=1:block_size)
+          work(k,ib) = work(k,ib) + sum_mul_a(2+2*(j-1)) * work(k,j)
+        end do
         
           imask(ia) = 1
           imask(ib) = 1
         end if
-        work(:,j) = 0
+        
+        do concurrent (k=1:block_size)
+          work(k,j) = 0
+        end do
+        
         imask(j) = 0
       end if
     end do
@@ -657,24 +673,24 @@ contains
 
        if (ia == 0) then
           
+            if (nnz + (kmax-kmin) + 1 >= sz) then
+               ! Exponential overallocation
+               sz = 2*sz + (kmax-kmin) + 1
+
+               allocate(itmp(sz))
+               itmp(1:nnz) = jac_i(1:nnz)
+               call move_alloc(itmp, jac_i)
+
+               allocate(itmp(sz))
+               itmp(1:nnz) = jac_j(1:nnz)
+               call move_alloc(itmp, jac_j)
+
+               allocate(vtmp(sz))
+               vtmp(1:nnz) = jac_val(1:nnz)
+               call move_alloc(vtmp, jac_val)
+            end if
             do k = kmin, kmax
                if (work(k-kmin+1,j).ne.0) then
-                   if (nnz >= sz) then
-                      ! Exponential overallocation
-                      sz = 2*sz + 1
-
-                      allocate(itmp(sz))
-                      itmp(1:nnz) = jac_i(1:nnz)
-                      call move_alloc(itmp, jac_i)
-
-                      allocate(itmp(sz))
-                      itmp(1:nnz) = jac_j(1:nnz)
-                      call move_alloc(itmp, jac_j)
-
-                      allocate(vtmp(sz))
-                      vtmp(1:nnz) = jac_val(1:nnz)
-                      call move_alloc(vtmp, jac_val)
-                   end if
                    nnz = nnz + 1
                    jac_i(nnz) = k
                    jac_j(nnz) = ib
@@ -684,8 +700,12 @@ contains
         
        else
           
-        work(:,ia) = work(:,ia) + sum_mul_a(1+2*(j-1)) * work(:,j)
-        work(:,ib) = work(:,ib) + sum_mul_a(2+2*(j-1)) * work(:,j)
+        do concurrent (k=1:block_size)
+          work(k,ia) = work(k,ia) + sum_mul_a(1+2*(j-1)) * work(k,j)
+        end do
+        do concurrent (k=1:block_size)
+          work(k,ib) = work(k,ib) + sum_mul_a(2+2*(j-1)) * work(k,j)
+        end do
         
           if (imask(ia) == 0 .and. imask(ib) == 0) then
              call heap_push(iwork, nwork, ia)
@@ -700,7 +720,11 @@ contains
              imask(ib) = 1
           end if
        end if
-       work(:,j) = 0
+       
+        do concurrent (k=1:block_size)
+          work(k,j) = 0
+        end do
+        
        imask(j) = 0
 
        if (nwork > 0 .and. j_next == 0) then
@@ -713,24 +737,24 @@ contains
         ib = sum_map_a(2+2*(j-1))
         if (ia == 0) then
           
+            if (nnz + (kmax-kmin) + 1 >= sz) then
+               ! Exponential overallocation
+               sz = 2*sz + (kmax-kmin) + 1
+
+               allocate(itmp(sz))
+               itmp(1:nnz) = jac_i(1:nnz)
+               call move_alloc(itmp, jac_i)
+
+               allocate(itmp(sz))
+               itmp(1:nnz) = jac_j(1:nnz)
+               call move_alloc(itmp, jac_j)
+
+               allocate(vtmp(sz))
+               vtmp(1:nnz) = jac_val(1:nnz)
+               call move_alloc(vtmp, jac_val)
+            end if
             do k = kmin, kmax
                if (work(k-kmin+1,j).ne.0) then
-                   if (nnz >= sz) then
-                      ! Exponential overallocation
-                      sz = 2*sz + 1
-
-                      allocate(itmp(sz))
-                      itmp(1:nnz) = jac_i(1:nnz)
-                      call move_alloc(itmp, jac_i)
-
-                      allocate(itmp(sz))
-                      itmp(1:nnz) = jac_j(1:nnz)
-                      call move_alloc(itmp, jac_j)
-
-                      allocate(vtmp(sz))
-                      vtmp(1:nnz) = jac_val(1:nnz)
-                      call move_alloc(vtmp, jac_val)
-                   end if
                    nnz = nnz + 1
                    jac_i(nnz) = k
                    jac_j(nnz) = ib
@@ -740,13 +764,21 @@ contains
         
         else
           
-        work(:,ia) = work(:,ia) + sum_mul_a(1+2*(j-1)) * work(:,j)
-        work(:,ib) = work(:,ib) + sum_mul_a(2+2*(j-1)) * work(:,j)
+        do concurrent (k=1:block_size)
+          work(k,ia) = work(k,ia) + sum_mul_a(1+2*(j-1)) * work(k,j)
+        end do
+        do concurrent (k=1:block_size)
+          work(k,ib) = work(k,ib) + sum_mul_a(2+2*(j-1)) * work(k,j)
+        end do
         
           imask(ia) = 1
           imask(ib) = 1
         end if
-        work(:,j) = 0
+        
+        do concurrent (k=1:block_size)
+          work(k,j) = 0
+        end do
+        
         imask(j) = 0
       end if
     end do
@@ -1995,8 +2027,12 @@ contains
           jac_dense(kmin:kmax,ib) = work(1:(kmax-kmin+1),j)
        else
           
-        work(:,ia) = work(:,ia) + sum_mul_q(1+2*(j-1)) * work(:,j)
-        work(:,ib) = work(:,ib) + sum_mul_q(2+2*(j-1)) * work(:,j)
+        do concurrent (k=1:block_size)
+          work(k,ia) = work(k,ia) + sum_mul_q(1+2*(j-1)) * work(k,j)
+        end do
+        do concurrent (k=1:block_size)
+          work(k,ib) = work(k,ib) + sum_mul_q(2+2*(j-1)) * work(k,j)
+        end do
         
           if (imask(ia) == 0 .and. imask(ib) == 0) then
              call heap_push(iwork, nwork, ia)
@@ -2011,7 +2047,11 @@ contains
              imask(ib) = 1
           end if
        end if
-       work(:,j) = 0
+       
+        do concurrent (k=1:block_size)
+          work(k,j) = 0
+        end do
+        
        imask(j) = 0
 
        if (nwork > 0 .and. j_next == 0) then
@@ -2026,13 +2066,21 @@ contains
           jac_dense(kmin:kmax,ib) = work(1:(kmax-kmin+1),j)
         else
           
-        work(:,ia) = work(:,ia) + sum_mul_q(1+2*(j-1)) * work(:,j)
-        work(:,ib) = work(:,ib) + sum_mul_q(2+2*(j-1)) * work(:,j)
+        do concurrent (k=1:block_size)
+          work(k,ia) = work(k,ia) + sum_mul_q(1+2*(j-1)) * work(k,j)
+        end do
+        do concurrent (k=1:block_size)
+          work(k,ib) = work(k,ib) + sum_mul_q(2+2*(j-1)) * work(k,j)
+        end do
         
           imask(ia) = 1
           imask(ib) = 1
         end if
-        work(:,j) = 0
+        
+        do concurrent (k=1:block_size)
+          work(k,j) = 0
+        end do
+        
         imask(j) = 0
       end if
     end do
@@ -2098,24 +2146,24 @@ contains
 
        if (ia == 0) then
           
+            if (nnz + (kmax-kmin) + 1 >= sz) then
+               ! Exponential overallocation
+               sz = 2*sz + (kmax-kmin) + 1
+
+               allocate(itmp(sz))
+               itmp(1:nnz) = jac_i(1:nnz)
+               call move_alloc(itmp, jac_i)
+
+               allocate(itmp(sz))
+               itmp(1:nnz) = jac_j(1:nnz)
+               call move_alloc(itmp, jac_j)
+
+               allocate(vtmp(sz))
+               vtmp(1:nnz) = jac_val(1:nnz)
+               call move_alloc(vtmp, jac_val)
+            end if
             do k = kmin, kmax
                if (work(k-kmin+1,j).ne.0) then
-                   if (nnz >= sz) then
-                      ! Exponential overallocation
-                      sz = 2*sz + 1
-
-                      allocate(itmp(sz))
-                      itmp(1:nnz) = jac_i(1:nnz)
-                      call move_alloc(itmp, jac_i)
-
-                      allocate(itmp(sz))
-                      itmp(1:nnz) = jac_j(1:nnz)
-                      call move_alloc(itmp, jac_j)
-
-                      allocate(vtmp(sz))
-                      vtmp(1:nnz) = jac_val(1:nnz)
-                      call move_alloc(vtmp, jac_val)
-                   end if
                    nnz = nnz + 1
                    jac_i(nnz) = k
                    jac_j(nnz) = ib
@@ -2125,8 +2173,12 @@ contains
         
        else
           
-        work(:,ia) = work(:,ia) + sum_mul_q(1+2*(j-1)) * work(:,j)
-        work(:,ib) = work(:,ib) + sum_mul_q(2+2*(j-1)) * work(:,j)
+        do concurrent (k=1:block_size)
+          work(k,ia) = work(k,ia) + sum_mul_q(1+2*(j-1)) * work(k,j)
+        end do
+        do concurrent (k=1:block_size)
+          work(k,ib) = work(k,ib) + sum_mul_q(2+2*(j-1)) * work(k,j)
+        end do
         
           if (imask(ia) == 0 .and. imask(ib) == 0) then
              call heap_push(iwork, nwork, ia)
@@ -2141,7 +2193,11 @@ contains
              imask(ib) = 1
           end if
        end if
-       work(:,j) = 0
+       
+        do concurrent (k=1:block_size)
+          work(k,j) = 0
+        end do
+        
        imask(j) = 0
 
        if (nwork > 0 .and. j_next == 0) then
@@ -2154,24 +2210,24 @@ contains
         ib = sum_map_q(2+2*(j-1))
         if (ia == 0) then
           
+            if (nnz + (kmax-kmin) + 1 >= sz) then
+               ! Exponential overallocation
+               sz = 2*sz + (kmax-kmin) + 1
+
+               allocate(itmp(sz))
+               itmp(1:nnz) = jac_i(1:nnz)
+               call move_alloc(itmp, jac_i)
+
+               allocate(itmp(sz))
+               itmp(1:nnz) = jac_j(1:nnz)
+               call move_alloc(itmp, jac_j)
+
+               allocate(vtmp(sz))
+               vtmp(1:nnz) = jac_val(1:nnz)
+               call move_alloc(vtmp, jac_val)
+            end if
             do k = kmin, kmax
                if (work(k-kmin+1,j).ne.0) then
-                   if (nnz >= sz) then
-                      ! Exponential overallocation
-                      sz = 2*sz + 1
-
-                      allocate(itmp(sz))
-                      itmp(1:nnz) = jac_i(1:nnz)
-                      call move_alloc(itmp, jac_i)
-
-                      allocate(itmp(sz))
-                      itmp(1:nnz) = jac_j(1:nnz)
-                      call move_alloc(itmp, jac_j)
-
-                      allocate(vtmp(sz))
-                      vtmp(1:nnz) = jac_val(1:nnz)
-                      call move_alloc(vtmp, jac_val)
-                   end if
                    nnz = nnz + 1
                    jac_i(nnz) = k
                    jac_j(nnz) = ib
@@ -2181,13 +2237,21 @@ contains
         
         else
           
-        work(:,ia) = work(:,ia) + sum_mul_q(1+2*(j-1)) * work(:,j)
-        work(:,ib) = work(:,ib) + sum_mul_q(2+2*(j-1)) * work(:,j)
+        do concurrent (k=1:block_size)
+          work(k,ia) = work(k,ia) + sum_mul_q(1+2*(j-1)) * work(k,j)
+        end do
+        do concurrent (k=1:block_size)
+          work(k,ib) = work(k,ib) + sum_mul_q(2+2*(j-1)) * work(k,j)
+        end do
         
           imask(ia) = 1
           imask(ib) = 1
         end if
-        work(:,j) = 0
+        
+        do concurrent (k=1:block_size)
+          work(k,j) = 0
+        end do
+        
         imask(j) = 0
       end if
     end do

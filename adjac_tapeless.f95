@@ -392,7 +392,7 @@ contains
 
     jac_dense = 0
 
-    do i = 1, size(y,1)
+    do concurrent (i=1:size(y,1))
        do p = 1, y(i)%n
           jac_dense(i, y(i)%i(p)) = jac_dense(i, y(i)%i(p)) &
                + y(i)%vmul * y(i)%v(p)
@@ -1607,7 +1607,7 @@ contains
 
     jac_dense = 0
 
-    do i = 1, size(y,1)
+    do concurrent (i=1:size(y,1))
        do p = 1, y(i)%n
           jac_dense(i, y(i)%i(p)) = jac_dense(i, y(i)%i(p)) &
                + y(i)%vmul * y(i)%v(p)
