@@ -249,7 +249,7 @@ contains
   end subroutine adjac_free
 
 {{if not TAPELESS}}  
-  subroutine heap_siftup(heap, nheap, initpos)
+  pure subroutine heap_siftup(heap, nheap, initpos)
     implicit none
     integer, intent(in) :: nheap
     integer, dimension(*), intent(inout) :: heap
@@ -274,7 +274,7 @@ contains
     call heap_siftdown(heap, initpos, pos)
   end subroutine heap_siftup
 
-  subroutine heap_siftdown(heap, initpos, pos0)
+  pure subroutine heap_siftdown(heap, initpos, pos0)
     implicit none
     integer, dimension(*), intent(inout) :: heap
     integer, intent(in) :: initpos, pos0
@@ -295,7 +295,7 @@ contains
     heap(pos) = item
   end subroutine heap_siftdown
 
-  subroutine heap_push(heap, nheap, item)
+  pure subroutine heap_push(heap, nheap, item)
     implicit none
     integer, intent(inout) :: nheap
     integer, dimension(*), intent(inout) :: heap
@@ -306,15 +306,11 @@ contains
     call heap_siftdown(heap, 1, nheap)
   end subroutine heap_push
 
-  subroutine heap_pop(heap, nheap, item)
+  pure subroutine heap_pop(heap, nheap, item)
     implicit none
     integer, intent(inout) :: nheap
     integer, dimension(*), intent(inout) :: heap
     integer, intent(out) :: item
-
-    if (nheap <= 0) then
-       call fatal_error('empty heap')
-    end if
 
     item = heap(1)
     heap(1) = heap(nheap)
@@ -325,7 +321,7 @@ contains
     end if
   end subroutine heap_pop
 
-  subroutine heap_pushpop(heap, nheap, item, item_out)
+  pure subroutine heap_pushpop(heap, nheap, item, item_out)
     implicit none
     integer, intent(inout) :: nheap
     integer, dimension(*), intent(inout) :: heap
@@ -398,7 +394,7 @@ contains
 {{endif}}
   end subroutine alloc_mem_{{CHR}}
 
-  {{pure}} subroutine link_mem_{{CHR}}(dst, src)
+  pure subroutine link_mem_{{CHR}}(dst, src)
     implicit none
     type({{TYPE}}), intent(inout) :: dst
     type({{TYPE}}), intent(in) :: src
@@ -413,7 +409,7 @@ contains
 {{endif}}
   end subroutine link_mem_{{CHR}}
 
-  {{pure}} subroutine free_mem_{{CHR}}(x)
+  pure subroutine free_mem_{{CHR}}(x)
     implicit none
     type({{TYPE}}), intent(inout) :: x
 {{if TAPELESS}}
@@ -739,6 +735,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     type({{TYPE}}), intent(in) :: a, b
     type({{TYPE}}), intent(inout) :: c
 
+{{if TAPELESS}}
     interface
        {{pure}} subroutine sparse_vector_sum_{{CHR}}(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
             bind(C,name="sparse_vector_sum_{{CHR}}")
@@ -755,6 +752,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
          {{endif}}
        end subroutine sparse_vector_sum_{{CHR}}
     end interface
+{{endif}}
 
     if (jac_product_mode) then
        c%vmul = alphap * a%vmul + betap * b%vmul
@@ -796,7 +794,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !!
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{elemental}} subroutine assign_{{CHR}}{{CHR2}}(x, y)
+  pure elemental subroutine assign_{{CHR}}{{CHR2}}(x, y)
     implicit none
     type({{TYPE}}), intent(inout) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -808,7 +806,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
 
   {{if TYPE == "adjac_double"}}
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{elemental}} subroutine assign_b{{CHR2}}(x, y)
+  pure elemental subroutine assign_b{{CHR2}}(x, y)
     implicit none
     type(adjac_complex), intent(inout) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -817,7 +815,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end subroutine assign_b{{CHR2}}
   {{endfor}}
 
-  {{elemental}} subroutine assign_bz(x, y)
+  pure elemental subroutine assign_bz(x, y)
     implicit none
     type(adjac_complex), intent(inout) :: x
     double complex, intent(in) :: y
@@ -825,7 +823,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     x%im = aimag(y)
   end subroutine assign_bz
 
-  {{elemental}} subroutine assign_ba(x, y)
+  pure elemental subroutine assign_ba(x, y)
     implicit none
     type(adjac_complex), intent(inout) :: x
     type({{TYPE}}), intent(in) :: y
@@ -853,7 +851,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function add_{{CHR}}{{CHR}}
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{elemental}} function add_{{CHR}}{{CHR2}}(x, y) result(z)
+  pure elemental function add_{{CHR}}{{CHR2}}(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -863,7 +861,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     call link_mem_{{CHR}}(z, x)
   end function add_{{CHR}}{{CHR2}}
 
-  {{elemental}} function add_{{CHR2}}{{CHR}}(x, y) result(z)
+  pure elemental function add_{{CHR2}}{{CHR}}(x, y) result(z)
     implicit none
     {{FTYPE2}}, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -873,7 +871,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   {{endfor}}
 
   {{if TYPE == "adjac_double"}}
-  {{elemental}} function add_az(x, y) result(z)
+  pure elemental function add_az(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     double complex, intent(in) :: y
@@ -882,7 +880,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = aimag(y)
   end function add_az
 
-  {{elemental}} function add_za(x, y) result(z)
+  pure elemental function add_za(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -900,7 +898,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x%im + y%im
   end function add_bb
 
-  {{elemental}} function add_bz(x, y) result(z)
+  pure elemental function add_bz(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     double complex, intent(in) :: y
@@ -909,7 +907,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x%im + aimag(y)
   end function add_bz
 
-  {{elemental}} function add_zb(x, y) result(z)
+  pure elemental function add_zb(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -937,7 +935,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function add_ab
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{elemental}} function add_b{{CHR2}}(x, y) result(z)
+  pure elemental function add_b{{CHR2}}(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -945,7 +943,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z = x + dcmplx(y)
   end function add_b{{CHR2}}
 
-  {{elemental}} function add_{{CHR2}}b(x, y) result(z)
+  pure elemental function add_{{CHR2}}b(x, y) result(z)
     implicit none
     {{FTYPE2}}, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -960,7 +958,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !! operator(+), unary
   !!
 
-  {{elemental}} function pos_{{CHR}}(x) result(z)
+  pure elemental function pos_{{CHR}}(x) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type({{TYPE}}) :: z
@@ -968,7 +966,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function pos_{{CHR}}
 
   {{if TYPE == "adjac_double"}}
-  {{elemental}} function pos_b(x) result(z)
+  pure elemental function pos_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
@@ -995,7 +993,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function sub_{{CHR}}{{CHR}}
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{elemental}} function sub_{{CHR}}{{CHR2}}(x, y) result(z)
+  pure elemental function sub_{{CHR}}{{CHR2}}(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1005,7 +1003,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     call link_mem_{{CHR}}(z, x)
   end function sub_{{CHR}}{{CHR2}}
 
-  {{elemental}} function sub_{{CHR2}}{{CHR}}(x, y) result(z)
+  pure elemental function sub_{{CHR2}}{{CHR}}(x, y) result(z)
     implicit none
     {{FTYPE2}}, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1017,7 +1015,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   {{endfor}}
 
   {{if TYPE == "adjac_double"}}
-  {{elemental}} function sub_az(x, y) result(z)
+  pure elemental function sub_az(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     double complex, intent(in) :: y
@@ -1026,7 +1024,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = -aimag(y)
   end function sub_az
 
-  {{elemental}} function sub_za(x, y) result(z)
+  pure elemental function sub_za(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1044,7 +1042,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x%im - y%im
   end function sub_bb
 
-  {{elemental}} function sub_bz(x, y) result(z)
+  pure elemental function sub_bz(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     double complex, intent(in) :: y
@@ -1053,7 +1051,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x%im - aimag(y)
   end function sub_bz
 
-  {{elemental}} function sub_zb(x, y) result(z)
+  pure elemental function sub_zb(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1081,7 +1079,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function sub_ab
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{elemental}} function sub_b{{CHR2}}(x, y) result(z)
+  pure elemental function sub_b{{CHR2}}(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1089,7 +1087,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z = x - dcmplx(y)
   end function sub_b{{CHR2}}
 
-  {{elemental}} function sub_{{CHR2}}b(x, y) result(z)
+  pure elemental function sub_{{CHR2}}b(x, y) result(z)
     implicit none
     {{FTYPE2}}, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1103,7 +1101,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !! operator(-), unary
   !!
 
-  {{elemental}} function neg_{{CHR}}(x) result(z)
+  pure elemental function neg_{{CHR}}(x) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type({{TYPE}}) :: z
@@ -1111,7 +1109,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function neg_{{CHR}}
 
   {{if TYPE == "adjac_double"}}
-  {{elemental}} function neg_b(x) result(z)
+  pure elemental function neg_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
@@ -1138,7 +1136,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function mul_{{CHR}}{{CHR}}
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{elemental}} function mul_{{CHR}}{{CHR2}}(x, y) result(z)
+  pure elemental function mul_{{CHR}}{{CHR2}}(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1153,7 +1151,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     end if
   end function mul_{{CHR}}{{CHR2}}
 
-  {{elemental}} function mul_{{CHR2}}{{CHR}}(x, y) result(z)
+  pure elemental function mul_{{CHR2}}{{CHR}}(x, y) result(z)
     implicit none
     {{FTYPE2}}, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1163,7 +1161,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   {{endfor}}
 
   {{if TYPE == "adjac_double"}}
-  {{elemental}} function mul_az(x, y) result(z)
+  pure elemental function mul_az(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     double complex, intent(in) :: y
@@ -1172,7 +1170,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x * aimag(y)
   end function mul_az
 
-  {{elemental}} function mul_za(x, y) result(z)
+  pure elemental function mul_za(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1263,7 +1261,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function div_{{CHR}}{{CHR}}
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{elemental}} function div_{{CHR}}{{CHR2}}(x, y) result(z)
+  pure elemental function div_{{CHR}}{{CHR2}}(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1271,7 +1269,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z = (1d0 / y) * x
   end function div_{{CHR}}{{CHR2}}
 
-  {{elemental}} function div_{{CHR2}}{{CHR}}(x, y) result(z)
+  pure elemental function div_{{CHR2}}{{CHR}}(x, y) result(z)
     implicit none
     {{FTYPE2}}, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1282,15 +1280,18 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   {{endfor}}
 
   {{if TYPE == "adjac_double"}}
-  {{elemental}} function div_az(x, y) result(z)
+  pure elemental function div_az(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     double complex, intent(in) :: y
     type(adjac_complex) :: z
-    z = x * conjg(y) / (dble(y)*dble(y) + aimag(y)*aimag(y))
+    double complex :: q
+    q = conjg(y) / (dble(y)*dble(y) + aimag(y)*aimag(y))
+    z%re = dble(q) * x
+    z%im = aimag(q) * x
   end function div_az
 
-  {{elemental}} function div_za(x, y) result(z)
+  pure elemental function div_za(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1365,7 +1366,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !!
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{elemental}} function pow_{{CHR}}{{CHR2}}(x, y) result(z)
+  pure elemental function pow_{{CHR}}{{CHR2}}(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1451,14 +1452,14 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !!
 
   {{if TYPE == "adjac_double"}}
-  {{elemental}} function dble_a(x) result(z)
+  pure elemental function dble_a(x) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     type(adjac_double) :: z
     z = x
   end function dble_a
 
-  {{elemental}} function dble_b(x) result(z)
+  pure elemental function dble_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_double) :: z
@@ -1471,7 +1472,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !!
 
   {{if TYPE == "adjac_double"}}
-  {{elemental}} function aimag_b(x) result(z)
+  pure elemental function aimag_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_double) :: z
@@ -1484,7 +1485,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !!
 
   {{if TYPE == "adjac_double"}}
-  {{elemental}} function conjg_b(x) result(z)
+  pure elemental function conjg_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
@@ -1497,7 +1498,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !! exp
   !!
 
-  {{elemental}} function exp_{{CHR}}(x) result(z)
+  pure elemental function exp_{{CHR}}(x) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type({{TYPE}}) :: z
@@ -1526,7 +1527,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !! sin
   !!
 
-  {{elemental}} function sin_{{CHR}}(x) result(z)
+  pure elemental function sin_{{CHR}}(x) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type({{TYPE}}) :: z
@@ -1555,7 +1556,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !! cos
   !!
 
-  {{elemental}} function cos_{{CHR}}(x) result(z)
+  pure elemental function cos_{{CHR}}(x) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type({{TYPE}}) :: z
@@ -1584,7 +1585,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !! log
   !!
 
-  {{elemental}} function log_{{CHR}}(x) result(z)
+  pure elemental function log_{{CHR}}(x) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type({{TYPE}}) :: z

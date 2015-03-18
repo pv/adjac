@@ -437,7 +437,6 @@ contains
     double precision, intent(in) :: alphap, betap
     type(adjac_double), intent(in) :: a, b
     type(adjac_double), intent(inout) :: c
-
     interface
        pure subroutine sparse_vector_sum_a(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
             bind(C,name="sparse_vector_sum_a")
@@ -1050,7 +1049,10 @@ contains
     type(adjac_double), intent(in) :: x
     double complex, intent(in) :: y
     type(adjac_complex) :: z
-    z = x * conjg(y) / (dble(y)*dble(y) + aimag(y)*aimag(y))
+    double complex :: q
+    q = conjg(y) / (dble(y)*dble(y) + aimag(y)*aimag(y))
+    z%re = dble(q) * x
+    z%im = aimag(q) * x
   end function div_az
 
   pure elemental function div_za(x, y) result(z)
@@ -1650,7 +1652,6 @@ contains
     double complex, intent(in) :: alphap, betap
     type(adjac_complexan), intent(in) :: a, b
     type(adjac_complexan), intent(inout) :: c
-
     interface
        pure subroutine sparse_vector_sum_q(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
             bind(C,name="sparse_vector_sum_q")

@@ -294,7 +294,7 @@ contains
        deallocate(sum_mul_q)
     end if
   end subroutine adjac_free
-  subroutine heap_siftup(heap, nheap, initpos)
+  pure subroutine heap_siftup(heap, nheap, initpos)
     implicit none
     integer, intent(in) :: nheap
     integer, dimension(*), intent(inout) :: heap
@@ -319,7 +319,7 @@ contains
     call heap_siftdown(heap, initpos, pos)
   end subroutine heap_siftup
 
-  subroutine heap_siftdown(heap, initpos, pos0)
+  pure subroutine heap_siftdown(heap, initpos, pos0)
     implicit none
     integer, dimension(*), intent(inout) :: heap
     integer, intent(in) :: initpos, pos0
@@ -340,7 +340,7 @@ contains
     heap(pos) = item
   end subroutine heap_siftdown
 
-  subroutine heap_push(heap, nheap, item)
+  pure subroutine heap_push(heap, nheap, item)
     implicit none
     integer, intent(inout) :: nheap
     integer, dimension(*), intent(inout) :: heap
@@ -351,15 +351,11 @@ contains
     call heap_siftdown(heap, 1, nheap)
   end subroutine heap_push
 
-  subroutine heap_pop(heap, nheap, item)
+  pure subroutine heap_pop(heap, nheap, item)
     implicit none
     integer, intent(inout) :: nheap
     integer, dimension(*), intent(inout) :: heap
     integer, intent(out) :: item
-
-    if (nheap <= 0) then
-       call fatal_error('empty heap')
-    end if
 
     item = heap(1)
     heap(1) = heap(nheap)
@@ -370,7 +366,7 @@ contains
     end if
   end subroutine heap_pop
 
-  subroutine heap_pushpop(heap, nheap, item, item_out)
+  pure subroutine heap_pushpop(heap, nheap, item, item_out)
     implicit none
     integer, intent(inout) :: nheap
     integer, dimension(*), intent(inout) :: heap
@@ -421,14 +417,14 @@ contains
     free_a = free_a + 1
   end subroutine alloc_mem_a
 
-   subroutine link_mem_a(dst, src)
+  pure subroutine link_mem_a(dst, src)
     implicit none
     type(adjac_double), intent(inout) :: dst
     type(adjac_double), intent(in) :: src
     dst%i = src%i
   end subroutine link_mem_a
 
-   subroutine free_mem_a(x)
+  pure subroutine free_mem_a(x)
     implicit none
     type(adjac_double), intent(inout) :: x
     x%i = 0
@@ -779,18 +775,6 @@ contains
     type(adjac_double), intent(in) :: a, b
     type(adjac_double), intent(inout) :: c
 
-    interface
-        subroutine sparse_vector_sum_a(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
-            bind(C,name="sparse_vector_sum_a")
-         use iso_c_binding
-         integer(kind=c_int), intent(in) :: na, nb, ia(*), ib(*)
-         integer(kind=c_int), intent(inout) :: nc
-         integer(kind=c_int), intent(out) :: ic(*)
-         real(kind=c_double), intent(in) :: alpha, beta, va(*), vb(*)
-         real(kind=c_double), intent(out) :: vc(*)
-       end subroutine sparse_vector_sum_a
-    end interface
-
     if (jac_product_mode) then
        c%vmul = alphap * a%vmul + betap * b%vmul
     else
@@ -823,7 +807,7 @@ contains
   !! assignment(=)
   !!
 
-  impure elemental subroutine assign_ai(x, y)
+  pure elemental subroutine assign_ai(x, y)
     implicit none
     type(adjac_double), intent(inout) :: x
     integer, intent(in) :: y
@@ -831,7 +815,7 @@ contains
     x%value = y
     x%vmul = 0
   end subroutine assign_ai
-  impure elemental subroutine assign_ad(x, y)
+  pure elemental subroutine assign_ad(x, y)
     implicit none
     type(adjac_double), intent(inout) :: x
     double precision, intent(in) :: y
@@ -839,14 +823,14 @@ contains
     x%value = y
     x%vmul = 0
   end subroutine assign_ad
-  impure elemental subroutine assign_bi(x, y)
+  pure elemental subroutine assign_bi(x, y)
     implicit none
     type(adjac_complex), intent(inout) :: x
     integer, intent(in) :: y
     x%re = dble(y)
     x%im = 0d0
   end subroutine assign_bi
-  impure elemental subroutine assign_bd(x, y)
+  pure elemental subroutine assign_bd(x, y)
     implicit none
     type(adjac_complex), intent(inout) :: x
     double precision, intent(in) :: y
@@ -854,7 +838,7 @@ contains
     x%im = 0d0
   end subroutine assign_bd
 
-  impure elemental subroutine assign_bz(x, y)
+  pure elemental subroutine assign_bz(x, y)
     implicit none
     type(adjac_complex), intent(inout) :: x
     double complex, intent(in) :: y
@@ -862,7 +846,7 @@ contains
     x%im = aimag(y)
   end subroutine assign_bz
 
-  impure elemental subroutine assign_ba(x, y)
+  pure elemental subroutine assign_ba(x, y)
     implicit none
     type(adjac_complex), intent(inout) :: x
     type(adjac_double), intent(in) :: y
@@ -885,7 +869,7 @@ contains
     call sum_taylor(dble(1d0), dble(1d0), x, y, z)
   end function add_aa
 
-  impure elemental function add_ai(x, y) result(z)
+  pure elemental function add_ai(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     integer, intent(in) :: y
@@ -895,14 +879,14 @@ contains
     call link_mem_a(z, x)
   end function add_ai
 
-  impure elemental function add_ia(x, y) result(z)
+  pure elemental function add_ia(x, y) result(z)
     implicit none
     integer, intent(in) :: x
     type(adjac_double), intent(in) :: y
     type(adjac_double) :: z
     z = y + x
   end function add_ia
-  impure elemental function add_ad(x, y) result(z)
+  pure elemental function add_ad(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     double precision, intent(in) :: y
@@ -912,14 +896,14 @@ contains
     call link_mem_a(z, x)
   end function add_ad
 
-  impure elemental function add_da(x, y) result(z)
+  pure elemental function add_da(x, y) result(z)
     implicit none
     double precision, intent(in) :: x
     type(adjac_double), intent(in) :: y
     type(adjac_double) :: z
     z = y + x
   end function add_da
-  impure elemental function add_az(x, y) result(z)
+  pure elemental function add_az(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     double complex, intent(in) :: y
@@ -928,7 +912,7 @@ contains
     z%im = aimag(y)
   end function add_az
 
-  impure elemental function add_za(x, y) result(z)
+  pure elemental function add_za(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_double), intent(in) :: y
@@ -946,7 +930,7 @@ contains
     z%im = x%im + y%im
   end function add_bb
 
-  impure elemental function add_bz(x, y) result(z)
+  pure elemental function add_bz(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     double complex, intent(in) :: y
@@ -955,7 +939,7 @@ contains
     z%im = x%im + aimag(y)
   end function add_bz
 
-  impure elemental function add_zb(x, y) result(z)
+  pure elemental function add_zb(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -982,7 +966,7 @@ contains
     z%im = y%im
   end function add_ab
 
-  impure elemental function add_bi(x, y) result(z)
+  pure elemental function add_bi(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     integer, intent(in) :: y
@@ -990,14 +974,14 @@ contains
     z = x + dcmplx(y)
   end function add_bi
 
-  impure elemental function add_ib(x, y) result(z)
+  pure elemental function add_ib(x, y) result(z)
     implicit none
     integer, intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
     z = dcmplx(x) + y
   end function add_ib
-  impure elemental function add_bd(x, y) result(z)
+  pure elemental function add_bd(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     double precision, intent(in) :: y
@@ -1005,7 +989,7 @@ contains
     z = x + dcmplx(y)
   end function add_bd
 
-  impure elemental function add_db(x, y) result(z)
+  pure elemental function add_db(x, y) result(z)
     implicit none
     double precision, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1017,14 +1001,14 @@ contains
   !! operator(+), unary
   !!
 
-  impure elemental function pos_a(x) result(z)
+  pure elemental function pos_a(x) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     type(adjac_double) :: z
     z = x
   end function pos_a
 
-  impure elemental function pos_b(x) result(z)
+  pure elemental function pos_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
@@ -1046,7 +1030,7 @@ contains
     call sum_taylor(dble(1d0), dble(-1d0), x, y, z)
   end function sub_aa
 
-  impure elemental function sub_ai(x, y) result(z)
+  pure elemental function sub_ai(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     integer, intent(in) :: y
@@ -1056,7 +1040,7 @@ contains
     call link_mem_a(z, x)
   end function sub_ai
 
-  impure elemental function sub_ia(x, y) result(z)
+  pure elemental function sub_ia(x, y) result(z)
     implicit none
     integer, intent(in) :: x
     type(adjac_double), intent(in) :: y
@@ -1065,7 +1049,7 @@ contains
     z%vmul = -y%vmul
     call link_mem_a(z, y)
   end function sub_ia
-  impure elemental function sub_ad(x, y) result(z)
+  pure elemental function sub_ad(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     double precision, intent(in) :: y
@@ -1075,7 +1059,7 @@ contains
     call link_mem_a(z, x)
   end function sub_ad
 
-  impure elemental function sub_da(x, y) result(z)
+  pure elemental function sub_da(x, y) result(z)
     implicit none
     double precision, intent(in) :: x
     type(adjac_double), intent(in) :: y
@@ -1084,7 +1068,7 @@ contains
     z%vmul = -y%vmul
     call link_mem_a(z, y)
   end function sub_da
-  impure elemental function sub_az(x, y) result(z)
+  pure elemental function sub_az(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     double complex, intent(in) :: y
@@ -1093,7 +1077,7 @@ contains
     z%im = -aimag(y)
   end function sub_az
 
-  impure elemental function sub_za(x, y) result(z)
+  pure elemental function sub_za(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_double), intent(in) :: y
@@ -1111,7 +1095,7 @@ contains
     z%im = x%im - y%im
   end function sub_bb
 
-  impure elemental function sub_bz(x, y) result(z)
+  pure elemental function sub_bz(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     double complex, intent(in) :: y
@@ -1120,7 +1104,7 @@ contains
     z%im = x%im - aimag(y)
   end function sub_bz
 
-  impure elemental function sub_zb(x, y) result(z)
+  pure elemental function sub_zb(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1147,7 +1131,7 @@ contains
     z%im = -y%im
   end function sub_ab
 
-  impure elemental function sub_bi(x, y) result(z)
+  pure elemental function sub_bi(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     integer, intent(in) :: y
@@ -1155,14 +1139,14 @@ contains
     z = x - dcmplx(y)
   end function sub_bi
 
-  impure elemental function sub_ib(x, y) result(z)
+  pure elemental function sub_ib(x, y) result(z)
     implicit none
     integer, intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
     z = dcmplx(x) - y
   end function sub_ib
-  impure elemental function sub_bd(x, y) result(z)
+  pure elemental function sub_bd(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     double precision, intent(in) :: y
@@ -1170,7 +1154,7 @@ contains
     z = x - dcmplx(y)
   end function sub_bd
 
-  impure elemental function sub_db(x, y) result(z)
+  pure elemental function sub_db(x, y) result(z)
     implicit none
     double precision, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1182,14 +1166,14 @@ contains
   !! operator(-), unary
   !!
 
-  impure elemental function neg_a(x) result(z)
+  pure elemental function neg_a(x) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     type(adjac_double) :: z
     z = 0d0 - x
   end function neg_a
 
-  impure elemental function neg_b(x) result(z)
+  pure elemental function neg_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
@@ -1211,7 +1195,7 @@ contains
     call sum_taylor(y%value, x%value, x, y, z)
   end function mul_aa
 
-  impure elemental function mul_ai(x, y) result(z)
+  pure elemental function mul_ai(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     integer, intent(in) :: y
@@ -1226,14 +1210,14 @@ contains
     end if
   end function mul_ai
 
-  impure elemental function mul_ia(x, y) result(z)
+  pure elemental function mul_ia(x, y) result(z)
     implicit none
     integer, intent(in) :: x
     type(adjac_double), intent(in) :: y
     type(adjac_double) :: z
     z = y * x
   end function mul_ia
-  impure elemental function mul_ad(x, y) result(z)
+  pure elemental function mul_ad(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     double precision, intent(in) :: y
@@ -1248,14 +1232,14 @@ contains
     end if
   end function mul_ad
 
-  impure elemental function mul_da(x, y) result(z)
+  pure elemental function mul_da(x, y) result(z)
     implicit none
     double precision, intent(in) :: x
     type(adjac_double), intent(in) :: y
     type(adjac_double) :: z
     z = y * x
   end function mul_da
-  impure elemental function mul_az(x, y) result(z)
+  pure elemental function mul_az(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     double complex, intent(in) :: y
@@ -1264,7 +1248,7 @@ contains
     z%im = x * aimag(y)
   end function mul_az
 
-  impure elemental function mul_za(x, y) result(z)
+  pure elemental function mul_za(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_double), intent(in) :: y
@@ -1363,7 +1347,7 @@ contains
     call sum_taylor(1d0/y%value, -x%value/(y%value**2), x, y, z)
   end function div_aa
 
-  impure elemental function div_ai(x, y) result(z)
+  pure elemental function div_ai(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     integer, intent(in) :: y
@@ -1371,7 +1355,7 @@ contains
     z = (1d0 / y) * x
   end function div_ai
 
-  impure elemental function div_ia(x, y) result(z)
+  pure elemental function div_ia(x, y) result(z)
     implicit none
     integer, intent(in) :: x
     type(adjac_double), intent(in) :: y
@@ -1379,7 +1363,7 @@ contains
     z = (-x / (y%value**2)) * y
     z%value = x / y%value
   end function div_ia
-  impure elemental function div_ad(x, y) result(z)
+  pure elemental function div_ad(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     double precision, intent(in) :: y
@@ -1387,7 +1371,7 @@ contains
     z = (1d0 / y) * x
   end function div_ad
 
-  impure elemental function div_da(x, y) result(z)
+  pure elemental function div_da(x, y) result(z)
     implicit none
     double precision, intent(in) :: x
     type(adjac_double), intent(in) :: y
@@ -1395,15 +1379,18 @@ contains
     z = (-x / (y%value**2)) * y
     z%value = x / y%value
   end function div_da
-  impure elemental function div_az(x, y) result(z)
+  pure elemental function div_az(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     double complex, intent(in) :: y
     type(adjac_complex) :: z
-    z = x * conjg(y) / (dble(y)*dble(y) + aimag(y)*aimag(y))
+    double complex :: q
+    q = conjg(y) / (dble(y)*dble(y) + aimag(y)*aimag(y))
+    z%re = dble(q) * x
+    z%im = aimag(q) * x
   end function div_az
 
-  impure elemental function div_za(x, y) result(z)
+  pure elemental function div_za(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_double), intent(in) :: y
@@ -1490,14 +1477,14 @@ contains
   !! operator(**)
   !!
 
-  impure elemental function pow_ai(x, y) result(z)
+  pure elemental function pow_ai(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     integer, intent(in) :: y
     type(adjac_double) :: z
     z = exp(y * log(x))
   end function pow_ai
-  impure elemental function pow_ad(x, y) result(z)
+  pure elemental function pow_ad(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     double precision, intent(in) :: y
@@ -1693,14 +1680,14 @@ contains
   !! dble
   !!
 
-  impure elemental function dble_a(x) result(z)
+  pure elemental function dble_a(x) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     type(adjac_double) :: z
     z = x
   end function dble_a
 
-  impure elemental function dble_b(x) result(z)
+  pure elemental function dble_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_double) :: z
@@ -1711,7 +1698,7 @@ contains
   !! aimag
   !!
 
-  impure elemental function aimag_b(x) result(z)
+  pure elemental function aimag_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_double) :: z
@@ -1722,7 +1709,7 @@ contains
   !! conjg
   !!
 
-  impure elemental function conjg_b(x) result(z)
+  pure elemental function conjg_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
@@ -1734,7 +1721,7 @@ contains
   !! exp
   !!
 
-  impure elemental function exp_a(x) result(z)
+  pure elemental function exp_a(x) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     type(adjac_double) :: z
@@ -1761,7 +1748,7 @@ contains
   !! sin
   !!
 
-  impure elemental function sin_a(x) result(z)
+  pure elemental function sin_a(x) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     type(adjac_double) :: z
@@ -1788,7 +1775,7 @@ contains
   !! cos
   !!
 
-  impure elemental function cos_a(x) result(z)
+  pure elemental function cos_a(x) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     type(adjac_double) :: z
@@ -1815,7 +1802,7 @@ contains
   !! log
   !!
 
-  impure elemental function log_a(x) result(z)
+  pure elemental function log_a(x) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     type(adjac_double) :: z
@@ -1871,14 +1858,14 @@ contains
     free_q = free_q + 1
   end subroutine alloc_mem_q
 
-   subroutine link_mem_q(dst, src)
+  pure subroutine link_mem_q(dst, src)
     implicit none
     type(adjac_complexan), intent(inout) :: dst
     type(adjac_complexan), intent(in) :: src
     dst%i = src%i
   end subroutine link_mem_q
 
-   subroutine free_mem_q(x)
+  pure subroutine free_mem_q(x)
     implicit none
     type(adjac_complexan), intent(inout) :: x
     x%i = 0
@@ -2229,18 +2216,6 @@ contains
     type(adjac_complexan), intent(in) :: a, b
     type(adjac_complexan), intent(inout) :: c
 
-    interface
-        subroutine sparse_vector_sum_q(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
-            bind(C,name="sparse_vector_sum_q")
-         use iso_c_binding
-         integer(kind=c_int), intent(in) :: na, nb, ia(*), ib(*)
-         integer(kind=c_int), intent(inout) :: nc
-         integer(kind=c_int), intent(out) :: ic(*)
-         complex(kind=c_double_complex), intent(in) :: alpha, beta, va(*), vb(*)
-         complex(kind=c_double_complex), intent(out) :: vc(*)
-       end subroutine sparse_vector_sum_q
-    end interface
-
     if (jac_product_mode) then
        c%vmul = alphap * a%vmul + betap * b%vmul
     else
@@ -2273,7 +2248,7 @@ contains
   !! assignment(=)
   !!
 
-  impure elemental subroutine assign_qi(x, y)
+  pure elemental subroutine assign_qi(x, y)
     implicit none
     type(adjac_complexan), intent(inout) :: x
     integer, intent(in) :: y
@@ -2281,7 +2256,7 @@ contains
     x%value = y
     x%vmul = 0
   end subroutine assign_qi
-  impure elemental subroutine assign_qd(x, y)
+  pure elemental subroutine assign_qd(x, y)
     implicit none
     type(adjac_complexan), intent(inout) :: x
     double precision, intent(in) :: y
@@ -2289,7 +2264,7 @@ contains
     x%value = y
     x%vmul = 0
   end subroutine assign_qd
-  impure elemental subroutine assign_qz(x, y)
+  pure elemental subroutine assign_qz(x, y)
     implicit none
     type(adjac_complexan), intent(inout) :: x
     double complex, intent(in) :: y
@@ -2313,7 +2288,7 @@ contains
     call sum_taylor(dcmplx(1d0), dcmplx(1d0), x, y, z)
   end function add_qq
 
-  impure elemental function add_qi(x, y) result(z)
+  pure elemental function add_qi(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     integer, intent(in) :: y
@@ -2323,14 +2298,14 @@ contains
     call link_mem_q(z, x)
   end function add_qi
 
-  impure elemental function add_iq(x, y) result(z)
+  pure elemental function add_iq(x, y) result(z)
     implicit none
     integer, intent(in) :: x
     type(adjac_complexan), intent(in) :: y
     type(adjac_complexan) :: z
     z = y + x
   end function add_iq
-  impure elemental function add_qd(x, y) result(z)
+  pure elemental function add_qd(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     double precision, intent(in) :: y
@@ -2340,14 +2315,14 @@ contains
     call link_mem_q(z, x)
   end function add_qd
 
-  impure elemental function add_dq(x, y) result(z)
+  pure elemental function add_dq(x, y) result(z)
     implicit none
     double precision, intent(in) :: x
     type(adjac_complexan), intent(in) :: y
     type(adjac_complexan) :: z
     z = y + x
   end function add_dq
-  impure elemental function add_qz(x, y) result(z)
+  pure elemental function add_qz(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     double complex, intent(in) :: y
@@ -2357,7 +2332,7 @@ contains
     call link_mem_q(z, x)
   end function add_qz
 
-  impure elemental function add_zq(x, y) result(z)
+  pure elemental function add_zq(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_complexan), intent(in) :: y
@@ -2369,7 +2344,7 @@ contains
   !! operator(+), unary
   !!
 
-  impure elemental function pos_q(x) result(z)
+  pure elemental function pos_q(x) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     type(adjac_complexan) :: z
@@ -2392,7 +2367,7 @@ contains
     call sum_taylor(dcmplx(1d0), dcmplx(-1d0), x, y, z)
   end function sub_qq
 
-  impure elemental function sub_qi(x, y) result(z)
+  pure elemental function sub_qi(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     integer, intent(in) :: y
@@ -2402,7 +2377,7 @@ contains
     call link_mem_q(z, x)
   end function sub_qi
 
-  impure elemental function sub_iq(x, y) result(z)
+  pure elemental function sub_iq(x, y) result(z)
     implicit none
     integer, intent(in) :: x
     type(adjac_complexan), intent(in) :: y
@@ -2411,7 +2386,7 @@ contains
     z%vmul = -y%vmul
     call link_mem_q(z, y)
   end function sub_iq
-  impure elemental function sub_qd(x, y) result(z)
+  pure elemental function sub_qd(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     double precision, intent(in) :: y
@@ -2421,7 +2396,7 @@ contains
     call link_mem_q(z, x)
   end function sub_qd
 
-  impure elemental function sub_dq(x, y) result(z)
+  pure elemental function sub_dq(x, y) result(z)
     implicit none
     double precision, intent(in) :: x
     type(adjac_complexan), intent(in) :: y
@@ -2430,7 +2405,7 @@ contains
     z%vmul = -y%vmul
     call link_mem_q(z, y)
   end function sub_dq
-  impure elemental function sub_qz(x, y) result(z)
+  pure elemental function sub_qz(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     double complex, intent(in) :: y
@@ -2440,7 +2415,7 @@ contains
     call link_mem_q(z, x)
   end function sub_qz
 
-  impure elemental function sub_zq(x, y) result(z)
+  pure elemental function sub_zq(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_complexan), intent(in) :: y
@@ -2454,7 +2429,7 @@ contains
   !! operator(-), unary
   !!
 
-  impure elemental function neg_q(x) result(z)
+  pure elemental function neg_q(x) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     type(adjac_complexan) :: z
@@ -2477,7 +2452,7 @@ contains
     call sum_taylor(y%value, x%value, x, y, z)
   end function mul_qq
 
-  impure elemental function mul_qi(x, y) result(z)
+  pure elemental function mul_qi(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     integer, intent(in) :: y
@@ -2492,14 +2467,14 @@ contains
     end if
   end function mul_qi
 
-  impure elemental function mul_iq(x, y) result(z)
+  pure elemental function mul_iq(x, y) result(z)
     implicit none
     integer, intent(in) :: x
     type(adjac_complexan), intent(in) :: y
     type(adjac_complexan) :: z
     z = y * x
   end function mul_iq
-  impure elemental function mul_qd(x, y) result(z)
+  pure elemental function mul_qd(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     double precision, intent(in) :: y
@@ -2514,14 +2489,14 @@ contains
     end if
   end function mul_qd
 
-  impure elemental function mul_dq(x, y) result(z)
+  pure elemental function mul_dq(x, y) result(z)
     implicit none
     double precision, intent(in) :: x
     type(adjac_complexan), intent(in) :: y
     type(adjac_complexan) :: z
     z = y * x
   end function mul_dq
-  impure elemental function mul_qz(x, y) result(z)
+  pure elemental function mul_qz(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     double complex, intent(in) :: y
@@ -2536,7 +2511,7 @@ contains
     end if
   end function mul_qz
 
-  impure elemental function mul_zq(x, y) result(z)
+  pure elemental function mul_zq(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_complexan), intent(in) :: y
@@ -2558,7 +2533,7 @@ contains
     call sum_taylor(1d0/y%value, -x%value/(y%value**2), x, y, z)
   end function div_qq
 
-  impure elemental function div_qi(x, y) result(z)
+  pure elemental function div_qi(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     integer, intent(in) :: y
@@ -2566,7 +2541,7 @@ contains
     z = (1d0 / y) * x
   end function div_qi
 
-  impure elemental function div_iq(x, y) result(z)
+  pure elemental function div_iq(x, y) result(z)
     implicit none
     integer, intent(in) :: x
     type(adjac_complexan), intent(in) :: y
@@ -2574,7 +2549,7 @@ contains
     z = (-x / (y%value**2)) * y
     z%value = x / y%value
   end function div_iq
-  impure elemental function div_qd(x, y) result(z)
+  pure elemental function div_qd(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     double precision, intent(in) :: y
@@ -2582,7 +2557,7 @@ contains
     z = (1d0 / y) * x
   end function div_qd
 
-  impure elemental function div_dq(x, y) result(z)
+  pure elemental function div_dq(x, y) result(z)
     implicit none
     double precision, intent(in) :: x
     type(adjac_complexan), intent(in) :: y
@@ -2590,7 +2565,7 @@ contains
     z = (-x / (y%value**2)) * y
     z%value = x / y%value
   end function div_dq
-  impure elemental function div_qz(x, y) result(z)
+  pure elemental function div_qz(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     double complex, intent(in) :: y
@@ -2598,7 +2573,7 @@ contains
     z = (1d0 / y) * x
   end function div_qz
 
-  impure elemental function div_zq(x, y) result(z)
+  pure elemental function div_zq(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_complexan), intent(in) :: y
@@ -2611,21 +2586,21 @@ contains
   !! operator(**)
   !!
 
-  impure elemental function pow_qi(x, y) result(z)
+  pure elemental function pow_qi(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     integer, intent(in) :: y
     type(adjac_complexan) :: z
     z = exp(y * log(x))
   end function pow_qi
-  impure elemental function pow_qd(x, y) result(z)
+  pure elemental function pow_qd(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     double precision, intent(in) :: y
     type(adjac_complexan) :: z
     z = exp(y * log(x))
   end function pow_qd
-  impure elemental function pow_qz(x, y) result(z)
+  pure elemental function pow_qz(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     double complex, intent(in) :: y
@@ -2814,7 +2789,7 @@ contains
   !! exp
   !!
 
-  impure elemental function exp_q(x) result(z)
+  pure elemental function exp_q(x) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     type(adjac_complexan) :: z
@@ -2830,7 +2805,7 @@ contains
   !! sin
   !!
 
-  impure elemental function sin_q(x) result(z)
+  pure elemental function sin_q(x) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     type(adjac_complexan) :: z
@@ -2846,7 +2821,7 @@ contains
   !! cos
   !!
 
-  impure elemental function cos_q(x) result(z)
+  pure elemental function cos_q(x) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     type(adjac_complexan) :: z
@@ -2862,7 +2837,7 @@ contains
   !! log
   !!
 
-  impure elemental function log_q(x) result(z)
+  pure elemental function log_q(x) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
     type(adjac_complexan) :: z
