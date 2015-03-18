@@ -4,7 +4,8 @@ program main
   integer, parameter :: n = 100, filliter = 10
   
   double precision :: xval(n), yval(n), J(n,n)
-  integer :: rep, i
+  integer :: rep
+  integer :: i
 
   do i = 1, n
      xval(i) = 1d0 + i
@@ -27,7 +28,6 @@ contains
     double precision, intent(in) :: xval(n)
     double precision, intent(out) :: yval(n), J(n,n)
     type(adjac_double) :: x(n), y(n)
-    integer :: i
 
     call adjac_reset()
     call adjac_set_independent(x, xval)

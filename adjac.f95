@@ -1501,12 +1501,11 @@ contains
        pos2 = 2*pos
     end do
     heap(pos) = item
-    call heap_siftdown(heap, nheap, initpos, pos)
+    call heap_siftdown(heap, initpos, pos)
   end subroutine heap_siftup
 
-  subroutine heap_siftdown(heap, nheap, initpos, pos0)
+  subroutine heap_siftdown(heap, initpos, pos0)
     implicit none
-    integer, intent(in) :: nheap
     integer, dimension(*), intent(inout) :: heap
     integer, intent(in) :: initpos, pos0
 
@@ -1532,11 +1531,9 @@ contains
     integer, dimension(*), intent(inout) :: heap
     integer, intent(in) :: item
 
-    integer :: parent, pos, tmp
-
     nheap = nheap + 1
     heap(nheap) = item
-    call heap_siftdown(heap, nheap, 1, nheap)
+    call heap_siftdown(heap, 1, nheap)
   end subroutine heap_push
 
   subroutine heap_pop(heap, nheap, item)
@@ -1544,8 +1541,6 @@ contains
     integer, intent(inout) :: nheap
     integer, dimension(*), intent(inout) :: heap
     integer, intent(out) :: item
-
-    integer :: pos, pos2, pos3, toswap, newitem, parent
 
     if (nheap <= 0) then
        call fatal_error('empty heap')
@@ -1567,8 +1562,6 @@ contains
     integer, intent(in) :: item
     integer, intent(out) :: item_out
 
-    integer :: parent, pos, tmp
-
     if (nheap > 0 .and. item < heap(1)) then
        item_out = heap(1)
        heap(1) = item
@@ -1582,7 +1575,6 @@ contains
    subroutine alloc_mem_a(x)
     implicit none
     type(adjac_double), intent(inout) :: x
-
     integer, dimension(:), allocatable :: itmp
     double precision, dimension(:), allocatable :: tmp
     integer :: sz
@@ -1707,7 +1699,6 @@ contains
     double precision, dimension(block_size,free_a) :: work
     integer, dimension(free_a) :: iwork, imask
     integer :: k, j, ia, ib, kmin, kmax, nwork, j_next
-    double precision :: v
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_dense_jacobian when jacobian product mode is active')
@@ -1807,7 +1798,6 @@ contains
     integer, dimension(:), allocatable :: itmp
     double precision, dimension(:), allocatable :: vtmp
     integer :: kmin, kmax, k, j, ia, ib, nnz, nwork, j_next, sz
-    double precision :: v
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
@@ -3035,7 +3025,6 @@ contains
    subroutine alloc_mem_q(x)
     implicit none
     type(adjac_complexan), intent(inout) :: x
-
     integer, dimension(:), allocatable :: itmp
     double complex, dimension(:), allocatable :: tmp
     integer :: sz
@@ -3160,7 +3149,6 @@ contains
     double complex, dimension(block_size,free_q) :: work
     integer, dimension(free_q) :: iwork, imask
     integer :: k, j, ia, ib, kmin, kmax, nwork, j_next
-    double complex :: v
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_dense_jacobian when jacobian product mode is active')
@@ -3260,7 +3248,6 @@ contains
     integer, dimension(:), allocatable :: itmp
     double complex, dimension(:), allocatable :: vtmp
     integer :: kmin, kmax, k, j, ia, ib, nnz, nwork, j_next, sz
-    double complex :: v
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')

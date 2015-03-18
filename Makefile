@@ -1,8 +1,8 @@
 FC=gfortran
 CXX=g++
 
-CXXFLAGS=-g -O3
-FFLAGS=-g -O3
+CXXFLAGS=-g -O3 -Wall
+FFLAGS=-g -O3 -Wall
 #FFLAGS=-ggdb -Og
 
 TESTS=$(patsubst %.f95,%.test,$(wildcard tests/test_*.f95)) $(patsubst %.f95,%.test_tapeless,$(wildcard tests/test_*.f95))

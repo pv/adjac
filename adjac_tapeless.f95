@@ -279,10 +279,6 @@ contains
     type(adjac_double), intent(inout) :: x
     integer, intent(in) :: n
 
-    integer, dimension(:), allocatable :: itmp
-    double precision, dimension(:), allocatable :: tmp
-    integer :: sz
-
     if (jac_product_mode) then
        return
     end if
@@ -1495,10 +1491,6 @@ contains
     implicit none
     type(adjac_complexan), intent(inout) :: x
     integer, intent(in) :: n
-
-    integer, dimension(:), allocatable :: itmp
-    double complex, dimension(:), allocatable :: tmp
-    integer :: sz
 
     if (jac_product_mode) then
        return

@@ -9,13 +9,13 @@ program laplacian
 
   double precision, dimension(n) :: x_value
   double precision, dimension(n) :: y_value
-  double precision, allocatable, dimension(:) :: jac_val, jac_val2
-  integer, allocatable, dimension(:) :: jac_i, jac_j, jac_indices, jac_indptr
+  double precision, allocatable, dimension(:) :: jac_val
+  integer, allocatable, dimension(:) :: jac_i, jac_j
   double precision, dimension(n,n) :: jac_dense
   
   type(adjac_double), dimension(n) :: x
   type(adjac_double), dimension(n) :: y
-  integer j, nnz
+  integer :: j
   
   call adjac_reset()
   do j = 1, n

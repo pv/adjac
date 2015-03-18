@@ -26,7 +26,6 @@ contains
     external :: zffti1, zfftf1
     integer, intent(in) :: n
     {{TYPE}}, dimension({{SIZE}}), intent(inout) :: q
-    integer :: i, j
 
     if (n.le.1) return
 
@@ -48,7 +47,7 @@ contains
     external :: zffti1, zfftf1
     integer, intent(in) :: n
     {{TYPE}}, dimension({{SIZE}}), intent(inout) :: q
-    integer :: i, j
+    integer :: i
 
     if (n.le.1) return
 

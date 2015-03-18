@@ -16,20 +16,20 @@
         double complex, dimension(2), intent(out) :: y_value
         double complex, dimension(2,3), intent(out) :: dy_dx
 
-	type(adjac_complexan), dimension(3) :: x
-	type(adjac_complexan), dimension(2) :: y
+        type(adjac_complexan), dimension(3) :: x
+        type(adjac_complexan), dimension(2) :: y
         integer :: j
 
         call adjac_reset()
-	call adjac_set_independent(x, x_value)
+        call adjac_set_independent(x, x_value)
 
         do j = 1, 2
             y(j) = log(x(j) / ((0d0,1d0) + cos(x(j+1))**2))
         end do
 
-	call adjac_get_value(y, y_value)
-	call adjac_get_dense_jacobian(y, dy_dx)
-	call adjac_free()
+        call adjac_get_value(y, y_value)
+        call adjac_get_dense_jacobian(y, dy_dx)
+        call adjac_free()
     end subroutine my_func_jac
 
 program simple

@@ -23,7 +23,6 @@ contains
     external :: zffti1, zfftf1
     integer, intent(in) :: n
     type(adjac_double), dimension(2*n), intent(inout) :: q
-    integer :: i, j
 
     if (n.le.1) return
 
@@ -45,7 +44,7 @@ contains
     external :: zffti1, zfftf1
     integer, intent(in) :: n
     type(adjac_double), dimension(2*n), intent(inout) :: q
-    integer :: i, j
+    integer :: i
 
     if (n.le.1) return
 
@@ -70,7 +69,6 @@ contains
     external :: zffti1, zfftf1
     integer, intent(in) :: n
     double precision, dimension(2*n), intent(inout) :: q
-    integer :: i, j
 
     if (n.le.1) return
 
@@ -92,7 +90,7 @@ contains
     external :: zffti1, zfftf1
     integer, intent(in) :: n
     double precision, dimension(2*n), intent(inout) :: q
-    integer :: i, j
+    integer :: i
 
     if (n.le.1) return
 
@@ -117,7 +115,6 @@ contains
     external :: zffti1, zfftf1
     integer, intent(in) :: n
     type(adjac_complex), dimension(n), intent(inout) :: q
-    integer :: i, j
 
     if (n.le.1) return
 
@@ -139,7 +136,7 @@ contains
     external :: zffti1, zfftf1
     integer, intent(in) :: n
     type(adjac_complex), dimension(n), intent(inout) :: q
-    integer :: i, j
+    integer :: i
 
     if (n.le.1) return
 
@@ -164,7 +161,6 @@ contains
     external :: zffti1, zfftf1
     integer, intent(in) :: n
     double complex, dimension(n), intent(inout) :: q
-    integer :: i, j
 
     if (n.le.1) return
 
@@ -186,7 +182,7 @@ contains
     external :: zffti1, zfftf1
     integer, intent(in) :: n
     double complex, dimension(n), intent(inout) :: q
-    integer :: i, j
+    integer :: i
 
     if (n.le.1) return
 
