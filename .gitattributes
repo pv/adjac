@@ -1,3 +1,5 @@
 adjac.f95 binary
-adjac_pure.f95 binary
-adjac_tape.f95 binary
+adjac_tapeless.f95 binary
+adjac_fft.f95 binary
+fftpack/zfftf1.f95 binary
+fftpack/zfftb1.f95 binary
