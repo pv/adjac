@@ -90,373 +90,21 @@ module adjac
 
 {{if TAPELESS}}
   {{default pure = "pure"}}
-  {{default pure_elemental = "pure elemental"}}
+  {{default elemental = "pure elemental"}}
 {{else}}
   {{default pure = ""}}
-  {{default pure_elemental = ""}}
+  {{default elemental = "impure elemental"}}
 {{endif}}
 
 {{py:
-
-def binops(name, tapeless):
+def binops(name):
     chrs = ['i', 'd', 'z']
     ops = ['aa', 'bb', 'qq', 'ab', 'ba']
     for c in chrs:
         ops += ['a'+c, 'b'+c, 'q'+c, c+'a', c+'b', c+'q']
     oldops = list(ops)
-    if not tapeless:
-        for suf in ['_1', '_01', '_10',
-                    '_2', '_02', '_20',
-                    '_3', '_03', '_30',
-                    '_4', '_04', '_40']:
-            ops.extend([x + suf for x in oldops])
     s = "\n".join("     module procedure " + name + "_" + op for op in ops)
     return s.lstrip()
-
-def elemental_versions(name, rtype, ops=None):
-    if ops is None:
-        chrs = ['i', 'd', 'z']
-        ops = ['aa', 'bb', 'qq', 'ab', 'ba']
-        for c in chrs:
-            ops += ['a'+c, 'b'+c, 'q'+c, c+'a', c+'b', c+'q']
-
-    binop_code = """
-    function {name}_{op}_1(a, b) result(c)
-      implicit none
-      {typea}, dimension(:), intent(in) :: a
-      {typeb}, dimension(size(a)), intent(in) :: b
-      {typec}, dimension(size(a)) :: c
-      integer :: i
-      do i = 1, size(a)
-        c(i) = {name}_{op}(a(i), b(i))
-      end do
-    end function {name}_{op}_1
-    function {name}_{op}_01(a, b) result(c)
-      implicit none
-      {typea}, intent(in) :: a
-      {typeb}, dimension(:), intent(in) :: b
-      {typec}, dimension(size(b)) :: c
-      integer :: i
-      do i = 1, size(b)
-        c(i) = {name}_{op}(a, b(i))
-      end do
-    end function {name}_{op}_01
-    function {name}_{op}_10(a, b) result(c)
-      implicit none
-      {typea}, dimension(:), intent(in) :: a
-      {typeb}, intent(in) :: b
-      {typec}, dimension(size(a)) :: c
-      integer :: i
-      do i = 1, size(a)
-        c(i) = {name}_{op}(a(i), b)
-      end do
-    end function {name}_{op}_10
-
-    function {name}_{op}_2(a, b) result(c)
-      implicit none
-      {typea}, dimension(:,:), intent(in) :: a
-      {typeb}, dimension(size(a,1),size(a,2)), intent(in) :: b
-      {typec}, dimension(size(a,1),size(a,2)) :: c
-      integer :: i, j
-      do j = 1, size(a,2)
-        do i = 1, size(a,1)
-          c(i,j) = {name}_{op}(a(i,j), b(i,j))
-        end do
-      end do
-    end function {name}_{op}_2
-    function {name}_{op}_02(a, b) result(c)
-      implicit none
-      {typea}, intent(in) :: a
-      {typeb}, dimension(:,:), intent(in) :: b
-      {typec}, dimension(size(b,1),size(b,2)) :: c
-      integer :: i, j
-      do j = 1, size(b,2)
-        do i = 1, size(b,1)
-          c(i,j) = {name}_{op}(a, b(i,j))
-        end do
-      end do
-    end function {name}_{op}_02
-    function {name}_{op}_20(a, b) result(c)
-      implicit none
-      {typea}, dimension(:,:), intent(in) :: a
-      {typeb}, intent(in) :: b
-      {typec}, dimension(size(a,1),size(a,2)) :: c
-      integer :: i, j
-      do j = 1, size(a,2)
-        do i = 1, size(a,1)
-          c(i,j) = {name}_{op}(a(i,j), b)
-        end do
-      end do
-    end function {name}_{op}_20
-
-    function {name}_{op}_3(a, b) result(c)
-      implicit none
-      {typea}, dimension(:,:,:), intent(in) :: a
-      {typeb}, dimension(size(a,1),size(a,2),size(a,3)), intent(in) :: b
-      {typec}, dimension(size(a,1),size(a,2),size(a,3)) :: c
-      integer :: i, j, k
-      do k = 1, size(a,3)
-        do j = 1, size(a,2)
-          do i = 1, size(a,1)
-            c(i,j,k) = {name}_{op}(a(i,j,k), b(i,j,k))
-          end do
-        end do
-      end do
-    end function {name}_{op}_3
-    function {name}_{op}_03(a, b) result(c)
-      implicit none
-      {typea}, intent(in) :: a
-      {typeb}, dimension(:,:,:), intent(in) :: b
-      {typec}, dimension(size(b,1),size(b,2),size(b,3)) :: c
-      integer :: i, j, k
-      do k = 1, size(b,3)
-        do j = 1, size(b,2)
-          do i = 1, size(b,1)
-            c(i,j,k) = {name}_{op}(a, b(i,j,k))
-          end do
-        end do
-      end do
-    end function {name}_{op}_03
-    function {name}_{op}_30(a, b) result(c)
-      implicit none
-      {typea}, dimension(:,:,:), intent(in) :: a
-      {typeb}, intent(in) :: b
-      {typec}, dimension(size(a,1),size(a,2),size(a,3)) :: c
-      integer :: i, j, k
-      do k = 1, size(a,3)
-        do j = 1, size(a,2)
-          do i = 1, size(a,1)
-            c(i,j,k) = {name}_{op}(a(i,j,k), b)
-          end do
-        end do
-      end do
-    end function {name}_{op}_30
-
-    function {name}_{op}_4(a, b) result(c)
-      implicit none
-      {typea}, dimension(:,:,:,:), intent(in) :: a
-      {typeb}, dimension(size(a,1),size(a,2),size(a,3),size(a,4)), intent(in) :: b
-      {typec}, dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
-      integer :: i, j, k, l
-      do l = 1, size(a,4)
-        do k = 1, size(a,3)
-          do j = 1, size(a,2)
-            do i = 1, size(a,1)
-              c(i,j,k,l) = {name}_{op}(a(i,j,k,l), b(i,j,k,l))
-            end do
-          end do
-        end do
-      end do
-    end function {name}_{op}_4
-    function {name}_{op}_04(a, b) result(c)
-      implicit none
-      {typea}, intent(in) :: a
-      {typeb}, dimension(:,:,:,:), intent(in) :: b
-      {typec}, dimension(size(b,1),size(b,2),size(b,3),size(b,4)) :: c
-      integer :: i, j, k, l
-      do l = 1, size(b,4)
-        do k = 1, size(b,3)
-          do j = 1, size(b,2)
-            do i = 1, size(b,1)
-              c(i,j,k,l) = {name}_{op}(a, b(i,j,k,l))
-            end do
-          end do
-        end do
-      end do
-    end function {name}_{op}_04
-    function {name}_{op}_40(a, b) result(c)
-      implicit none
-      {typea}, dimension(:,:,:,:), intent(in) :: a
-      {typeb}, intent(in) :: b
-      {typec}, dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
-      integer :: i, j, k, l
-      do l = 1, size(a,4)
-        do k = 1, size(a,3)
-          do j = 1, size(a,2)
-            do i = 1, size(a,1)
-              c(i,j,k,l) = {name}_{op}(a(i,j,k,l), b)
-            end do
-          end do
-        end do
-      end do
-    end function {name}_{op}_40
-    """
-
-    unop_code = """
-    function {name}_{op}_1(a) result(c)
-      implicit none
-      {typea}, dimension(:), intent(in) :: a
-      {typec}, dimension(size(a)) :: c
-      integer :: i
-      do i = 1, size(a)
-        c(i) = {name}_{op}(a(i))
-      end do
-    end function {name}_{op}_1
-    function {name}_{op}_2(a) result(c)
-      implicit none
-      {typea}, dimension(:,:), intent(in) :: a
-      {typec}, dimension(size(a,1),size(a,2)) :: c
-      integer :: i, j
-      do j = 1, size(a,2)
-        do i = 1, size(a,1)
-          c(i,j) = {name}_{op}(a(i,j))
-        end do
-      end do
-    end function {name}_{op}_2
-    function {name}_{op}_3(a) result(c)
-      implicit none
-      {typea}, dimension(:,:,:), intent(in) :: a
-      {typec}, dimension(size(a,1),size(a,2),size(a,3)) :: c
-      integer :: i, j, k
-      do k = 1, size(a,3)
-        do j = 1, size(a,2)
-          do i = 1, size(a,1)
-            c(i,j,k) = {name}_{op}(a(i,j,k))
-          end do
-        end do
-      end do
-    end function {name}_{op}_3
-    function {name}_{op}_4(a) result(c)
-      implicit none
-      {typea}, dimension(:,:,:,:), intent(in) :: a
-      {typec}, dimension(size(a,1),size(a,2),size(a,3),size(a,4)) :: c
-      integer :: i, j, k, l
-      do l = 1, size(a,4)
-        do k = 1, size(a,3)
-          do j = 1, size(a,2)
-            do i = 1, size(a,1)
-              c(i,j,k,l) = {name}_{op}(a(i,j,k,l))
-            end do
-          end do
-        end do
-      end do
-    end function {name}_{op}_4
-    """
-
-    assign_code = """
-    subroutine {name}_{op}_1(c, a)
-      implicit none
-      {typea}, dimension(:), intent(in) :: a
-      {typec}, dimension(:), intent(out) :: c
-      integer :: i
-      do i = 1, size(c)
-        call {name}_{op}(c(i), a(i))
-      end do
-    end subroutine {name}_{op}_1
-    subroutine {name}_{op}_10(c, a)
-      implicit none
-      {typea}, intent(in) :: a
-      {typec}, dimension(:), intent(out) :: c
-      integer :: i
-      do i = 1, size(c)
-        call {name}_{op}(c(i), a)
-      end do
-    end subroutine {name}_{op}_10
-    subroutine {name}_{op}_2(c, a)
-      implicit none
-      {typea}, dimension(:,:), intent(in) :: a
-      {typec}, dimension(size(a,1),size(a,2)), intent(out) :: c
-      integer :: i, j
-      do j = 1, size(a,2)
-        do i = 1, size(a,1)
-          call {name}_{op}(c(i,j), a(i,j))
-        end do
-      end do
-    end subroutine {name}_{op}_2
-    subroutine {name}_{op}_20(c, a)
-      implicit none
-      {typea}, intent(in) :: a
-      {typec}, dimension(:,:), intent(out) :: c
-      integer :: i, j
-      do j = 1, size(c,2)
-        do i = 1, size(c,1)
-          call {name}_{op}(c(i,j), a)
-        end do
-      end do
-    end subroutine {name}_{op}_20
-    subroutine {name}_{op}_3(c, a)
-      implicit none
-      {typea}, dimension(:,:,:), intent(in) :: a
-      {typec}, dimension(:,:,:), intent(out) :: c
-      integer :: i, j, k
-      do k = 1, size(c,3)
-        do j = 1, size(c,2)
-          do i = 1, size(c,1)
-            call {name}_{op}(c(i,j,k), a(i,j,k))
-          end do
-        end do
-      end do
-    end subroutine {name}_{op}_3
-    subroutine {name}_{op}_30(c, a)
-      implicit none
-      {typea}, intent(in) :: a
-      {typec}, dimension(:,:,:), intent(out) :: c
-      integer :: i, j, k
-      do k = 1, size(c,3)
-        do j = 1, size(c,2)
-          do i = 1, size(c,1)
-            call {name}_{op}(c(i,j,k), a)
-          end do
-        end do
-      end do
-    end subroutine {name}_{op}_30
-    subroutine {name}_{op}_4(c, a)
-      implicit none
-      {typea}, dimension(:,:,:,:), intent(in) :: a
-      {typec}, dimension(:,:,:,:), intent(out) :: c
-      integer :: i, j, k, l
-      do l = 1, size(c,4)
-        do k = 1, size(c,3)
-          do j = 1, size(c,2)
-            do i = 1, size(c,1)
-              call {name}_{op}(c(i,j,k,l), a(i,j,k,l))
-            end do
-          end do
-        end do
-      end do
-    end subroutine {name}_{op}_4
-    subroutine {name}_{op}_40(c, a)
-      implicit none
-      {typea}, intent(in) :: a
-      {typec}, dimension(:,:,:,:), intent(out) :: c
-      integer :: i, j, k, l
-      do l = 1, size(c,4)
-        do k = 1, size(c,3)
-          do j = 1, size(c,2)
-            do i = 1, size(c,1)
-              call {name}_{op}(c(i,j,k,l), a)
-            end do
-          end do
-        end do
-      end do
-    end subroutine {name}_{op}_40
-    """
-
-    base_code = {'binop': binop_code, 'unop': unop_code, 'assign': assign_code}[rtype]
-    types = {'a': 'type(adjac_double)', 
-             'b': 'type(adjac_complex)',
-             'q': 'type(adjac_complexan)',
-             'i': 'integer',
-             'd': 'double precision',
-             'z': 'double complex'}
-
-    s = ""
-    typeb = ""
-    for op in ops:
-        if rtype == 'binop':
-            typea = types[op[0]]
-            typeb = types[op[1]]
-            typec = typea if op[0] in 'abq' else typeb
-            if typec == 'type(adjac_double)' and ('z' in op or 'b' in op): 
-                typec = 'type(adjac_complex)'
-        elif rtype == 'assign':
-            typec = types[op[0]]
-            typea = types[op[1]]
-        else:
-            typea = types[op[0]]
-            typec = typea
-        s += base_code.format(name=name, op=op, typea=typea, typeb=typeb, typec=typec)
-    return s
 }}
 
   public assignment(=)
@@ -464,95 +112,33 @@ def elemental_versions(name, rtype, ops=None):
      module procedure assign_ai, assign_ad
      module procedure assign_bi, assign_bd, assign_bz, assign_ba
      module procedure assign_qi, assign_qd, assign_qz
-
-{{if not TAPELESS}}
-     module procedure assign_ai_1, assign_ad_1
-     module procedure assign_bi_1, assign_bd_1, assign_bz_1, assign_ba_1
-     module procedure assign_qi_1, assign_qd_1, assign_qz_1
-
-     module procedure assign_ai_10, assign_ad_10
-     module procedure assign_bi_10, assign_bd_10, assign_bz_10, assign_ba_10
-     module procedure assign_qi_10, assign_qd_10, assign_qz_10
-
-     module procedure assign_ai_2, assign_ad_2
-     module procedure assign_bi_2, assign_bd_2, assign_bz_2, assign_ba_2
-     module procedure assign_qi_2, assign_qd_2, assign_qz_2
-
-     module procedure assign_ai_20, assign_ad_20
-     module procedure assign_bi_20, assign_bd_20, assign_bz_20, assign_ba_20
-     module procedure assign_qi_20, assign_qd_20, assign_qz_20
-
-     module procedure assign_ai_3, assign_ad_3
-     module procedure assign_bi_3, assign_bd_3, assign_bz_3, assign_ba_3
-     module procedure assign_qi_3, assign_qd_3, assign_qz_3
-
-     module procedure assign_ai_30, assign_ad_30
-     module procedure assign_bi_30, assign_bd_30, assign_bz_30, assign_ba_30
-     module procedure assign_qi_30, assign_qd_30, assign_qz_30
-
-     module procedure assign_ai_4, assign_ad_4
-     module procedure assign_bi_4, assign_bd_4, assign_bz_4, assign_ba_4
-     module procedure assign_qi_4, assign_qd_4, assign_qz_4
-
-     module procedure assign_ai_40, assign_ad_40
-     module procedure assign_bi_40, assign_bd_40, assign_bz_40, assign_ba_40
-     module procedure assign_qi_40, assign_qd_40, assign_qz_40
-{{endif}}
   end interface
 
   public operator(+)
   interface operator(+)
-     {{binops("add", TAPELESS)}}
+     {{binops("add")}}
      module procedure pos_a, pos_b, pos_q
-{{if not TAPELESS}}
-     module procedure pos_a_1, pos_b_1, pos_q_1
-     module procedure pos_a_2, pos_b_2, pos_q_2
-     module procedure pos_a_3, pos_b_3, pos_q_3
-     module procedure pos_a_4, pos_b_4, pos_q_4
-{{endif}}
   end interface
 
   public operator(-)
   interface operator(-)
-     {{binops("sub", TAPELESS)}}
+     {{binops("sub")}}
      module procedure neg_a, neg_b, neg_q
-{{if not TAPELESS}}
-     module procedure neg_a_1, neg_b_1, neg_q_1
-     module procedure neg_a_2, neg_b_2, neg_q_2
-     module procedure neg_a_3, neg_b_3, neg_q_3
-     module procedure neg_a_4, neg_b_4, neg_q_4
-{{endif}}
   end interface
 
   public operator(*)
   interface operator(*)
-     {{binops("mul", TAPELESS)}}
+     {{binops("mul")}}
   end interface operator(*)
 
   public operator(/)
   interface operator(/)
-     {{binops("div", TAPELESS)}}
+     {{binops("div")}}
   end interface operator(/)
 
   public operator(**)
   interface operator(**)
      module procedure pow_ai, pow_ad, pow_qi, pow_qd, pow_qz
-{{if not TAPELESS}}
-     module procedure pow_ai_1, pow_ad_1, pow_qi_1, pow_qd_1, pow_qz_1
-     module procedure pow_ai_2, pow_ad_2, pow_qi_2, pow_qd_2, pow_qz_2
-     module procedure pow_ai_3, pow_ad_3, pow_qi_3, pow_qd_3, pow_qz_3
-     module procedure pow_ai_4, pow_ad_4, pow_qi_4, pow_qd_4, pow_qz_4
-
-     module procedure pow_ai_10, pow_ad_10, pow_qi_10, pow_qd_10, pow_qz_10
-     module procedure pow_ai_20, pow_ad_20, pow_qi_20, pow_qd_20, pow_qz_20
-     module procedure pow_ai_30, pow_ad_30, pow_qi_30, pow_qd_30, pow_qz_30
-     module procedure pow_ai_40, pow_ad_40, pow_qi_40, pow_qd_40, pow_qz_40
-
-     module procedure pow_ai_01, pow_ad_01, pow_qi_01, pow_qd_01, pow_qz_01
-     module procedure pow_ai_02, pow_ad_02, pow_qi_02, pow_qd_02, pow_qz_02
-     module procedure pow_ai_03, pow_ad_03, pow_qi_03, pow_qd_03, pow_qz_03
-     module procedure pow_ai_04, pow_ad_04, pow_qi_04, pow_qd_04, pow_qz_04
-{{endif}}
   end interface operator(**)
 
   public matmul
@@ -565,78 +151,36 @@ def elemental_versions(name, rtype, ops=None):
   public dble
   interface dble
      module procedure dble_a, dble_b
-{{if not TAPELESS}}
-     module procedure dble_a_1, dble_b_1
-     module procedure dble_a_2, dble_b_2
-     module procedure dble_a_3, dble_b_3
-     module procedure dble_a_4, dble_b_4
-{{endif}}
   end interface dble
 
   public aimag
   interface aimag
      module procedure aimag_b
-{{if not TAPELESS}}
-     module procedure aimag_b_1
-     module procedure aimag_b_2
-     module procedure aimag_b_3
-     module procedure aimag_b_4
-{{endif}}
   end interface aimag
 
   public conjg
   interface conjg
      module procedure conjg_b
-{{if not TAPELESS}}
-     module procedure conjg_b_1
-     module procedure conjg_b_2
-     module procedure conjg_b_3
-     module procedure conjg_b_4
-{{endif}}
   end interface conjg
 
   public exp
   interface exp
      module procedure exp_a, exp_b, exp_q
-{{if not TAPELESS}}
-     module procedure exp_a_1, exp_b_1, exp_q_1
-     module procedure exp_a_2, exp_b_2, exp_q_2
-     module procedure exp_a_3, exp_b_3, exp_q_3
-     module procedure exp_a_4, exp_b_4, exp_q_4
-{{endif}}
   end interface exp
 
   public sin
   interface sin
      module procedure sin_a, sin_b, sin_q
-{{if not TAPELESS}}
-     module procedure sin_a_1, sin_b_1, sin_q_1
-     module procedure sin_a_2, sin_b_2, sin_q_2
-     module procedure sin_a_3, sin_b_3, sin_q_3
-     module procedure sin_a_4, sin_b_4, sin_q_4
-{{endif}}
   end interface sin
 
   public cos
   interface cos
      module procedure cos_a, cos_b, cos_q
-{{if not TAPELESS}}
-     module procedure cos_a_1, cos_b_1, cos_q_1
-     module procedure cos_a_2, cos_b_2, cos_q_2
-     module procedure cos_a_3, cos_b_3, cos_q_3
-     module procedure cos_a_4, cos_b_4, cos_q_4
-{{endif}}
   end interface cos
 
   public log
   interface log
      module procedure log_a, log_b, log_q
-{{if not TAPELESS}}
-     module procedure log_a_1, log_b_1, log_q_1
-     module procedure log_a_2, log_b_2, log_q_2
-     module procedure log_a_3, log_b_3, log_q_3
-     module procedure log_a_4, log_b_4, log_q_4
-{{endif}}
   end interface log
 
   interface adjac_set_independent
@@ -1252,7 +796,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !!
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{pure_elemental}} subroutine assign_{{CHR}}{{CHR2}}(x, y)
+  {{elemental}} subroutine assign_{{CHR}}{{CHR2}}(x, y)
     implicit none
     type({{TYPE}}), intent(inout) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1264,7 +808,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
 
   {{if TYPE == "adjac_double"}}
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{pure_elemental}} subroutine assign_b{{CHR2}}(x, y)
+  {{elemental}} subroutine assign_b{{CHR2}}(x, y)
     implicit none
     type(adjac_complex), intent(inout) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1273,7 +817,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end subroutine assign_b{{CHR2}}
   {{endfor}}
 
-  {{pure_elemental}} subroutine assign_bz(x, y)
+  {{elemental}} subroutine assign_bz(x, y)
     implicit none
     type(adjac_complex), intent(inout) :: x
     double complex, intent(in) :: y
@@ -1281,7 +825,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     x%im = aimag(y)
   end subroutine assign_bz
 
-  {{pure_elemental}} subroutine assign_ba(x, y)
+  {{elemental}} subroutine assign_ba(x, y)
     implicit none
     type(adjac_complex), intent(inout) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1296,7 +840,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
 
   ! X + Y = x + y + (x_j + y_j) dj
 
-  {{pure_elemental}} function add_{{CHR}}{{CHR}}(x, y) result(z)
+  {{elemental}} function add_{{CHR}}{{CHR}}(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x, y
     type({{TYPE}}) :: z
@@ -1309,7 +853,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function add_{{CHR}}{{CHR}}
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{pure_elemental}} function add_{{CHR}}{{CHR2}}(x, y) result(z)
+  {{elemental}} function add_{{CHR}}{{CHR2}}(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1319,7 +863,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     call link_mem_{{CHR}}(z, x)
   end function add_{{CHR}}{{CHR2}}
 
-  {{pure_elemental}} function add_{{CHR2}}{{CHR}}(x, y) result(z)
+  {{elemental}} function add_{{CHR2}}{{CHR}}(x, y) result(z)
     implicit none
     {{FTYPE2}}, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1329,7 +873,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   {{endfor}}
 
   {{if TYPE == "adjac_double"}}
-  {{pure_elemental}} function add_az(x, y) result(z)
+  {{elemental}} function add_az(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     double complex, intent(in) :: y
@@ -1338,7 +882,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = aimag(y)
   end function add_az
 
-  {{pure_elemental}} function add_za(x, y) result(z)
+  {{elemental}} function add_za(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1347,7 +891,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = aimag(x)
   end function add_za
 
-  {{pure_elemental}} function add_bb(x, y) result(z)
+  {{elemental}} function add_bb(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1356,7 +900,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x%im + y%im
   end function add_bb
 
-  {{pure_elemental}} function add_bz(x, y) result(z)
+  {{elemental}} function add_bz(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     double complex, intent(in) :: y
@@ -1365,7 +909,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x%im + aimag(y)
   end function add_bz
 
-  {{pure_elemental}} function add_zb(x, y) result(z)
+  {{elemental}} function add_zb(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1374,7 +918,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = aimag(x) + y%im
   end function add_zb
 
-  {{pure_elemental}} function add_ba(x, y) result(z)
+  {{elemental}} function add_ba(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1383,7 +927,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x%im
   end function add_ba
 
-  {{pure_elemental}} function add_ab(x, y) result(z)
+  {{elemental}} function add_ab(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1393,7 +937,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function add_ab
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{pure_elemental}} function add_b{{CHR2}}(x, y) result(z)
+  {{elemental}} function add_b{{CHR2}}(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1401,7 +945,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z = x + dcmplx(y)
   end function add_b{{CHR2}}
 
-  {{pure_elemental}} function add_{{CHR2}}b(x, y) result(z)
+  {{elemental}} function add_{{CHR2}}b(x, y) result(z)
     implicit none
     {{FTYPE2}}, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1416,7 +960,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !! operator(+), unary
   !!
 
-  {{pure_elemental}} function pos_{{CHR}}(x) result(z)
+  {{elemental}} function pos_{{CHR}}(x) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type({{TYPE}}) :: z
@@ -1424,7 +968,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function pos_{{CHR}}
 
   {{if TYPE == "adjac_double"}}
-  {{pure_elemental}} function pos_b(x) result(z)
+  {{elemental}} function pos_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
@@ -1438,7 +982,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
 
   ! X - Y = x - y + (x_j - y_j) dj
 
-  {{pure_elemental}} function sub_{{CHR}}{{CHR}}(x, y) result(z)
+  {{elemental}} function sub_{{CHR}}{{CHR}}(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x, y
     type({{TYPE}}) :: z
@@ -1451,7 +995,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function sub_{{CHR}}{{CHR}}
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{pure_elemental}} function sub_{{CHR}}{{CHR2}}(x, y) result(z)
+  {{elemental}} function sub_{{CHR}}{{CHR2}}(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1461,7 +1005,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     call link_mem_{{CHR}}(z, x)
   end function sub_{{CHR}}{{CHR2}}
 
-  {{pure_elemental}} function sub_{{CHR2}}{{CHR}}(x, y) result(z)
+  {{elemental}} function sub_{{CHR2}}{{CHR}}(x, y) result(z)
     implicit none
     {{FTYPE2}}, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1473,7 +1017,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   {{endfor}}
 
   {{if TYPE == "adjac_double"}}
-  {{pure_elemental}} function sub_az(x, y) result(z)
+  {{elemental}} function sub_az(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     double complex, intent(in) :: y
@@ -1482,7 +1026,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = -aimag(y)
   end function sub_az
 
-  {{pure_elemental}} function sub_za(x, y) result(z)
+  {{elemental}} function sub_za(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1491,7 +1035,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = aimag(x)
   end function sub_za
 
-  {{pure_elemental}} function sub_bb(x, y) result(z)
+  {{elemental}} function sub_bb(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1500,7 +1044,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x%im - y%im
   end function sub_bb
 
-  {{pure_elemental}} function sub_bz(x, y) result(z)
+  {{elemental}} function sub_bz(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     double complex, intent(in) :: y
@@ -1509,7 +1053,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x%im - aimag(y)
   end function sub_bz
 
-  {{pure_elemental}} function sub_zb(x, y) result(z)
+  {{elemental}} function sub_zb(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1518,7 +1062,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = aimag(x) - y%im
   end function sub_zb
 
-  {{pure_elemental}} function sub_ba(x, y) result(z)
+  {{elemental}} function sub_ba(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1527,7 +1071,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x%im
   end function sub_ba
 
-  {{pure_elemental}} function sub_ab(x, y) result(z)
+  {{elemental}} function sub_ab(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1537,7 +1081,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function sub_ab
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{pure_elemental}} function sub_b{{CHR2}}(x, y) result(z)
+  {{elemental}} function sub_b{{CHR2}}(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1545,7 +1089,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z = x - dcmplx(y)
   end function sub_b{{CHR2}}
 
-  {{pure_elemental}} function sub_{{CHR2}}b(x, y) result(z)
+  {{elemental}} function sub_{{CHR2}}b(x, y) result(z)
     implicit none
     {{FTYPE2}}, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1559,7 +1103,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !! operator(-), unary
   !!
 
-  {{pure_elemental}} function neg_{{CHR}}(x) result(z)
+  {{elemental}} function neg_{{CHR}}(x) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type({{TYPE}}) :: z
@@ -1567,7 +1111,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function neg_{{CHR}}
 
   {{if TYPE == "adjac_double"}}
-  {{pure_elemental}} function neg_b(x) result(z)
+  {{elemental}} function neg_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
@@ -1581,7 +1125,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
 
   ! X*Y = x*y + (x y_j + y x_j) dj
 
-  {{pure_elemental}} function mul_{{CHR}}{{CHR}}(x, y) result(z)
+  {{elemental}} function mul_{{CHR}}{{CHR}}(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x, y
     type({{TYPE}}) :: z
@@ -1594,7 +1138,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function mul_{{CHR}}{{CHR}}
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{pure_elemental}} function mul_{{CHR}}{{CHR2}}(x, y) result(z)
+  {{elemental}} function mul_{{CHR}}{{CHR2}}(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1609,7 +1153,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     end if
   end function mul_{{CHR}}{{CHR2}}
 
-  {{pure_elemental}} function mul_{{CHR2}}{{CHR}}(x, y) result(z)
+  {{elemental}} function mul_{{CHR2}}{{CHR}}(x, y) result(z)
     implicit none
     {{FTYPE2}}, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1619,7 +1163,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   {{endfor}}
 
   {{if TYPE == "adjac_double"}}
-  {{pure_elemental}} function mul_az(x, y) result(z)
+  {{elemental}} function mul_az(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     double complex, intent(in) :: y
@@ -1628,7 +1172,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x * aimag(y)
   end function mul_az
 
-  {{pure_elemental}} function mul_za(x, y) result(z)
+  {{elemental}} function mul_za(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1637,7 +1181,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = aimag(x) * y
   end function mul_za
 
-  {{pure_elemental}} function mul_bb(x, y) result(z)
+  {{elemental}} function mul_bb(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1646,7 +1190,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x%re * y%im + x%im * y%re
   end function mul_bb
 
-  {{pure_elemental}} function mul_bz(x, y) result(z)
+  {{elemental}} function mul_bz(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     double complex, intent(in) :: y
@@ -1655,7 +1199,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x%re * aimag(y) + x%im * dble(y)
   end function mul_bz
 
-  {{pure_elemental}} function mul_zb(x, y) result(z)
+  {{elemental}} function mul_zb(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1664,7 +1208,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = dble(x) * y%im + aimag(x) * y%re
   end function mul_zb
 
-  {{pure_elemental}} function mul_ba(x, y) result(z)
+  {{elemental}} function mul_ba(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1673,7 +1217,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x%im * y
   end function mul_ba
 
-  {{pure_elemental}} function mul_ab(x, y) result(z)
+  {{elemental}} function mul_ab(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1683,7 +1227,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function mul_ab
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{pure_elemental}} function mul_b{{CHR2}}(x, y) result(z)
+  {{elemental}} function mul_b{{CHR2}}(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1691,7 +1235,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z = x * dcmplx(y)
   end function mul_b{{CHR2}}
 
-  {{pure_elemental}} function mul_{{CHR2}}b(x, y) result(z)
+  {{elemental}} function mul_{{CHR2}}b(x, y) result(z)
     implicit none
     {{FTYPE2}}, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1707,7 +1251,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
 
   ! X/Y = x/y + (x_j/y - x y_j/y**2) dj
 
-  {{pure_elemental}} function div_{{CHR}}{{CHR}}(x, y) result(z)
+  {{elemental}} function div_{{CHR}}{{CHR}}(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x, y
     type({{TYPE}}) :: z
@@ -1719,7 +1263,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function div_{{CHR}}{{CHR}}
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{pure_elemental}} function div_{{CHR}}{{CHR2}}(x, y) result(z)
+  {{elemental}} function div_{{CHR}}{{CHR2}}(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1727,7 +1271,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z = (1d0 / y) * x
   end function div_{{CHR}}{{CHR2}}
 
-  {{pure_elemental}} function div_{{CHR2}}{{CHR}}(x, y) result(z)
+  {{elemental}} function div_{{CHR2}}{{CHR}}(x, y) result(z)
     implicit none
     {{FTYPE2}}, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1738,7 +1282,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   {{endfor}}
 
   {{if TYPE == "adjac_double"}}
-  {{pure_elemental}} function div_az(x, y) result(z)
+  {{elemental}} function div_az(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     double complex, intent(in) :: y
@@ -1746,7 +1290,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z = x * conjg(y) / (dble(y)*dble(y) + aimag(y)*aimag(y))
   end function div_az
 
-  {{pure_elemental}} function div_za(x, y) result(z)
+  {{elemental}} function div_za(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1755,7 +1299,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = aimag(x) / y
   end function div_za
 
-  {{pure_elemental}} function div_bb(x, y) result(z)
+  {{elemental}} function div_bb(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1763,7 +1307,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z = x * conjg(y) / (dble(y)*dble(y) + aimag(y)*aimag(y))
   end function div_bb
 
-  {{pure_elemental}} function div_bz(x, y) result(z)
+  {{elemental}} function div_bz(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     double complex, intent(in) :: y
@@ -1771,7 +1315,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z = x * conjg(y) / (dble(y)*dble(y) + aimag(y)*aimag(y))
   end function div_bz
 
-  {{pure_elemental}} function div_zb(x, y) result(z)
+  {{elemental}} function div_zb(x, y) result(z)
     implicit none
     double complex, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1779,7 +1323,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z = x * conjg(y) / (dble(y)*dble(y) + aimag(y)*aimag(y))
   end function div_zb
 
-  {{pure_elemental}} function div_ba(x, y) result(z)
+  {{elemental}} function div_ba(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type({{TYPE}}), intent(in) :: y
@@ -1788,7 +1332,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x%im / y
   end function div_ba
 
-  {{pure_elemental}} function div_ab(x, y) result(z)
+  {{elemental}} function div_ab(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1797,7 +1341,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function div_ab
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{pure_elemental}} function div_b{{CHR2}}(x, y) result(z)
+  {{elemental}} function div_b{{CHR2}}(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1806,7 +1350,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     z%im = x%im / y
   end function div_b{{CHR2}}
 
-  {{pure_elemental}} function div_{{CHR2}}b(x, y) result(z)
+  {{elemental}} function div_{{CHR2}}b(x, y) result(z)
     implicit none
     {{FTYPE2}}, intent(in) :: x
     type(adjac_complex), intent(in) :: y
@@ -1821,7 +1365,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !!
 
   {{for FTYPE2, CHR2 in FTYPES2}}
-  {{pure_elemental}} function pow_{{CHR}}{{CHR2}}(x, y) result(z)
+  {{elemental}} function pow_{{CHR}}{{CHR2}}(x, y) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     {{FTYPE2}}, intent(in) :: y
@@ -1907,14 +1451,14 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !!
 
   {{if TYPE == "adjac_double"}}
-  {{pure_elemental}} function dble_a(x) result(z)
+  {{elemental}} function dble_a(x) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
     type(adjac_double) :: z
     z = x
   end function dble_a
 
-  {{pure_elemental}} function dble_b(x) result(z)
+  {{elemental}} function dble_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_double) :: z
@@ -1927,7 +1471,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !!
 
   {{if TYPE == "adjac_double"}}
-  {{pure_elemental}} function aimag_b(x) result(z)
+  {{elemental}} function aimag_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_double) :: z
@@ -1940,7 +1484,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !!
 
   {{if TYPE == "adjac_double"}}
-  {{pure_elemental}} function conjg_b(x) result(z)
+  {{elemental}} function conjg_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
@@ -1953,7 +1497,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !! exp
   !!
 
-  {{pure_elemental}} function exp_{{CHR}}(x) result(z)
+  {{elemental}} function exp_{{CHR}}(x) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type({{TYPE}}) :: z
@@ -1965,7 +1509,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function exp_{{CHR}}
 
   {{if TYPE == "adjac_double"}}
-  {{pure_elemental}} function exp_b(x) result(z)
+  {{elemental}} function exp_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
@@ -1982,7 +1526,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !! sin
   !!
 
-  {{pure_elemental}} function sin_{{CHR}}(x) result(z)
+  {{elemental}} function sin_{{CHR}}(x) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type({{TYPE}}) :: z
@@ -1994,7 +1538,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function sin_{{CHR}}
 
   {{if TYPE == "adjac_double"}}
-  {{pure_elemental}} function sin_b(x) result(z)
+  {{elemental}} function sin_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
@@ -2011,7 +1555,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !! cos
   !!
 
-  {{pure_elemental}} function cos_{{CHR}}(x) result(z)
+  {{elemental}} function cos_{{CHR}}(x) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type({{TYPE}}) :: z
@@ -2023,7 +1567,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function cos_{{CHR}}
 
   {{if TYPE == "adjac_double"}}
-  {{pure_elemental}} function cos_b(x) result(z)
+  {{elemental}} function cos_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
@@ -2040,7 +1584,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   !! log
   !!
 
-  {{pure_elemental}} function log_{{CHR}}(x) result(z)
+  {{elemental}} function log_{{CHR}}(x) result(z)
     implicit none
     type({{TYPE}}), intent(in) :: x
     type({{TYPE}}) :: z
@@ -2052,7 +1596,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function log_{{CHR}}
 
   {{if TYPE == "adjac_double"}}
-  {{pure_elemental}} function log_b(x) result(z)
+  {{elemental}} function log_b(x) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
@@ -2065,23 +1609,5 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
   end function log_b
   {{endif}}
 {{endfor}}
-
-{{if not TAPELESS}}
-  {{elemental_versions('assign', 'assign', ops='ai ad bi bd bz ba qi qd qz'.split())}}
-  {{elemental_versions('add', 'binop')}}
-  {{elemental_versions('sub', 'binop')}}
-  {{elemental_versions('mul', 'binop')}}
-  {{elemental_versions('div', 'binop')}}
-  {{elemental_versions('pow', 'binop', ops=['ai', 'ad', 'qi', 'qd', 'qz'])}}
-  {{elemental_versions('dble', 'unop', ops=['a', 'b'])}}
-  {{elemental_versions('aimag', 'unop', ops=['b'])}}
-  {{elemental_versions('conjg', 'unop', ops=['b'])}}
-  {{elemental_versions('neg', 'unop', ops=['a', 'b', 'q'])}}
-  {{elemental_versions('pos', 'unop', ops=['a', 'b', 'q'])}}
-  {{elemental_versions('exp', 'unop', ops=['a', 'b', 'q'])}}
-  {{elemental_versions('sin', 'unop', ops=['a', 'b', 'q'])}}
-  {{elemental_versions('cos', 'unop', ops=['a', 'b', 'q'])}}
-  {{elemental_versions('log', 'unop', ops=['a', 'b', 'q'])}}
-{{endif}}
 
 end module adjac
