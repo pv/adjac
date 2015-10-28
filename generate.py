@@ -4,7 +4,10 @@ generate.py SRC DST
 import sys
 import os
 import argparse
-import tempita
+try:
+    import tempita
+except ImportError:
+    import Cython.Tempita as tempita
 
 
 def define_symbol(string):
