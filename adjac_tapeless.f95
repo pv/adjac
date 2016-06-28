@@ -452,10 +452,23 @@ contains
     if (jac_product_mode) then
        c%vmul = alphap * a%vmul + betap * b%vmul
     else
-       call sparse_vector_sum_a(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
-            a%i, b%i, c%i, &
-            a%v, b%v, c%v)
-       c%vmul = 1
+       if (a%n > 0 .and. b%n > 0) then
+          call sparse_vector_sum_a(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
+               a%i, b%i, c%i, &
+               a%v, b%v, c%v)
+          c%vmul = 1
+       else if (a%n > 0) then
+          c%i = a%i
+          c%v = a%v
+          c%vmul = a%vmul
+       else if (b%n > 0) then
+          c%i = b%i
+          c%v = b%v
+          c%vmul = b%vmul
+       else
+          c%n = 0
+          c%vmul = 0
+       end if
     end if
   end subroutine sum_taylor_a
 
@@ -1667,10 +1680,23 @@ contains
     if (jac_product_mode) then
        c%vmul = alphap * a%vmul + betap * b%vmul
     else
-       call sparse_vector_sum_q(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
-            a%i, b%i, c%i, &
-            a%v, b%v, c%v)
-       c%vmul = 1
+       if (a%n > 0 .and. b%n > 0) then
+          call sparse_vector_sum_q(alphap*a%vmul, betap*b%vmul, a%n, b%n, c%n, &
+               a%i, b%i, c%i, &
+               a%v, b%v, c%v)
+          c%vmul = 1
+       else if (a%n > 0) then
+          c%i = a%i
+          c%v = a%v
+          c%vmul = a%vmul
+       else if (b%n > 0) then
+          c%i = b%i
+          c%v = b%v
+          c%vmul = b%vmul
+       else
+          c%n = 0
+          c%vmul = 0
+       end if
     end if
   end subroutine sum_taylor_q
 
