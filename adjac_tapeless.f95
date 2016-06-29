@@ -458,12 +458,14 @@ contains
                a%v, b%v, c%v)
           c%vmul = 1
        else if (a%n > 0) then
-          c%i = a%i
-          c%v = a%v
+          c%i(1:a%n) = a%i(1:a%n)
+          c%v(1:a%n) = a%v(1:a%n)
+          c%n = a%n
           c%vmul = a%vmul
        else if (b%n > 0) then
-          c%i = b%i
-          c%v = b%v
+          c%i(1:b%n) = b%i(1:b%n)
+          c%v(1:b%n) = b%v(1:b%n)
+          c%n = b%n
           c%vmul = b%vmul
        else
           c%n = 0
@@ -1686,12 +1688,14 @@ contains
                a%v, b%v, c%v)
           c%vmul = 1
        else if (a%n > 0) then
-          c%i = a%i
-          c%v = a%v
+          c%i(1:a%n) = a%i(1:a%n)
+          c%v(1:a%n) = a%v(1:a%n)
+          c%n = a%n
           c%vmul = a%vmul
        else if (b%n > 0) then
-          c%i = b%i
-          c%v = b%v
+          c%i(1:b%n) = b%i(1:b%n)
+          c%v(1:b%n) = b%v(1:b%n)
+          c%n = b%n
           c%vmul = b%vmul
        else
           c%n = 0
