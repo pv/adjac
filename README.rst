@@ -1,3 +1,6 @@
+.. image:: https://zenodo.org/badge/23917/pv/adjac.svg
+   :target: https://zenodo.org/badge/latestdoi/23917/pv/adjac
+
 =====
 adjac
 =====
