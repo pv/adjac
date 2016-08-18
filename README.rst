@@ -33,10 +33,9 @@ equivalent, but adjac_complexan is more efficient computationally.
 The data types support operations =,*,+,-,matmul,exp,sin,cos,log,dble,aimag,conjg.
 However, adjac_complexan does not support operations that break complex analyticity.
 
-For more information about automatic differentiation, and other AD software
-(there are many and adjac does not do anything unusual), see
-http://autodiff.org/ Adjac performance appears to be roughly similar to ADOLC,
-and within a factor of 2-3 from ADEPT.
+For more information about automatic differentiation, and other AD software ,
+see http://autodiff.org/ Adjac performance appears to be roughly similar to
+ADOLC, and within a factor of 2-3 from ADEPT.
 
 Versions
 --------
