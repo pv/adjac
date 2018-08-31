@@ -1183,6 +1183,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
     if (y == 0) then
        z%value = 0
        z%vmul = 0
+       call free_mem_{{CHR}}(z)
     else
        z%value = x%value * y
        z%vmul = x%vmul * y
