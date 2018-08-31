@@ -49,7 +49,7 @@ module adjac
   end type adjac_double
 
   type, public :: adjac_complexan
-     double complex :: value, vmul
+     complex(kind=kind(0d0)) :: value, vmul
      integer :: i = 0
   end type adjac_complexan
 
@@ -71,7 +71,7 @@ module adjac
   integer :: free_a = 1, free_q = 1
   integer, dimension(:), allocatable :: sum_map_a, sum_map_q
   double precision, dimension(:), allocatable :: sum_mul_a
-  double complex, dimension(:), allocatable :: sum_mul_q
+  complex(kind=kind(0d0)), dimension(:), allocatable :: sum_mul_q
 
   public assignment(=)
   interface assignment(=)
@@ -262,7 +262,6 @@ module adjac
   public adjac_set_independent, adjac_get_value, &
        adjac_get_dense_jacobian, adjac_get_coo_jacobian, &
        adjac_reset, adjac_free
-
 contains
 
   subroutine fatal_error(msg)
@@ -875,7 +874,7 @@ contains
   pure elemental subroutine assign_bz(x, y)
     implicit none
     type(adjac_complex), intent(inout) :: x
-    double complex, intent(in) :: y
+    complex(kind=kind(0d0)), intent(in) :: y
     x%re = dble(y)
     x%im = aimag(y)
   end subroutine assign_bz
@@ -900,7 +899,7 @@ contains
     type(adjac_double) :: z
 
     z%value = x%value + y%value
-    call sum_taylor(dble(1d0), dble(1d0), x, y, z)
+    call sum_taylor(real(1d0, kind=kind(0d0)), real(1d0, kind=kind(0d0)), x, y, z)
   end function add_aa
 
   pure elemental function add_ai(x, y) result(z)
@@ -940,7 +939,7 @@ contains
   pure elemental function add_az(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
-    double complex, intent(in) :: y
+    complex(kind=kind(0d0)), intent(in) :: y
     type(adjac_complex) :: z
     z%re = x + dble(y)
     z%im = aimag(y)
@@ -948,7 +947,7 @@ contains
 
   pure elemental function add_za(x, y) result(z)
     implicit none
-    double complex, intent(in) :: x
+    complex(kind=kind(0d0)), intent(in) :: x
     type(adjac_double), intent(in) :: y
     type(adjac_complex) :: z
     z%re = dble(x) + y
@@ -967,7 +966,7 @@ contains
   pure elemental function add_bz(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
-    double complex, intent(in) :: y
+    complex(kind=kind(0d0)), intent(in) :: y
     type(adjac_complex) :: z
     z%re = x%re + dble(y)
     z%im = x%im + aimag(y)
@@ -975,7 +974,7 @@ contains
 
   pure elemental function add_zb(x, y) result(z)
     implicit none
-    double complex, intent(in) :: x
+    complex(kind=kind(0d0)), intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
     z%re = dble(x) + y%re
@@ -1005,7 +1004,7 @@ contains
     type(adjac_complex), intent(in) :: x
     integer, intent(in) :: y
     type(adjac_complex) :: z
-    z = x + dcmplx(y)
+    z = x + cmplx(y, kind=kind(0d0))
   end function add_bi
 
   pure elemental function add_ib(x, y) result(z)
@@ -1013,14 +1012,14 @@ contains
     integer, intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
-    z = dcmplx(x) + y
+    z = cmplx(x, kind=kind(0d0)) + y
   end function add_ib
   pure elemental function add_bd(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     double precision, intent(in) :: y
     type(adjac_complex) :: z
-    z = x + dcmplx(y)
+    z = x + cmplx(y, kind=kind(0d0))
   end function add_bd
 
   pure elemental function add_db(x, y) result(z)
@@ -1028,7 +1027,7 @@ contains
     double precision, intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
-    z = dcmplx(x) + y
+    z = cmplx(x, kind=kind(0d0)) + y
   end function add_db
 
   !!
@@ -1061,7 +1060,7 @@ contains
     type(adjac_double) :: z
 
     z%value = x%value - y%value
-    call sum_taylor(dble(1d0), dble(-1d0), x, y, z)
+    call sum_taylor(real(1d0, kind=kind(0d0)), real(-1d0, kind=kind(0d0)), x, y, z)
   end function sub_aa
 
   pure elemental function sub_ai(x, y) result(z)
@@ -1105,7 +1104,7 @@ contains
   pure elemental function sub_az(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
-    double complex, intent(in) :: y
+    complex(kind=kind(0d0)), intent(in) :: y
     type(adjac_complex) :: z
     z%re = x - dble(y)
     z%im = -aimag(y)
@@ -1113,7 +1112,7 @@ contains
 
   pure elemental function sub_za(x, y) result(z)
     implicit none
-    double complex, intent(in) :: x
+    complex(kind=kind(0d0)), intent(in) :: x
     type(adjac_double), intent(in) :: y
     type(adjac_complex) :: z
     z%re = dble(x) - y
@@ -1132,7 +1131,7 @@ contains
   pure elemental function sub_bz(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
-    double complex, intent(in) :: y
+    complex(kind=kind(0d0)), intent(in) :: y
     type(adjac_complex) :: z
     z%re = x%re - dble(y)
     z%im = x%im - aimag(y)
@@ -1140,7 +1139,7 @@ contains
 
   pure elemental function sub_zb(x, y) result(z)
     implicit none
-    double complex, intent(in) :: x
+    complex(kind=kind(0d0)), intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
     z%re = dble(x) - y%re
@@ -1170,7 +1169,7 @@ contains
     type(adjac_complex), intent(in) :: x
     integer, intent(in) :: y
     type(adjac_complex) :: z
-    z = x - dcmplx(y)
+    z = x - cmplx(y, kind=kind(0d0))
   end function sub_bi
 
   pure elemental function sub_ib(x, y) result(z)
@@ -1178,14 +1177,14 @@ contains
     integer, intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
-    z = dcmplx(x) - y
+    z = cmplx(x, kind=kind(0d0)) - y
   end function sub_ib
   pure elemental function sub_bd(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     double precision, intent(in) :: y
     type(adjac_complex) :: z
-    z = x - dcmplx(y)
+    z = x - cmplx(y, kind=kind(0d0))
   end function sub_bd
 
   pure elemental function sub_db(x, y) result(z)
@@ -1193,7 +1192,7 @@ contains
     double precision, intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
-    z = dcmplx(x) - y
+    z = cmplx(x, kind=kind(0d0)) - y
   end function sub_db
 
   !!
@@ -1276,7 +1275,7 @@ contains
   pure elemental function mul_az(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
-    double complex, intent(in) :: y
+    complex(kind=kind(0d0)), intent(in) :: y
     type(adjac_complex) :: z
     z%re = x * dble(y)
     z%im = x * aimag(y)
@@ -1284,7 +1283,7 @@ contains
 
   pure elemental function mul_za(x, y) result(z)
     implicit none
-    double complex, intent(in) :: x
+    complex(kind=kind(0d0)), intent(in) :: x
     type(adjac_double), intent(in) :: y
     type(adjac_complex) :: z
     z%re = dble(x) * y
@@ -1303,7 +1302,7 @@ contains
   impure elemental function mul_bz(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
-    double complex, intent(in) :: y
+    complex(kind=kind(0d0)), intent(in) :: y
     type(adjac_complex) :: z
     z%re = x%re * dble(y) - x%im * aimag(y)
     z%im = x%re * aimag(y) + x%im * dble(y)
@@ -1311,7 +1310,7 @@ contains
 
   impure elemental function mul_zb(x, y) result(z)
     implicit none
-    double complex, intent(in) :: x
+    complex(kind=kind(0d0)), intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
     z%re = dble(x) * y%re - aimag(x) * y%im
@@ -1341,7 +1340,7 @@ contains
     type(adjac_complex), intent(in) :: x
     integer, intent(in) :: y
     type(adjac_complex) :: z
-    z = x * dcmplx(y)
+    z = x * cmplx(y, kind=kind(0d0))
   end function mul_bi
 
   impure elemental function mul_ib(x, y) result(z)
@@ -1349,14 +1348,14 @@ contains
     integer, intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
-    z = dcmplx(x) * y
+    z = cmplx(x, kind=kind(0d0)) * y
   end function mul_ib
   impure elemental function mul_bd(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
     double precision, intent(in) :: y
     type(adjac_complex) :: z
-    z = x * dcmplx(y)
+    z = x * cmplx(y, kind=kind(0d0))
   end function mul_bd
 
   impure elemental function mul_db(x, y) result(z)
@@ -1364,7 +1363,7 @@ contains
     double precision, intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
-    z = dcmplx(x) * y
+    z = cmplx(x, kind=kind(0d0)) * y
   end function mul_db
 
   !!
@@ -1416,9 +1415,9 @@ contains
   pure elemental function div_az(x, y) result(z)
     implicit none
     type(adjac_double), intent(in) :: x
-    double complex, intent(in) :: y
+    complex(kind=kind(0d0)), intent(in) :: y
     type(adjac_complex) :: z
-    double complex :: q
+    complex(kind=kind(0d0)) :: q
     q = conjg(y) / (dble(y)*dble(y) + aimag(y)*aimag(y))
     z%re = dble(q) * x
     z%im = aimag(q) * x
@@ -1426,7 +1425,7 @@ contains
 
   pure elemental function div_za(x, y) result(z)
     implicit none
-    double complex, intent(in) :: x
+    complex(kind=kind(0d0)), intent(in) :: x
     type(adjac_double), intent(in) :: y
     type(adjac_complex) :: z
     z%re = dble(x) / y
@@ -1444,14 +1443,14 @@ contains
   impure elemental function div_bz(x, y) result(z)
     implicit none
     type(adjac_complex), intent(in) :: x
-    double complex, intent(in) :: y
+    complex(kind=kind(0d0)), intent(in) :: y
     type(adjac_complex) :: z
     z = x * conjg(y) / (dble(y)*dble(y) + aimag(y)*aimag(y))
   end function div_bz
 
   impure elemental function div_zb(x, y) result(z)
     implicit none
-    double complex, intent(in) :: x
+    complex(kind=kind(0d0)), intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
     z = x * conjg(y) / (dble(y)*dble(y) + aimag(y)*aimag(y))
@@ -1488,7 +1487,7 @@ contains
     integer, intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
-    z = dcmplx(x) / y
+    z = cmplx(x, kind=kind(0d0)) / y
   end function div_ib
   impure elemental function div_bd(x, y) result(z)
     implicit none
@@ -1504,7 +1503,7 @@ contains
     double precision, intent(in) :: x
     type(adjac_complex), intent(in) :: y
     type(adjac_complex) :: z
-    z = dcmplx(x) / y
+    z = cmplx(x, kind=kind(0d0)) / y
   end function div_db
 
   !!
@@ -1667,7 +1666,7 @@ contains
   function matmul_bz(x, y) result(z)
     implicit none
     type(adjac_complex), dimension(:,:), intent(in) :: x
-    double complex, dimension(:,:), intent(in) :: y
+    complex(kind=kind(0d0)), dimension(:,:), intent(in) :: y
     type(adjac_complex), dimension(size(x,1),size(y,2)) :: z
         integer i, j, k
 
@@ -1689,7 +1688,7 @@ contains
 
   function matmul_zb(x, y) result(z)
     implicit none
-    double complex, dimension(:,:), intent(in) :: x
+    complex(kind=kind(0d0)), dimension(:,:), intent(in) :: x
     type(adjac_complex), dimension(:,:), intent(in) :: y
     type(adjac_complex), dimension(size(x,1),size(y,2)) :: z
         integer i, j, k
@@ -1770,8 +1769,8 @@ contains
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
-    double complex :: v, dv
-    v = exp(dcmplx(x%re%value, x%im%value))
+    complex(kind=kind(0d0)) :: v, dv
+    v = exp(cmplx(x%re%value, x%im%value, kind=kind(0d0)))
     dv = v
     z = dv*x
     z%re%value = dble(v)
@@ -1797,9 +1796,9 @@ contains
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
-    double complex :: v, dv
-    v = sin(dcmplx(x%re%value, x%im%value))
-    dv = cos(dcmplx(x%re%value, x%im%value))
+    complex(kind=kind(0d0)) :: v, dv
+    v = sin(cmplx(x%re%value, x%im%value, kind=kind(0d0)))
+    dv = cos(cmplx(x%re%value, x%im%value, kind=kind(0d0)))
     z = dv*x
     z%re%value = dble(v)
     z%im%value = aimag(v)
@@ -1824,9 +1823,9 @@ contains
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
-    double complex :: v, dv
-    v = cos(dcmplx(x%re%value, x%im%value))
-    dv = -sin(dcmplx(x%re%value, x%im%value))
+    complex(kind=kind(0d0)) :: v, dv
+    v = cos(cmplx(x%re%value, x%im%value, kind=kind(0d0)))
+    dv = -sin(cmplx(x%re%value, x%im%value, kind=kind(0d0)))
     z = dv*x
     z%re%value = dble(v)
     z%im%value = aimag(v)
@@ -1851,9 +1850,9 @@ contains
     implicit none
     type(adjac_complex), intent(in) :: x
     type(adjac_complex) :: z
-    double complex :: v, dv
-    v = log(dcmplx(x%re%value, x%im%value))
-    dv = 1d0/dcmplx(x%re%value, x%im%value)
+    complex(kind=kind(0d0)) :: v, dv
+    v = log(cmplx(x%re%value, x%im%value, kind=kind(0d0)))
+    dv = 1d0/cmplx(x%re%value, x%im%value, kind=kind(0d0))
     z = dv*x
     z%re%value = dble(v)
     z%im%value = aimag(v)
@@ -1862,7 +1861,7 @@ contains
     implicit none
     type(adjac_complexan), intent(inout) :: x
     integer, dimension(:), allocatable :: itmp
-    double complex, dimension(:), allocatable :: tmp
+    complex(kind=kind(0d0)), dimension(:), allocatable :: tmp
     integer :: sz
 
     if (jac_product_mode) then
@@ -1908,8 +1907,8 @@ contains
   subroutine set_independent_q(x, xval, j, dx)
     implicit none
     type(adjac_complexan), intent(out) :: x
-    double complex, intent(in) :: xval
-    double complex, optional, intent(in) :: dx
+    complex(kind=kind(0d0)), intent(in) :: xval
+    complex(kind=kind(0d0)), optional, intent(in) :: dx
     integer, intent(in) :: j
 
     x%value = xval
@@ -1929,8 +1928,8 @@ contains
   subroutine set_independent_many_q(x, xval, dx)
     implicit none
     type(adjac_complexan), dimension(:), intent(inout) :: x
-    double complex, dimension(size(x)), intent(in) :: xval
-    double complex, dimension(size(x)), optional, intent(in) :: dx
+    complex(kind=kind(0d0)), dimension(size(x)), intent(in) :: xval
+    complex(kind=kind(0d0)), dimension(size(x)), optional, intent(in) :: dx
 
     integer :: j
 
@@ -1948,8 +1947,8 @@ contains
   subroutine get_value_one_q(y, val, dy)
     implicit none
     type(adjac_complexan), intent(in) :: y
-    double complex, intent(out) :: val
-    double complex, optional, intent(out) :: dy
+    complex(kind=kind(0d0)), intent(out) :: val
+    complex(kind=kind(0d0)), optional, intent(out) :: dy
     val = y%value
     if (present(dy)) then
        if (.not. jac_product_mode) then
@@ -1962,8 +1961,8 @@ contains
   subroutine get_value_many_q(y, val, dy)
     implicit none
     type(adjac_complexan), dimension(:), intent(in) :: y
-    double complex, dimension(size(y,1)), intent(out) :: val
-    double complex, dimension(size(y,1)), optional, intent(out) :: dy
+    complex(kind=kind(0d0)), dimension(size(y,1)), intent(out) :: val
+    complex(kind=kind(0d0)), dimension(size(y,1)), optional, intent(out) :: dy
     integer :: j
     do j = 1, size(val,1)
        val(j) = y(j)%value
@@ -1981,8 +1980,8 @@ contains
   subroutine get_dense_jacobian_q(y, jac_dense)
     implicit none
     type(adjac_complexan), dimension(:), intent(inout) :: y
-    double complex, dimension(:,:), intent(out) :: jac_dense
-    double complex, dimension(block_size,free_q) :: work
+    complex(kind=kind(0d0)), dimension(:,:), intent(out) :: jac_dense
+    complex(kind=kind(0d0)), dimension(block_size,free_q) :: work
     integer, dimension(free_q) :: iwork, imask
     integer :: k, j, ia, ib, kmin, kmax, nwork, j_next
 
@@ -2093,12 +2092,12 @@ contains
   subroutine get_coo_jacobian_q(y, jac_val, jac_i, jac_j)
     implicit none
     type(adjac_complexan), dimension(:), intent(inout) :: y
-    double complex, dimension(:), allocatable, intent(inout) :: jac_val
+    complex(kind=kind(0d0)), dimension(:), allocatable, intent(inout) :: jac_val
     integer, dimension(:), allocatable, intent(inout) :: jac_i, jac_j
-    double complex, dimension(block_size,free_q) :: work
+    complex(kind=kind(0d0)), dimension(block_size,free_q) :: work
     integer, dimension(free_q) :: iwork, imask
     integer, dimension(:), allocatable :: itmp
-    double complex, dimension(:), allocatable :: vtmp
+    complex(kind=kind(0d0)), dimension(:), allocatable :: vtmp
     integer :: kmin, kmax, k, j, ia, ib, nnz, nwork, j_next, sz
 
     if (jac_product_mode) then
@@ -2278,7 +2277,7 @@ contains
     ! c := alpha*a + beta*b
     use iso_c_binding
     implicit none
-    double complex, intent(in) :: alphap, betap
+    complex(kind=kind(0d0)), intent(in) :: alphap, betap
     type(adjac_complexan), intent(in) :: a, b
     type(adjac_complexan), intent(inout) :: c
 
@@ -2333,7 +2332,7 @@ contains
   pure elemental subroutine assign_qz(x, y)
     implicit none
     type(adjac_complexan), intent(inout) :: x
-    double complex, intent(in) :: y
+    complex(kind=kind(0d0)), intent(in) :: y
     call free_mem_q(x)
     x%value = y
     x%vmul = 0
@@ -2351,7 +2350,7 @@ contains
     type(adjac_complexan) :: z
 
     z%value = x%value + y%value
-    call sum_taylor(dcmplx(1d0), dcmplx(1d0), x, y, z)
+    call sum_taylor(cmplx(1d0, kind=kind(0d0)), cmplx(1d0, kind=kind(0d0)), x, y, z)
   end function add_qq
 
   pure elemental function add_qi(x, y) result(z)
@@ -2391,7 +2390,7 @@ contains
   pure elemental function add_qz(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
-    double complex, intent(in) :: y
+    complex(kind=kind(0d0)), intent(in) :: y
     type(adjac_complexan) :: z
     z%value = x%value + y
     z%vmul = x%vmul
@@ -2400,7 +2399,7 @@ contains
 
   pure elemental function add_zq(x, y) result(z)
     implicit none
-    double complex, intent(in) :: x
+    complex(kind=kind(0d0)), intent(in) :: x
     type(adjac_complexan), intent(in) :: y
     type(adjac_complexan) :: z
     z = y + x
@@ -2430,7 +2429,7 @@ contains
     type(adjac_complexan) :: z
 
     z%value = x%value - y%value
-    call sum_taylor(dcmplx(1d0), dcmplx(-1d0), x, y, z)
+    call sum_taylor(cmplx(1d0, kind=kind(0d0)), cmplx(-1d0, kind=kind(0d0)), x, y, z)
   end function sub_qq
 
   pure elemental function sub_qi(x, y) result(z)
@@ -2474,7 +2473,7 @@ contains
   pure elemental function sub_qz(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
-    double complex, intent(in) :: y
+    complex(kind=kind(0d0)), intent(in) :: y
     type(adjac_complexan) :: z
     z%value = x%value - y
     z%vmul = x%vmul
@@ -2483,7 +2482,7 @@ contains
 
   pure elemental function sub_zq(x, y) result(z)
     implicit none
-    double complex, intent(in) :: x
+    complex(kind=kind(0d0)), intent(in) :: x
     type(adjac_complexan), intent(in) :: y
     type(adjac_complexan) :: z
     z%value = x - y%value
@@ -2565,7 +2564,7 @@ contains
   pure elemental function mul_qz(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
-    double complex, intent(in) :: y
+    complex(kind=kind(0d0)), intent(in) :: y
     type(adjac_complexan) :: z
     if (y == 0) then
        z%value = 0
@@ -2579,7 +2578,7 @@ contains
 
   pure elemental function mul_zq(x, y) result(z)
     implicit none
-    double complex, intent(in) :: x
+    complex(kind=kind(0d0)), intent(in) :: x
     type(adjac_complexan), intent(in) :: y
     type(adjac_complexan) :: z
     z = y * x
@@ -2634,14 +2633,14 @@ contains
   pure elemental function div_qz(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
-    double complex, intent(in) :: y
+    complex(kind=kind(0d0)), intent(in) :: y
     type(adjac_complexan) :: z
     z = (1d0 / y) * x
   end function div_qz
 
   pure elemental function div_zq(x, y) result(z)
     implicit none
-    double complex, intent(in) :: x
+    complex(kind=kind(0d0)), intent(in) :: x
     type(adjac_complexan), intent(in) :: y
     type(adjac_complexan) :: z
     z = (-x / (y%value**2)) * y
@@ -2669,7 +2668,7 @@ contains
   pure elemental function pow_qz(x, y) result(z)
     implicit none
     type(adjac_complexan), intent(in) :: x
-    double complex, intent(in) :: y
+    complex(kind=kind(0d0)), intent(in) :: y
     type(adjac_complexan) :: z
     z = exp(y * log(x))
   end function pow_qz
@@ -2793,7 +2792,7 @@ contains
   function matmul_qz(x, y) result(z)
     implicit none
     type(adjac_complexan), dimension(:,:), intent(in) :: x
-    double complex, dimension(:,:), intent(in) :: y
+    complex(kind=kind(0d0)), dimension(:,:), intent(in) :: y
     type(adjac_complexan), dimension(size(x,1),size(y,2)) :: z
         integer i, j, k
 
@@ -2815,7 +2814,7 @@ contains
 
   function matmul_zq(x, y) result(z)
     implicit none
-    double complex, dimension(:,:), intent(in) :: x
+    complex(kind=kind(0d0)), dimension(:,:), intent(in) :: x
     type(adjac_complexan), dimension(:,:), intent(in) :: y
     type(adjac_complexan), dimension(size(x,1),size(y,2)) :: z
         integer i, j, k
@@ -2859,7 +2858,7 @@ contains
     implicit none
     type(adjac_complexan), intent(in) :: x
     type(adjac_complexan) :: z
-    double complex :: v, dv
+    complex(kind=kind(0d0)) :: v, dv
     v = exp(x%value)
     dv = v
     z = dv*x
@@ -2875,7 +2874,7 @@ contains
     implicit none
     type(adjac_complexan), intent(in) :: x
     type(adjac_complexan) :: z
-    double complex :: v, dv
+    complex(kind=kind(0d0)) :: v, dv
     v = sin(x%value)
     dv = cos(x%value)
     z = dv*x
@@ -2891,7 +2890,7 @@ contains
     implicit none
     type(adjac_complexan), intent(in) :: x
     type(adjac_complexan) :: z
-    double complex :: v, dv
+    complex(kind=kind(0d0)) :: v, dv
     v = cos(x%value)
     dv = -sin(x%value)
     z = dv*x
@@ -2907,7 +2906,7 @@ contains
     implicit none
     type(adjac_complexan), intent(in) :: x
     type(adjac_complexan) :: z
-    double complex :: v, dv
+    complex(kind=kind(0d0)) :: v, dv
     v = log(x%value)
     dv = 1d0/x%value
     z = dv*x

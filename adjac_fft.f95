@@ -162,7 +162,7 @@ contains
     use adjac
     implicit none
     external :: zffti1, zfftf1
-    double complex, dimension(:), contiguous, intent(inout) :: q
+    complex(kind=kind(0d0)), dimension(:), contiguous, intent(inout) :: q
     integer :: n
 
     n = size(q)
@@ -184,7 +184,7 @@ contains
     use adjac
     implicit none
     external :: zffti1, zfftf1
-    double complex, dimension(:), contiguous, intent(inout) :: q
+    complex(kind=kind(0d0)), dimension(:), contiguous, intent(inout) :: q
     integer :: i, n
 
     n = size(q)
