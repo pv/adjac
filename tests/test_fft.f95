@@ -7,7 +7,7 @@ program test_fft
   type(adjac_double), dimension(2,2*n,3) :: x
   double precision, dimension(2,2*n,3) :: x_value
   double precision, dimension(2*n,2*n) :: jac
-  double complex :: v1, v2
+  complex(kind=kind(0d0)) :: v1, v2
   integer :: i, j
 
   do i = 1, n

@@ -1,7 +1,7 @@
     subroutine my_func(x, y)
         implicit none
-        double complex, dimension(3), intent(in) :: x
-        double complex, dimension(2), intent(out) :: y
+        complex(kind=kind(0d0)), dimension(3), intent(in) :: x
+        complex(kind=kind(0d0)), dimension(2), intent(out) :: y
 
         integer :: j
         do j = 1, 2
@@ -12,9 +12,9 @@
     subroutine my_func_jac(x_value, y_value, dy_dx)
         use adjac
         implicit none
-        double complex, dimension(3), intent(in) :: x_value
-        double complex, dimension(2), intent(out) :: y_value
-        double complex, dimension(2,3), intent(out) :: dy_dx
+        complex(kind=kind(0d0)), dimension(3), intent(in) :: x_value
+        complex(kind=kind(0d0)), dimension(2), intent(out) :: y_value
+        complex(kind=kind(0d0)), dimension(2,3), intent(out) :: dy_dx
 
         type(adjac_complexan), dimension(3) :: x
         type(adjac_complexan), dimension(2) :: y
@@ -36,9 +36,9 @@ program simple
   implicit none
   double precision, parameter :: dx = 1e-7
 
-  double complex, dimension(3) :: x, x2
-  double complex, dimension(2) :: y, y2
-  double complex, dimension(2,3) :: dy_dx
+  complex(kind=kind(0d0)), dimension(3) :: x, x2
+  complex(kind=kind(0d0)), dimension(2) :: y, y2
+  complex(kind=kind(0d0)), dimension(2,3) :: dy_dx
 
   integer :: i
 

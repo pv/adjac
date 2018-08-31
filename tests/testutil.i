@@ -25,7 +25,7 @@ contains
 
   subroutine assert_equal_z(a, b)
     implicit none
-    double complex, intent(in) :: a, b
+    complex(kind=kind(0d0)), intent(in) :: a, b
     if (a.ne.b) then
        write(*,*) 'FAIL', a, '!=', b
     end if

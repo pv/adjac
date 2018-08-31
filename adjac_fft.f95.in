@@ -19,7 +19,7 @@ contains
   {{for TYPE, SUF, SIZE, SUF2 in [('type(adjac_double)', 'a', 'size(q)/2', 'a'),
                                   ('double precision', 'd', 'size(q)/2', 'd'),
                                   ('type(adjac_complex)', 'b', 'size(q)', 'a'),
-                                  ('double complex', 'z', 'size(q)', 'd')]}}
+                                  ('complex(kind=kind(0d0))', 'z', 'size(q)', 'd')]}}
   subroutine fft_{{SUF}}(q)
     use adjac
     implicit none
