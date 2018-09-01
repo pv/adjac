@@ -617,7 +617,8 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
        kmax = min(kmin + block_size - 1, size(y,1))
 
        nwork = 0
-       do k = kmin, kmax
+       do k = kmin, kmax, 1
+          if (y(k)%i == 0) cycle
           work(k-kmin+1, y(k)%i) = y(k)%vmul
           call heap_push(iwork, nwork, y(k)%i)
           imask(y(k)%i) = 1
@@ -677,7 +678,8 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
        kmax = min(kmin + block_size - 1, size(y,1))
 
        nwork = 0
-       do k = kmin, kmax
+       do k = kmin, kmax, 1
+          if (y(k)%i == 0) cycle
           work(k-kmin+1, y(k)%i) = y(k)%vmul
           call heap_push(iwork, nwork, y(k)%i)
           imask(y(k)%i) = 1
