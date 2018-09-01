@@ -15,7 +15,7 @@ program laplacian
   
   type(adjac_double), dimension(n) :: x
   type(adjac_double), dimension(n) :: y
-  integer :: j
+  integer :: j, nnz
   
   call adjac_reset()
   do j = 1, n
@@ -44,8 +44,8 @@ program laplacian
 
   ! Obtain jacobian in sparse coordinate (i, j, value) format
   write(*,*) '-- COO laplacian'
-  call adjac_get_coo_jacobian(y, jac_val, jac_i, jac_j)
-  do j = 1, size(jac_i,1)
+  call adjac_get_coo_jacobian(y, nnz, jac_val, jac_i, jac_j)
+  do j = 1, nnz
      write(*,*) jac_i(j), jac_j(j), real(jac_val(j))
   end do
 

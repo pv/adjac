@@ -33,13 +33,14 @@ contains
     type(adjac_double) :: x(n), y(n)
     double precision, allocatable, dimension(:), intent(inout) :: jac_val
     integer, allocatable, dimension(:), intent(inout) :: jac_i, jac_j
+    integer :: nnz
 
     call adjac_reset()
     call adjac_set_independent(x, xval)
     call oper(x, y)
 
     call adjac_get_value(y, yval)
-    call adjac_get_coo_jacobian(y, jac_val, jac_i, jac_j)
+    call adjac_get_coo_jacobian(y, nnz, jac_val, jac_i, jac_j)
   end subroutine doit
 
   subroutine oper(x, y)

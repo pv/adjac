@@ -646,18 +646,19 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
 {{endif}}
   end subroutine get_dense_jacobian_{{CHR}}
 
-  subroutine get_coo_jacobian_{{CHR}}(y, jac_val, jac_i, jac_j)
+  subroutine get_coo_jacobian_{{CHR}}(y, nnz, jac_val, jac_i, jac_j)
     implicit none
     type({{TYPE}}), dimension(:), intent(inout) :: y
     {{FTYPE}}, dimension(:), allocatable, intent(inout) :: jac_val
     integer, dimension(:), allocatable, intent(inout) :: jac_i, jac_j
+    integer, intent(out) :: nnz
 
 {{if not TAPELESS}}
     {{FTYPE}}, dimension(block_size,free_{{CHR}}) :: work
     integer, dimension(free_{{CHR}}) :: iwork, imask
     integer, dimension(:), allocatable :: itmp
     {{FTYPE}}, dimension(:), allocatable :: vtmp
-    integer :: kmin, kmax, k, j, ia, ib, nnz, nwork, j_next, sz
+    integer :: kmin, kmax, k, j, ia, ib, nwork, j_next, sz
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
@@ -713,7 +714,11 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
         """)}}
     end do
 
-    if (nnz < sz) then
+    if (nnz .eq. 0) then
+       if (allocated(jac_val)) deallocate(jac_val)
+       if (allocated(jac_i)) deallocate(jac_i)
+       if (allocated(jac_j)) deallocate(jac_j)
+    else if (nnz < sz) then
        ! Shrink to size
        allocate(itmp(nnz))
        itmp(1:nnz) = jac_i(1:nnz)
@@ -726,7 +731,7 @@ def walk_tape(ftype, chr, assign, accumulate=None, clear=None):
        call move_alloc(vtmp, jac_val)
     end if
 {{else}}
-    integer :: i, k, nnz
+    integer :: i, k
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
