@@ -12,7 +12,6 @@ sparse_vector_sum_{{CHR}}({{TYPE}} *restrict alphap, {{TYPE}} *restrict betap,
                           int *restrict ia, int *restrict ib, int *restrict ic,
                           {{TYPE}} *restrict va, {{TYPE}} *restrict vb, {{TYPE}} *restrict vc)
 {
-    {{TYPE}} tmp;
     int *ic0, *ia_end, *ib_end;
 
     ia_end = ia + (*na);
@@ -23,26 +22,29 @@ sparse_vector_sum_{{CHR}}({{TYPE}} *restrict alphap, {{TYPE}} *restrict betap,
     {
         if (*ia < *ib) {
             *vc = (*alphap) * (*va);
-            *ic = *ia;
-            ++vc;
-            ++ic;
+            if (*vc != 0) {
+		*ic = *ia;
+		++vc;
+		++ic;
+	    }
 
             ++va;
             ++ia;
         }
         else if (*ia > *ib) {
             *vc = (*betap) * (*vb);
-            *ic = *ib;
-            ++vc;
-            ++ic;
+            if (*vc != 0) {
+		*ic = *ib;
+		++vc;
+		++ic;
+	    }
 
             ++vb;
             ++ib;
         }
         else {
-            tmp = (*alphap) * (*va) + (*betap) * (*vb);
-            if (tmp) {
-                *vc = tmp;
+            *vc = (*alphap) * (*va) + (*betap) * (*vb);
+            if (*vc != 0) {
                 *ic = *ia;
                 ++vc;
                 ++ic;
@@ -56,18 +58,22 @@ sparse_vector_sum_{{CHR}}({{TYPE}} *restrict alphap, {{TYPE}} *restrict betap,
 
     while (ia < ia_end) {
         *vc = (*alphap) * (*va);
-        *ic = *ia;
-        ++vc;
-        ++ic;
+        if (*vc != 0) {
+	    *ic = *ia;
+	    ++vc;
+	    ++ic;
+	}
         ++va;
         ++ia;
     }
 
     while (ib < ib_end) {
         *vc = (*betap) * (*vb);
-        *ic = *ib;
-        ++vc;
-        ++ic;
+        if (*vc != 0) {
+	    *ic = *ib;
+	    ++vc;
+	    ++ic;
+	}
         ++vb;
         ++ib;
     }
