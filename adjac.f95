@@ -525,7 +525,8 @@ contains
        kmax = min(kmin + block_size - 1, size(y,1))
 
        nwork = 0
-       do k = kmin, kmax
+       do k = kmin, kmax, 1
+          if (y(k)%i == 0) cycle
           work(k-kmin+1, y(k)%i) = y(k)%vmul
           call heap_push(iwork, nwork, y(k)%i)
           imask(y(k)%i) = 1
@@ -616,16 +617,17 @@ contains
     end do
   end subroutine get_dense_jacobian_a
 
-  subroutine get_coo_jacobian_a(y, jac_val, jac_i, jac_j)
+  subroutine get_coo_jacobian_a(y, nnz, jac_val, jac_i, jac_j)
     implicit none
     type(adjac_double), dimension(:), intent(inout) :: y
     double precision, dimension(:), allocatable, intent(inout) :: jac_val
     integer, dimension(:), allocatable, intent(inout) :: jac_i, jac_j
+    integer, intent(out) :: nnz
     double precision, dimension(block_size,free_a) :: work
     integer, dimension(free_a) :: iwork, imask
     integer, dimension(:), allocatable :: itmp
     double precision, dimension(:), allocatable :: vtmp
-    integer :: kmin, kmax, k, j, ia, ib, nnz, nwork, j_next, sz
+    integer :: kmin, kmax, k, j, ia, ib, nwork, j_next, sz
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
@@ -646,7 +648,8 @@ contains
        kmax = min(kmin + block_size - 1, size(y,1))
 
        nwork = 0
-       do k = kmin, kmax
+       do k = kmin, kmax, 1
+          if (y(k)%i == 0) cycle
           work(k-kmin+1, y(k)%i) = y(k)%vmul
           call heap_push(iwork, nwork, y(k)%i)
           imask(y(k)%i) = 1
@@ -786,7 +789,11 @@ contains
 
     end do
 
-    if (nnz < sz) then
+    if (nnz .eq. 0) then
+       if (allocated(jac_val)) deallocate(jac_val)
+       if (allocated(jac_i)) deallocate(jac_i)
+       if (allocated(jac_j)) deallocate(jac_j)
+    else if (nnz < sz) then
        ! Shrink to size
        allocate(itmp(nnz))
        itmp(1:nnz) = jac_i(1:nnz)
@@ -1236,6 +1243,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%vmul = 0
+       call free_mem_a(z)
     else
        z%value = x%value * y
        z%vmul = x%vmul * y
@@ -1258,6 +1266,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%vmul = 0
+       call free_mem_a(z)
     else
        z%value = x%value * y
        z%vmul = x%vmul * y
@@ -1998,7 +2007,8 @@ contains
        kmax = min(kmin + block_size - 1, size(y,1))
 
        nwork = 0
-       do k = kmin, kmax
+       do k = kmin, kmax, 1
+          if (y(k)%i == 0) cycle
           work(k-kmin+1, y(k)%i) = y(k)%vmul
           call heap_push(iwork, nwork, y(k)%i)
           imask(y(k)%i) = 1
@@ -2089,16 +2099,17 @@ contains
     end do
   end subroutine get_dense_jacobian_q
 
-  subroutine get_coo_jacobian_q(y, jac_val, jac_i, jac_j)
+  subroutine get_coo_jacobian_q(y, nnz, jac_val, jac_i, jac_j)
     implicit none
     type(adjac_complexan), dimension(:), intent(inout) :: y
     complex(kind=kind(0d0)), dimension(:), allocatable, intent(inout) :: jac_val
     integer, dimension(:), allocatable, intent(inout) :: jac_i, jac_j
+    integer, intent(out) :: nnz
     complex(kind=kind(0d0)), dimension(block_size,free_q) :: work
     integer, dimension(free_q) :: iwork, imask
     integer, dimension(:), allocatable :: itmp
     complex(kind=kind(0d0)), dimension(:), allocatable :: vtmp
-    integer :: kmin, kmax, k, j, ia, ib, nnz, nwork, j_next, sz
+    integer :: kmin, kmax, k, j, ia, ib, nwork, j_next, sz
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
@@ -2119,7 +2130,8 @@ contains
        kmax = min(kmin + block_size - 1, size(y,1))
 
        nwork = 0
-       do k = kmin, kmax
+       do k = kmin, kmax, 1
+          if (y(k)%i == 0) cycle
           work(k-kmin+1, y(k)%i) = y(k)%vmul
           call heap_push(iwork, nwork, y(k)%i)
           imask(y(k)%i) = 1
@@ -2259,7 +2271,11 @@ contains
 
     end do
 
-    if (nnz < sz) then
+    if (nnz .eq. 0) then
+       if (allocated(jac_val)) deallocate(jac_val)
+       if (allocated(jac_i)) deallocate(jac_i)
+       if (allocated(jac_j)) deallocate(jac_j)
+    else if (nnz < sz) then
        ! Shrink to size
        allocate(itmp(nnz))
        itmp(1:nnz) = jac_i(1:nnz)
@@ -2525,6 +2541,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%vmul = 0
+       call free_mem_q(z)
     else
        z%value = x%value * y
        z%vmul = x%vmul * y
@@ -2547,6 +2564,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%vmul = 0
+       call free_mem_q(z)
     else
        z%value = x%value * y
        z%vmul = x%vmul * y
@@ -2569,6 +2587,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%vmul = 0
+       call free_mem_q(z)
     else
        z%value = x%value * y
        z%vmul = x%vmul * y

@@ -413,12 +413,13 @@ contains
     end do
   end subroutine get_dense_jacobian_a
 
-  subroutine get_coo_jacobian_a(y, jac_val, jac_i, jac_j)
+  subroutine get_coo_jacobian_a(y, nnz, jac_val, jac_i, jac_j)
     implicit none
     type(adjac_double), dimension(:), intent(inout) :: y
     double precision, dimension(:), allocatable, intent(inout) :: jac_val
     integer, dimension(:), allocatable, intent(inout) :: jac_i, jac_j
-    integer :: i, k, nnz
+    integer, intent(out) :: nnz
+    integer :: i, k
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
@@ -483,13 +484,13 @@ contains
           c%i(1:a%n) = a%i(1:a%n)
           c%v(1:a%n) = a%v(1:a%n)
           c%n = a%n
-          c%vmul = a%vmul
+          c%vmul = alphap * a%vmul
        else if (allocated(b%v) .and. b%n > 0) then
           call alloc_mem_a(c, b%n)
           c%i(1:b%n) = b%i(1:b%n)
           c%v(1:b%n) = b%v(1:b%n)
           c%n = b%n
-          c%vmul = b%vmul
+          c%vmul = betap * b%vmul
        else
           c%n = 0
           c%vmul = 0
@@ -902,6 +903,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%vmul = 0
+       call free_mem_a(z)
     else
        z%value = x%value * y
        z%vmul = x%vmul * y
@@ -924,6 +926,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%vmul = 0
+       call free_mem_a(z)
     else
        z%value = x%value * y
        z%vmul = x%vmul * y
@@ -1660,12 +1663,13 @@ contains
     end do
   end subroutine get_dense_jacobian_q
 
-  subroutine get_coo_jacobian_q(y, jac_val, jac_i, jac_j)
+  subroutine get_coo_jacobian_q(y, nnz, jac_val, jac_i, jac_j)
     implicit none
     type(adjac_complexan), dimension(:), intent(inout) :: y
     complex(kind=kind(0d0)), dimension(:), allocatable, intent(inout) :: jac_val
     integer, dimension(:), allocatable, intent(inout) :: jac_i, jac_j
-    integer :: i, k, nnz
+    integer, intent(out) :: nnz
+    integer :: i, k
 
     if (jac_product_mode) then
        call fatal_error('call to adjac_get_coo_jacobian when jacobian product mode is active')
@@ -1730,13 +1734,13 @@ contains
           c%i(1:a%n) = a%i(1:a%n)
           c%v(1:a%n) = a%v(1:a%n)
           c%n = a%n
-          c%vmul = a%vmul
+          c%vmul = alphap * a%vmul
        else if (allocated(b%v) .and. b%n > 0) then
           call alloc_mem_q(c, b%n)
           c%i(1:b%n) = b%i(1:b%n)
           c%v(1:b%n) = b%v(1:b%n)
           c%n = b%n
-          c%vmul = b%vmul
+          c%vmul = betap * b%vmul
        else
           c%n = 0
           c%vmul = 0
@@ -1965,6 +1969,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%vmul = 0
+       call free_mem_q(z)
     else
        z%value = x%value * y
        z%vmul = x%vmul * y
@@ -1987,6 +1992,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%vmul = 0
+       call free_mem_q(z)
     else
        z%value = x%value * y
        z%vmul = x%vmul * y
@@ -2009,6 +2015,7 @@ contains
     if (y == 0) then
        z%value = 0
        z%vmul = 0
+       call free_mem_q(z)
     else
        z%value = x%value * y
        z%vmul = x%vmul * y
