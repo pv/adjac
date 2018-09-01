@@ -11,7 +11,6 @@ sparse_vector_sum_a(double *restrict alphap, double *restrict betap,
                           int *restrict ia, int *restrict ib, int *restrict ic,
                           double *restrict va, double *restrict vb, double *restrict vc)
 {
-    double tmp;
     int *ic0, *ia_end, *ib_end;
 
     ia_end = ia + (*na);
@@ -22,26 +21,29 @@ sparse_vector_sum_a(double *restrict alphap, double *restrict betap,
     {
         if (*ia < *ib) {
             *vc = (*alphap) * (*va);
-            *ic = *ia;
-            ++vc;
-            ++ic;
+            if (*vc != 0) {
+		*ic = *ia;
+		++vc;
+		++ic;
+	    }
 
             ++va;
             ++ia;
         }
         else if (*ia > *ib) {
             *vc = (*betap) * (*vb);
-            *ic = *ib;
-            ++vc;
-            ++ic;
+            if (*vc != 0) {
+		*ic = *ib;
+		++vc;
+		++ic;
+	    }
 
             ++vb;
             ++ib;
         }
         else {
-            tmp = (*alphap) * (*va) + (*betap) * (*vb);
-            if (tmp) {
-                *vc = tmp;
+            *vc = (*alphap) * (*va) + (*betap) * (*vb);
+            if (*vc != 0) {
                 *ic = *ia;
                 ++vc;
                 ++ic;
@@ -55,18 +57,22 @@ sparse_vector_sum_a(double *restrict alphap, double *restrict betap,
 
     while (ia < ia_end) {
         *vc = (*alphap) * (*va);
-        *ic = *ia;
-        ++vc;
-        ++ic;
+        if (*vc != 0) {
+	    *ic = *ia;
+	    ++vc;
+	    ++ic;
+	}
         ++va;
         ++ia;
     }
 
     while (ib < ib_end) {
         *vc = (*betap) * (*vb);
-        *ic = *ib;
-        ++vc;
-        ++ic;
+        if (*vc != 0) {
+	    *ic = *ib;
+	    ++vc;
+	    ++ic;
+	}
         ++vb;
         ++ib;
     }
@@ -79,7 +85,6 @@ sparse_vector_sum_q(double complex *restrict alphap, double complex *restrict be
                           int *restrict ia, int *restrict ib, int *restrict ic,
                           double complex *restrict va, double complex *restrict vb, double complex *restrict vc)
 {
-    double complex tmp;
     int *ic0, *ia_end, *ib_end;
 
     ia_end = ia + (*na);
@@ -90,26 +95,29 @@ sparse_vector_sum_q(double complex *restrict alphap, double complex *restrict be
     {
         if (*ia < *ib) {
             *vc = (*alphap) * (*va);
-            *ic = *ia;
-            ++vc;
-            ++ic;
+            if (*vc != 0) {
+		*ic = *ia;
+		++vc;
+		++ic;
+	    }
 
             ++va;
             ++ia;
         }
         else if (*ia > *ib) {
             *vc = (*betap) * (*vb);
-            *ic = *ib;
-            ++vc;
-            ++ic;
+            if (*vc != 0) {
+		*ic = *ib;
+		++vc;
+		++ic;
+	    }
 
             ++vb;
             ++ib;
         }
         else {
-            tmp = (*alphap) * (*va) + (*betap) * (*vb);
-            if (tmp) {
-                *vc = tmp;
+            *vc = (*alphap) * (*va) + (*betap) * (*vb);
+            if (*vc != 0) {
                 *ic = *ia;
                 ++vc;
                 ++ic;
@@ -123,18 +131,22 @@ sparse_vector_sum_q(double complex *restrict alphap, double complex *restrict be
 
     while (ia < ia_end) {
         *vc = (*alphap) * (*va);
-        *ic = *ia;
-        ++vc;
-        ++ic;
+        if (*vc != 0) {
+	    *ic = *ia;
+	    ++vc;
+	    ++ic;
+	}
         ++va;
         ++ia;
     }
 
     while (ib < ib_end) {
         *vc = (*betap) * (*vb);
-        *ic = *ib;
-        ++vc;
-        ++ic;
+        if (*vc != 0) {
+	    *ic = *ib;
+	    ++vc;
+	    ++ic;
+	}
         ++vb;
         ++ib;
     }
