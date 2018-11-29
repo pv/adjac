@@ -450,6 +450,68 @@ contains
        end if
     end do
   end subroutine get_coo_jacobian_a
+  pure subroutine sparse_vector_sum_a(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc)
+    ! Sum sparse vectors c = alpha*a + beta*b, with index and data arrays (ia,va), (ib,vb), (ic,vc)
+    ! The output arrays are assumed to be big enough to hold the data.
+    implicit none
+    integer, intent(in) :: na, nb, ia(*), ib(*)
+    integer, intent(inout) :: nc
+    integer, intent(out) :: ic(*)
+    double precision, intent(in) :: alpha, beta, va(*), vb(*)
+    double precision, intent(out) :: vc(*)
+
+    integer :: ja, jb, jc
+
+    ja = 1
+    jb = 1
+    jc = 1
+
+    do while (ja <= na .and. jb <= nb)
+       if (ia(ja) < ib(jb)) then
+          vc(jc) = alpha * va(ja)
+          if (vc(jc) .ne. 0) then
+             ic(jc) = ia(ja)
+             jc = jc + 1
+          end if
+          ja = ja + 1
+       else if (ia(ja) > ib(jb)) then
+          vc(jc) = beta * vb(jb)
+          if (vc(jc) .ne. 0) then
+             ic(jc) = ib(jb)
+             jc = jc + 1
+          end if
+          jb = jb + 1
+       else
+          vc(jc) = alpha * va(ja) + beta * vb(jb)
+          if (vc(jc) .ne. 0) then
+             ic(jc) = ia(ja)
+             jc = jc + 1
+          end if
+          ja = ja + 1
+          jb = jb + 1
+       end if
+    end do
+
+    do while (ja <= na)
+       vc(jc) = alpha * va(ja)
+       if (vc(jc) .ne. 0) then
+          ic(jc) = ia(ja)
+          jc = jc + 1
+       end if
+       ja = ja + 1
+    end do
+
+    do while (jb <= nb)
+       vc(jc) = beta * vb(jb)
+       if (vc(jc) .ne. 0) then
+          ic(jc) = ib(jb)
+          jc = jc + 1
+       end if
+       jb = jb + 1
+    end do
+
+    nc = jc - 1
+  end subroutine sparse_vector_sum_a
 
   pure subroutine sum_taylor_a(alphap, betap, a, b, c)
     ! c := alpha*a + beta*b
@@ -458,17 +520,6 @@ contains
     double precision, intent(in) :: alphap, betap
     type(adjac_double), intent(in) :: a, b
     type(adjac_double), intent(inout) :: c
-    interface
-       pure subroutine sparse_vector_sum_a(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
-            bind(C,name="sparse_vector_sum_a")
-         use iso_c_binding
-         integer(kind=c_int), intent(in) :: na, nb, ia(*), ib(*)
-         integer(kind=c_int), intent(inout) :: nc
-         integer(kind=c_int), intent(out) :: ic(*)
-         real(kind=c_double), intent(in) :: alpha, beta, va(*), vb(*)
-         real(kind=c_double), intent(out) :: vc(*)
-       end subroutine sparse_vector_sum_a
-    end interface
 
     if (jac_product_mode) then
        c%vmul = alphap * a%vmul + betap * b%vmul
@@ -1700,6 +1751,68 @@ contains
        end if
     end do
   end subroutine get_coo_jacobian_q
+  pure subroutine sparse_vector_sum_q(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc)
+    ! Sum sparse vectors c = alpha*a + beta*b, with index and data arrays (ia,va), (ib,vb), (ic,vc)
+    ! The output arrays are assumed to be big enough to hold the data.
+    implicit none
+    integer, intent(in) :: na, nb, ia(*), ib(*)
+    integer, intent(inout) :: nc
+    integer, intent(out) :: ic(*)
+    complex(kind=kind(0d0)), intent(in) :: alpha, beta, va(*), vb(*)
+    complex(kind=kind(0d0)), intent(out) :: vc(*)
+
+    integer :: ja, jb, jc
+
+    ja = 1
+    jb = 1
+    jc = 1
+
+    do while (ja <= na .and. jb <= nb)
+       if (ia(ja) < ib(jb)) then
+          vc(jc) = alpha * va(ja)
+          if (vc(jc) .ne. 0) then
+             ic(jc) = ia(ja)
+             jc = jc + 1
+          end if
+          ja = ja + 1
+       else if (ia(ja) > ib(jb)) then
+          vc(jc) = beta * vb(jb)
+          if (vc(jc) .ne. 0) then
+             ic(jc) = ib(jb)
+             jc = jc + 1
+          end if
+          jb = jb + 1
+       else
+          vc(jc) = alpha * va(ja) + beta * vb(jb)
+          if (vc(jc) .ne. 0) then
+             ic(jc) = ia(ja)
+             jc = jc + 1
+          end if
+          ja = ja + 1
+          jb = jb + 1
+       end if
+    end do
+
+    do while (ja <= na)
+       vc(jc) = alpha * va(ja)
+       if (vc(jc) .ne. 0) then
+          ic(jc) = ia(ja)
+          jc = jc + 1
+       end if
+       ja = ja + 1
+    end do
+
+    do while (jb <= nb)
+       vc(jc) = beta * vb(jb)
+       if (vc(jc) .ne. 0) then
+          ic(jc) = ib(jb)
+          jc = jc + 1
+       end if
+       jb = jb + 1
+    end do
+
+    nc = jc - 1
+  end subroutine sparse_vector_sum_q
 
   pure subroutine sum_taylor_q(alphap, betap, a, b, c)
     ! c := alpha*a + beta*b
@@ -1708,17 +1821,6 @@ contains
     complex(kind=kind(0d0)), intent(in) :: alphap, betap
     type(adjac_complexan), intent(in) :: a, b
     type(adjac_complexan), intent(inout) :: c
-    interface
-       pure subroutine sparse_vector_sum_q(alpha, beta, na, nb, nc, ia, ib, ic, va, vb, vc) &
-            bind(C,name="sparse_vector_sum_q")
-         use iso_c_binding
-         integer(kind=c_int), intent(in) :: na, nb, ia(*), ib(*)
-         integer(kind=c_int), intent(inout) :: nc
-         integer(kind=c_int), intent(out) :: ic(*)
-         complex(kind=c_double_complex), intent(in) :: alpha, beta, va(*), vb(*)
-         complex(kind=c_double_complex), intent(out) :: vc(*)
-       end subroutine sparse_vector_sum_q
-    end interface
 
     if (jac_product_mode) then
        c%vmul = alphap * a%vmul + betap * b%vmul
