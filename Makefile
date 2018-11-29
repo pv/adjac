@@ -58,9 +58,6 @@ adjac_fft.f95: adjac_fft.f95.in generate.py
 fftpack/%.f95: fftpack/%.f95.in generate.py
 	python generate.py $< $@
 
-sparse_sum.c: sparse_sum.c.in generate.py
-	python generate.py sparse_sum.c.in sparse_sum.c
-
 %.o: %.f95
 	@install -d build/base
 	$(FC) $(FFLAGS) -Jbuild/base -c -o $@ $^
@@ -72,10 +69,10 @@ adjac_tapeless.o: adjac_tapeless.f95
 %.o: %.c
 	gcc -std=c99 $(FFLAGS) -c -o $@ $^
 
-libadjac.a: adjac.o sparse_sum.o build/base/adjac_fft.o build/base/zfftf1.o build/base/zfftb1.o build/base/zffti1.o
+libadjac.a: adjac.o build/base/adjac_fft.o build/base/zfftf1.o build/base/zfftb1.o build/base/zffti1.o
 	ar cru $@ $^
 
-libadjac_tapeless.a: adjac_tapeless.o sparse_sum.o build/tapeless/adjac_fft.o build/tapeless/zfftf1.o build/tapeless/zfftb1.o build/tapeless/zffti1.o
+libadjac_tapeless.a: adjac_tapeless.o build/tapeless/adjac_fft.o build/tapeless/zfftf1.o build/tapeless/zfftb1.o build/tapeless/zffti1.o
 	ar cru $@ $^
 
 build/base/adjac_fft.o: adjac_fft.f95 adjac.o
