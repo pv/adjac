@@ -210,6 +210,11 @@ module adjac
      module procedure conjg_b
   end interface conjg
 
+  public abs
+  interface abs
+     module procedure abs_a, abs_b
+  end interface abs
+
   public exp
   interface exp
      module procedure exp_a, exp_b, exp_q
@@ -229,6 +234,11 @@ module adjac
   interface log
      module procedure log_a, log_b, log_q
   end interface log
+
+  public sqrt
+  interface sqrt
+     module procedure sqrt_a, sqrt_b, sqrt_q
+  end interface sqrt
 
   interface adjac_set_independent
      module procedure set_independent_a, set_independent_q
@@ -1471,6 +1481,33 @@ contains
   end function conjg_b
 
   !!
+  !! abs
+  !!
+
+  pure elemental function abs_a(x) result(z)
+    implicit none
+    type(adjac_double), intent(in) :: x
+    type(adjac_double) :: z
+    if (x%value .ge. 0) then
+       z = x
+    else
+       z = -x
+    end if
+  end function abs_a
+
+  pure elemental function abs_b(x) result(z)
+    implicit none
+    type(adjac_complex), intent(in) :: x
+    type(adjac_double) :: z
+    double precision :: v, dv_re, dv_im
+    v = hypot(x%re%value, x%im%value)
+    dv_re = x%re%value / v
+    dv_im = x%im%value / v
+    z = dv_re * x%re + dv_im * x%im
+    z%value = v
+  end function abs_b
+
+  !!
   !! exp
   !!
 
@@ -1577,6 +1614,33 @@ contains
     z%re%value = dble(v)
     z%im%value = aimag(v)
   end function log_b
+
+  !!
+  !! sqrt
+  !!
+
+  pure elemental function sqrt_a(x) result(z)
+    implicit none
+    type(adjac_double), intent(in) :: x
+    type(adjac_double) :: z
+    double precision :: v, dv
+    v = sqrt(x%value)
+    dv = 0.5d0/v
+    z = dv*x
+    z%value = v
+  end function sqrt_a
+
+  pure elemental function sqrt_b(x) result(z)
+    implicit none
+    type(adjac_complex), intent(in) :: x
+    type(adjac_complex) :: z
+    complex(kind=kind(0d0)) :: v, dv
+    v = sqrt(cmplx(x%re%value, x%im%value, kind=kind(0d0)))
+    dv = 0.5d0/v
+    z = dv*x
+    z%re%value = dble(v)
+    z%im%value = aimag(v)
+  end function sqrt_b
   pure subroutine alloc_mem_q(x, n)
     implicit none
     type(adjac_complexan), intent(inout) :: x
@@ -2400,6 +2464,11 @@ contains
 
 
   !!
+  !! abs
+  !!
+
+
+  !!
   !! exp
   !!
 
@@ -2461,6 +2530,22 @@ contains
     z = dv*x
     z%value = v
   end function log_q
+
+
+  !!
+  !! sqrt
+  !!
+
+  pure elemental function sqrt_q(x) result(z)
+    implicit none
+    type(adjac_complexan), intent(in) :: x
+    type(adjac_complexan) :: z
+    complex(kind=kind(0d0)) :: v, dv
+    v = sqrt(x%value)
+    dv = 0.5d0/v
+    z = dv*x
+    z%value = v
+  end function sqrt_q
 
 
 end module adjac
